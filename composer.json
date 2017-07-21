@@ -1,0 +1,23 @@
+{
+    "name": "simoja/slblog",
+    "description": "Simple Laravel Blog",
+    "license": "MT",
+    "authors": [
+        {
+            "name": "Mohamed Benhida",
+            "email": "mohameedbenhida@gmail.com"
+        }
+    ],
+    "require": {},
+     "autoload" : {
+        "psr-4": {
+            "Simoja\\SLblog\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Simoja\\SLblog\\Tests\\": "tests/"
+      }
+    },
+    "minimum-stability": "stable",
+}
