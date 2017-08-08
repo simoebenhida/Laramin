@@ -9,6 +9,10 @@ class SLBlogHomeController extends Controller
 {
     public function index()
     {
-    	return view('slblog::post.browse');
+    	return redirect()->route('slblog.dashboard');
+    }
+    public function dashboard()
+    {
+    	return view('slblog::dashboard.index');
     }
 }

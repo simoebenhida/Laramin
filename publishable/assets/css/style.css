@@ -1,6 +1,12 @@
 .m-t-100 {
 	margin-top: 100px;
 }
+.m-t-120 {
+	margin-top: 120px;
+}
+.m-t-160 {
+	margin-top: 160px;
+}
 .m-t-20 {
 	margin-top: 20px;
 }
@@ -10,11 +16,17 @@
 .m-t-40 {
 	margin-top: 40px;
 }
+.m-t-43 {
+	margin-top: 43px;
+}
 .m-t-10 {
 	margin-top: 10px;
 }
 .m-t-50 {
 	margin-top: 50px;
+}
+.m-b-200 {
+	margin-bottom: 200px;
 }
 .m-b-100 {
 	margin-bottom: 100px;
@@ -36,4 +48,25 @@
 }
 .pull-right {
 	float: right;
+}
+.menu-background {
+	background-color: snow;
+}
+.menu-extraStyle {
+    position: relative;
+    width: 100%;
+    margin-top: 25px;
+    margin-left: 10px;
+}
+.size-t-2 {
+	font-size: 2em;
+}
+.size-t-1 {
+	font-size: 1em;
+}
+.size-t-3 {
+	font-size: 3em;
+}
+.marg-left-28 {
+	margin-left: 28%;
 }

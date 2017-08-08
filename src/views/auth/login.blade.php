@@ -1,20 +1,26 @@
-@extends('slblog::partials.main')
-@section('title','LogIn')
-
-@section('content')
-
-	<div class="columns">
-  	<div class="column is-half is-offset-one-quarter m-t-100">
-  		<div class="card">
-  			<div class="card-content">
-  				<h1 class="title">Log In</h1>
-                    <form action="{{ route('login') }}" method="POST">
-  				<div class="field">
-  					<label>Email</label>
-  					<p class="control">
-  						<input type="email" class="input" placeholder="Email" name="email">
-  					</p>
-  				</div>
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Login</title>
+  <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.4.3/css/bulma.min.css">
+  <link rel="stylesheet" type="text/css" href="{{ slblog_asset('css/style.css') }}">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="//fonts.googleapis.com/icon?family=Material+Icons">
+</head>
+<body>
+    <div class="column is-half is-offset-one-quarter m-t-100">
+      <div class="card">
+        <div class="card-content">
+          <h1 class="title">Log In</h1>
+         <form action="{{ route('slblog.postlogin') }}" method="POST">
+                    {{ csrf_field() }}
+          <div class="field">
+              <label>Email</label>
+                <p class="control">
+                    <input type="email" class="input @if($errors->has('email')) is-danger @endif"  placeholder="Email" name="email">
+                </p>
+                <p class="help is-danger"> {{ $errors->first('email') }}</p>
+          </div>
                         <div class="field">
                           <label>Password</label>
                           <p class="control">
@@ -26,10 +32,22 @@
                               Login
                             </button>
                         </div>
-  				</form>
-  			</div>
-  		</div>
-  	</div>
-	</div>
+          </form>
+        </div>
+      </div>
+  </div>
+  {{-- <script src="https://unpkg.com/vue"></script> --}}
+  {{-- @include('slblog::partials.footer'); --}}
+  {{-- <script type="text/javascript">
+    Vue.use(Buefy.default)
 
-@endsection
+  var App = new Vue({
+      el: '#app',
+      data: {
+        switchState: true,
+        checkboxState: true
+    }
+  })
+  </script> --}}
+</body>
+</html>

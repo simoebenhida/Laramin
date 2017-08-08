@@ -8,7 +8,9 @@
             "email": "mohameedbenhida@gmail.com"
         }
     ],
-    "require": {},
+    "require": {
+          "santigarcor/laratrust": "4.0.*"
+    },
      "autoload" : {
         "psr-4": {
             "Simoja\\SLblog\\": "src/"
