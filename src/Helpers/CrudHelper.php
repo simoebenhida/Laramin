@@ -16,19 +16,17 @@ if (!function_exists('slblog_menu_models')) {
 if (!function_exists('slblog_get_active_menu')) {
     function slblog_get_active_menu()
     {
-    	$type = parse_url(request()->url());
-           $type = collect($type);
-           $path = $type->filter(function($item,$index) {
-                    return $index == 'path';
-           });
+        $type = parse_url(request()->url());
+        $type = collect($type);
+        $path = $type->filter(function ($item, $index) {
+            return $index == 'path';
+        });
 
-            if(! $path->isEmpty())
-            {
-             $type = collect(explode('/',$type['path']));
-                if($type->contains(config('SLblog.prefix')))
-                    {
-        	               return $type[2];
-                    }
+        if (! $path->isEmpty()) {
+            $type = collect(explode('/', $type['path']));
+            if ($type->contains(config('SLblog.prefix'))) {
+                return $type[2];
             }
+        }
     }
 }

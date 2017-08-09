@@ -1,0 +1,17 @@
+<?php
+
+namespace App;
+
+use Illuminate\Database\Eloquent\Model;
+
+class DataInfo extends Model
+{
+    protected $fillable = [
+        'column','data_types_id','validation'
+    ];
+
+    public function types()
+    {
+    	return $this->belongsTo('App\DataType');
+    }
+}

@@ -22,17 +22,17 @@ class SLBlogServiceProvider extends ServiceProvider
 
     public function boot(Router $router)
     {
-          $this->loadViewsFrom(__DIR__.'/views', 'slblog');
-          // $this->loadRoutesFrom(__DIR__.'/routes.php');
-          $this->loadHelpers();
+        $this->loadViewsFrom(__DIR__.'/views', 'slblog');
+        // $this->loadRoutesFrom(__DIR__.'/routes.php');
+        $this->loadHelpers();
 
-          if (app()->version() >= 5.4) {
+        if (app()->version() >= 5.4) {
             $router->aliasMiddleware('admin.user', SLblogAdminMiddleware::class);
             $router->aliasMiddleware('admin.guest', SLblogGuestMiddleware::class);
-            } else {
+        } else {
             $router->middleware('admin.user', SLblogAdminMiddleware::class);
             $router->middleware('admin.guest', SLblogGuestMiddleware::class);
-            }
+        }
     }
 
     /**
@@ -42,24 +42,24 @@ class SLBlogServiceProvider extends ServiceProvider
      */
     public function register()
     {
-         $this->publishablePath = $this->getPublishablePath();
-         $this->configPath = config_path('slblog.php');
+        $this->publishablePath = $this->getPublishablePath();
+        $this->configPath = config_path('slblog.php');
+        $this->registerConsoleCommands();
 
-         $this->mergeConfigFrom($this->configPath, 'SLblog');
+        $this->mergeConfigFrom($this->configPath, 'SLblog');
 
-         $loader = AliasLoader::getInstance();
-         $loader->alias('SLblog',SLblogFacade::class);
+        $loader = AliasLoader::getInstance();
+        $loader->alias('SLblog', SLblogFacade::class);
 
-         $this->app->singleton('slblog',function ($app) {
-                return new SLblog();
-           });
-          if ($this->app->runningInConsole()) {
+        $this->app->singleton('slblog', function ($app) {
+            return new SLblog();
+        });
+        if ($this->app->runningInConsole()) {
             $this->registerPublishableResources();
-            $this->registerConsoleCommands();
-          }
+        }
     }
 
-   private function registerPublishableResources()
+    private function registerPublishableResources()
     {
         $publishable = [
             'config' => [
@@ -96,11 +96,12 @@ class SLBlogServiceProvider extends ServiceProvider
     {
         $this->commands(Commands\InstallCommand::class);
         $this->commands(Commands\SeederCommand::class);
+        $this->commands(Commands\ModelCommand::class);
     }
 
     protected function loadHelpers()
     {
-         foreach (glob(__DIR__.'/Helpers/*.php') as $filename) {
+        foreach (glob(__DIR__.'/Helpers/*.php') as $filename) {
             require_once $filename;
         }
     }

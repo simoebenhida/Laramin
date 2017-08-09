@@ -5,7 +5,7 @@ use Illuminate\Database\Seeder;
 use App\DataType;
 use App\DataInfo;
 
-class DefaultDataSeeder extends Seeder
+class SLblogDataSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -65,35 +65,29 @@ class DefaultDataSeeder extends Seeder
                 ]
                ]);
 
-            $this->command->info('SLblog Data Seeder');
+        $this->command->info('SLblog Data Seeder');
 
-             $models->each(function($model,$index) use($columns) {
+        $models->each(function ($model, $index) use ($columns) {
+            $this->command->info('Creating Data Type to '.$index);
 
-                    $this->command->info('Creating Data Type to '.$index);
-
-                    $res = DataType::create([
+            $res = DataType::create([
                         'name' => $index,
                         'slug' => strtolower($index),
                     ]);
-                     $id = $res->id;
-                $columns->filter(function($item,$key) use($index,$id) {
+            $id = $res->id;
+            $columns->filter(function ($item, $key) use ($index,$id) {
+                return $key == $index;
+            })->Flatmap(function ($item, $key) use ($id) {
+                return $item;
+            })->each(function ($item, $key) use ($id) {
+                $this->command->info('Creating Data Info '.$key.' for '.DataType::find($id)->name);
 
-                    return $key == $index;
-
-                })->Flatmap(function($item,$key) use($id) {
-
-                    return $item;
-
-                })->each(function($item,$key) use($id) {
-
-                     $this->command->info('Creating Data Info '.$key.' for '.DataType::find($id)->name);
-
-                    DataInfo::create([
+                DataInfo::create([
                         'data_types_id' => $id,
                         'column' => $key,
                         'validation' => json_encode($item)
                     ]);
-                });
             });
+        });
     }
 }

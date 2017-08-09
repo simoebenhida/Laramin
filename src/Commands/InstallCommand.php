@@ -56,9 +56,6 @@ class InstallCommand extends Command
         $this->info('Publishing the SLblog assets');
         $this->call('vendor:publish', ['--provider' => SLBlogServiceProvider::class]);
 
-        // $models = [
-        // 'Role','User','Permission'
-        // ];
         // foreach(SLblogFacade::getModels() as $key => $model)
         // {
         //     file_put_contents(
