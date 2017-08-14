@@ -16,9 +16,10 @@ class CreateDataInfosTable extends Migration
         Schema::create('data_infos', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('data_types_id')->unsigned();
-            $table->integer('data_types_id')->references('id')->on('data_types')->onDelete('cascade');
+            $table->foreign('data_types_id')->references('id')->on('data_types')->onDelete('cascade');
             $table->string('column');
-            $table->json('validation');
+            $table->string('type');
+            $table->json('validation')->nullable();
             $table->timestamps();
         });
     }

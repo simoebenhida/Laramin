@@ -5,6 +5,6 @@
             - Menu Click Event For Later
            */ --}}
 
-         <slblogthemenu :menus='{{ json_encode(slblog_menu_models()) }}' prefix="{{ config('SLblog.prefix') }}" active="{{ slblog_get_active_menu() }}"></slblogthemenu>
+         <slblogthemenu :menus='{{ json_encode(slblog_menu_models()) }}' prefix="{{ config('SLblog.prefix') }}" :active="{{ json_encode(slblog_get_active_menu()) }}"></slblogthemenu>
 </div>
 

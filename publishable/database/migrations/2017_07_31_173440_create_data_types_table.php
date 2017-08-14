@@ -16,7 +16,9 @@ class CreateDataTypesTable extends Migration
         Schema::create('data_types', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
-            $table->string('slug');
+            $table->string('model')->nullable();
+            $table->string('slug')->nullable();
+            $table->enum('menu', ['show', 'unshow'])->default('unshow');
             $table->timestamps();
         });
     }

@@ -89,6 +89,16 @@ class InstallCommand extends Command
         // \Route::group(['prefix' =>  config('SLblog.prefix')], function () {
         //     \SLblog::routes();
         // });
+        $this->info('Adding SLblog api routes to routes/api.php');
+
+         $filesystem->append(
+            base_path('routes/api.php'),
+            "\n\nRoute::group(['prefix' =>  config('SLblog.prefix')], function () {\n    SLblog::ApiRoutes();\n});\n"
+        );
+
+        // \Route::group(['prefix' =>  config('SLblog.prefix')], function () {
+        //     \SLblog::routes();
+        // });
         // $this->call('migrate');
     }
 

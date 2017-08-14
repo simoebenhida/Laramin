@@ -6,6 +6,13 @@ if (!function_exists('slblog_menu_slugs')) {
     }
 }
 
+if (!function_exists('slblog_basic_types')) {
+    function slblog_basic_types()
+    {
+        return SLblog::getBasicTypes();
+    }
+}
+
 if (!function_exists('slblog_menu_models')) {
     function slblog_menu_models()
     {
@@ -25,7 +32,9 @@ if (!function_exists('slblog_get_active_menu')) {
         if (! $path->isEmpty()) {
             $type = collect(explode('/', $type['path']));
             if ($type->contains(config('SLblog.prefix'))) {
-                return $type[2];
+                $type->shift();
+                $type->shift();
+                return $type;
             }
         }
     }

@@ -10,7 +10,13 @@ use Simoja\SLblog\Facades\SLblog;
 
 class SLBlogDatabaseController extends Controller
 {
+    protected $basicType;
     protected $types = [];
+    protected $columnNames = [];
+    public function __construct()
+    {
+        $this->basicType = SLblog::getBasicTypes();
+    }
 
     public function browse()
     {
@@ -29,55 +35,72 @@ class SLBlogDatabaseController extends Controller
         });
         return stripslashes($something->first());
     }
-    public function store()
+    public function store(Request $request)
     {
+        $this->validate($request,
+            [
+            'nameType' => 'required',
+            'slugType' => 'required',
+            'defaultFirstNameColumn' => 'required',
+            ],
+            [
+             'defaultFirstNameColumn.required' => 'The column name field is required'
+            ]
+            );
+        $this->columnNames = collect(request()->name_columns);
         //Store Info on database
-        // dd(collect(request()->columns));
-
         $modelType = SLblog::model('DataType')->create([
                 'name' => request()->nameType,
                 'slug' => request()->slugType
             ]);
         $id = $modelType->id;
-        collect(request()->name_columns)->each(function ($value, $key) use ($id) {
+        $this->columnNames->each(function ($value, $key) use ($id) {
             SLblog::model('DataInfo')->create([
                     'data_types_id' => $id,
                     'column' => $value,
-                    'validation' => json_encode([request()->validation[$key]])
+                    'type' => request()->type_columns[$key],
+                    'validation' => json_encode(request()->validation[$key])
                 ]);
         });
+
         $this->types = collect(request()->type_columns);
-        // collect(request()->columns)->each(function ($value, $key) {
-        //     dd($key[0]);
-        // });
+
         //Add To Database
-        // dd($this->findType('text'));
-        //        <option value="checkbox">Checkbox</option>
-        //  <option value="date">Date</option>
-        //  <option value="file">File</option>
-        //  <option value="image">Image</option>
-        //  <option value="multiple_images">Multiple Images</option>
-        // <option value="number" selected="">Number </option>
-        //  <option value="password">Password</option>
-        //  <option value="radio_btn">Radio Button</option>
-        //  <option value="rich_text_box">Rich Text Box</option>
-        //  <option value="select_dropdown"> Select Dropdown </option>
-        //  <option value="select_multiple">Select Multiple</option>
-        //  <option value="text">Text</option>
-        //  <option value="text_area">Text Area</option>
-        //  <option value="timestamp">Timestamp </option>
-        //  <option value="hidden">Hidden</option>
-        //  <option value="code_editor">Code Editor </option>
         if (! Schema::hasTable(request()->nameType)) {
             Schema::create(request()->nameType, function (Blueprint $table) {
                 // $this->findType('text');
                 $table->increments('id');
-                if ($this->types->contains('text')) {
-                    $table->string("test");
+                while (sizeof($this->types) > 0) {
+                    $callItOnce = $this->types->shift();
+                    if ($callItOnce == 'date') {
+                        $table->date($this->columnNames->shift());
+                    }
+                    if (($callItOnce == 'string') || ($callItOnce == 'file') || ($callItOnce== 'image') || ($callItOnce == 'password'))
+                    {
+                        $table->string($this->columnNames->shift());
+                    }
+                    if (($callItOnce == 'checkbox') || ($callItOnce == 'radio_btn')) {
+                        $table->boolean($this->columnNames->shift());
+                    }
+                    if ($callItOnce == 'number') {
+                        $table->float($this->columnNames->shift());
+                    }
+                    if ($callItOnce == 'json') {
+                        $table->json($this->columnNames->shift());
+                    }
+                    if ($callItOnce == 'text') {
+                        $table->text($this->columnNames->shift());
+                    }
+                    if (($callItOnce == 'rich_text_box') || ($callItOnce == 'text_area')) {
+                        $table->longText($this->columnNames->shift());
+                    }
+                     if ($callItOnce == 'timestamp') {
+                        $table->timestamp($this->columnNames->shift());
+                     }
                 }
             });
         }
         //Create Model File
-        Artisan::call('SLblog:model', ['name' => request()->model, 'migration' => request()->nameType]);
+        Artisan::call('SLblog:model', ['name' => ucfirst(request()->model), 'migration' => request()->nameType]);
     }
 }

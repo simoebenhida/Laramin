@@ -19,12 +19,23 @@
                 - click link target the type and change the config to current type ?
                 Make Slug ?
              */
+                //Database
             Route::group(['prefix' => 'database', 'as' => 'database.'], function () use ($namespaceController) {
                 Route::get('/', ['uses' => "{$namespaceController}\SLBlogDatabaseController@browse",'as' => 'browse']);
                 Route::get('/create', ['uses' => "{$namespaceController}\SLBlogDatabaseController@create",'as' => 'add']);
                 Route::post('/add', ['uses' => "{$namespaceController}\SLBlogDatabaseController@store",'as' => 'store']);
             });
-
+            //Permission
+            Route::group(['prefix' => 'users', 'as' => 'users.'], function () use ($namespaceController) {
+                Route::get('/', ['uses' => "{$namespaceController}\SLblogPermissionController@users",'as' => 'users']);
+                // Route::get('/create', ['uses' => "{$namespaceController}\SLblogPermissionController@create",'as' => 'add']);
+                // Route::post('/add', ['uses' => "{$namespaceController}\SLblogPermissionController@store",'as' => 'store']);
+            });
+            Route::group(['prefix' => 'roles', 'as' => 'roles.'], function () use ($namespaceController) {
+                Route::get('/', ['uses' => "{$namespaceController}\SLblogPermissionController@roles",'as' => 'roles']);
+                // Route::get('/create', ['uses' => "{$namespaceController}\SLblogPermissionController@create",'as' => 'add']);
+                // Route::post('/add', ['uses' => "{$namespaceController}\SLblogPermissionController@store",'as' => 'store']);
+            });
             foreach (slblog_menu_slugs() as $key => $value) {
                 Route::group(['prefix' => $value, 'as' => $value.'.'], function () use ($namespaceController) {
                     Route::get('/', ['uses' => "{$namespaceController}\SLBlogCrudController@browse",'as' => 'browse']);

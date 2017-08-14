@@ -26,41 +26,59 @@ class SLblogDataSeeder extends Seeder
         $columns = collect([
                'Post' => [
                     'title' => [
-                        'required|max:150'
+                        'required|max:150',
+                        'text'
                     ],
                     'slug' => [
-                        'required|unique:posts'
+                        'required|unique:posts',
+                        'text'
                     ],
                     'content' => [
-                        'required'
+                        'required',
+                        'text_area'
                     ],
                     'description' => [
-                        'required|max:250'
+                        'required|max:250',
+                        'text_area'
                     ],
                     'featured' => [
-                        'required|max:154'
+                        'required|max:154',
+                        'checkbox'
                     ],
                     'image' => [
-                        'required|mimes:jpeg,bmp,png'
+                        'required|mimes:jpeg,bmp,png',
+                        'image'
                     ],
+                    /**
+
+                        TODO:
+                        - Add Enum For Later
+
+                     */
+
                     'status' => [
-                        'required'
+                        'required',
+                        'text',
                     ]
                 ],
                'Tag' => [
                     'name' => [
-                        'required|max:156'
+                        'required|max:156',
+                        'text'
                     ],
                     'slug' => [
-                        'required|max:100|unique:tags'
+                        'required|max:100|unique:tags',
+                        'text'
                     ]
                 ],
                'Category' => [
                     'name' => [
-                        'required|max:156'
+                        'required|max:156',
+                        'text'
                     ],
                     'slug' => [
-                        'required|max:100|unique:categories'
+                        'required|max:100|unique:categories',
+                        'text'
                     ]
                 ]
                ]);
@@ -75,7 +93,7 @@ class SLblogDataSeeder extends Seeder
                         'slug' => strtolower($index),
                     ]);
             $id = $res->id;
-            $columns->filter(function ($item, $key) use ($index,$id) {
+            $columns->filter(function ($item, $key) use ($index, $id) {
                 return $key == $index;
             })->Flatmap(function ($item, $key) use ($id) {
                 return $item;
@@ -85,7 +103,8 @@ class SLblogDataSeeder extends Seeder
                 DataInfo::create([
                         'data_types_id' => $id,
                         'column' => $key,
-                        'validation' => json_encode($item)
+                        'type' => $item[1],
+                        'validation' => json_encode($item[0])
                     ]);
             });
         });
