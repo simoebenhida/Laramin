@@ -11,15 +11,12 @@ class SLblogUserController extends Controller
     public function update()
     {
         $userByID = SLblog::model('User')::find(request()->id);
-        $userByID->update(collect(request()->all())->only([
-                                                                                                                'name',
-                                                                                                                'email'
-                                                                                                                 ])->toArray());
+        $userByID->update(collect(request()->all())->only(['name','email'])->toArray());
         //Attach Or Detach Role
-        if(request()->role)
-        {
-                     $role = SLblog::model('Role')->where('name',request()->role)->first();
-                     $userByID->detachRole($role);
+        if (request()->role) {
+            // $role = SLblog::model('Role')->where('name', request()->role)->first();
+            $userByID->detachRole(request()->oldRole);
+            $userByID->attachRole(request()->role);
         }
         // $user->attachRole(2);
         return response()->json(['user' => $userByID,'users' => SLblog::model('User')->all()]);

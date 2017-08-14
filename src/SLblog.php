@@ -58,7 +58,7 @@ class SLblog
 
     protected $DataType;
 
-    protected $getCAnAllModels = [];
+    protected $getEnabledModels = [];
 
     public function __construct()
     {
@@ -66,8 +66,8 @@ class SLblog
         $this->BasicModels = collect($this->BasicModels);
         $this->setDataType();
         $this->setExtraModels();
-        $this->getbAllModels();
-        $this->getCAnAllModel();
+        $this->getbackModels();
+        $this->getEnabledModel();
     }
 
     public function routes()
@@ -106,19 +106,19 @@ class SLblog
         return $this->ExtraModelSlug;
     }
 
-    public function getCAnAllModel()
+    public function getEnabledModel()
     {
         //Always Delete The 2 First Elements
         $basicModel = $this->BasicModels;
         $basicModel->shift();
         $basicModel->shift();
-        $this->getCAnAllModels = $basicModel->merge($this->ExtraModels);
+        $this->getEnabledModels = $basicModel->merge($this->ExtraModels);
     }
     public function getAllModels()
     {
-        return $this->getCAnAllModels;
+        return $this->getEnabledModels;
     }
-    public function getbAllModels()
+    public function getbackModels()
     {
         $this->AllModels = $this->BasicModels->merge($this->ExtraModels);
         return $this->AllModels;

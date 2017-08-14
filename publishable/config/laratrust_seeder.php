@@ -4,8 +4,11 @@ return [
     'role_structure' => [
         'superadministrator' => [
             'users' => 'c,r,u,d',
-            'acl' => 'c,r,u,d',
-            'profile' => 'r,u'
+            'permissions' => 'c,r,u,d',
+            'roles' => 'c,r,u,d',
+            'posts' => 'c,r,u,d',
+            'tags' => 'c,r,u,d',
+            'categories' => 'c,r,u,d'
         ],
         'administrator' => [
             'users' => 'c,r,u,d',

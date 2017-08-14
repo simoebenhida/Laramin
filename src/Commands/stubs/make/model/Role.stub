@@ -3,8 +3,17 @@
 namespace App;
 
 use Laratrust\LaratrustRole;
+use Simoja\SLblog\Facades\SLblog;
 
 class Role extends LaratrustRole
 {
+    protected $fillable = [
+        'name' , 'display_name','description'];
 
+    public function toArray()
+    {
+        return array_merge(parent::toArray(), [
+            'permission' => SLblog::getModelPermission($this)
+         ]);
+    }
 }

@@ -2,9 +2,10 @@
 
 namespace App;
 
-use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
 use Laratrust\Traits\LaratrustUserTrait;
+use Simoja\SLblog\Facades\SLblog;
 
 class User extends Authenticatable
 {
@@ -27,4 +28,12 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    public function toArray()
+    {
+        return array_merge(parent::toArray(), [
+            'role' =>   slblog_each_user_role($this),
+            'permission' => SLblog::getModelPermission($this)
+         ]);
+    }
 }

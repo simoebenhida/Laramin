@@ -65,12 +65,12 @@ class SLBlogServiceProvider extends ServiceProvider
             'config' => [
                 "{$this->publishablePath}/config/slblog.php" => config_path('slblog.php'),
             ],
-            // 'config' => [
-            //     "{$this->publishablePath}/config/laratrust.php" => config_path('laratrust.php'),
-            // ],
-            // 'config' => [
-            //     "{$this->publishablePath}/config/laratrust_seeder.php" => config_path('laratrust_seeder.php'),
-            // ],
+            'config' => [
+                "{$this->publishablePath}/config/laratrust.php" => config_path('laratrust.php'),
+            ],
+            'config' => [
+                "{$this->publishablePath}/config/laratrust_seeder.php" => config_path('laratrust_seeder.php'),
+            ],
             'sLblog_assets' => [
                 "{$this->publishablePath}/assets/" => public_path(config('SLblog.public_path')),
             ],

@@ -56,13 +56,13 @@ class InstallCommand extends Command
         $this->info('Publishing the SLblog assets');
         $this->call('vendor:publish', ['--provider' => SLBlogServiceProvider::class]);
 
-        // foreach(SLblogFacade::getModels() as $key => $model)
-        // {
-        //     file_put_contents(
-        //         app_path("{$key}.php"),
-        //         $this->compileControllerStub($key)
-        //     );
-        // }
+        foreach(SLblogFacade::getbackModels() as $key => $model)
+        {
+            file_put_contents(
+                app_path("{$key}.php"),
+                $this->compileControllerStub($key)
+            );
+        }
         //migration
         /**
 
@@ -70,21 +70,21 @@ class InstallCommand extends Command
             - UnComment For Later
          */
 
-        // $this->info('Migrating the database tables into your application');
-        // $this->call('laratrust:migration');
-        // $this->info('Dumping the autoloaded files and reloading all new files');
+        $this->info('Migrating the database tables into your application');
+        $this->call('laratrust:migration');
+        $this->info('Dumping the autoloaded files and reloading all new files');
 
-        // $composer = $this->findComposer();
+        $composer = $this->findComposer();
 
-        // $process = new Process($composer.' dump-autoload');
-        // $process->setWorkingDirectory(base_path())->run();
+        $process = new Process($composer.' dump-autoload');
+        $process->setWorkingDirectory(base_path())->run();
 
         $this->info('Adding SLblog routes to routes/web.php');
 
-        // $filesystem->append(
-        //     base_path('routes/web.php'),
-        //     "\n\nRoute::group(['prefix' =>  config('SLblog.prefix')], function () {\n    SLblog::routes();\n});\n"
-        // );
+        $filesystem->append(
+            base_path('routes/web.php'),
+            "\n\nRoute::group(['prefix' =>  config('SLblog.prefix')], function () {\n    SLblog::routes();\n});\n"
+        );
 
         // \Route::group(['prefix' =>  config('SLblog.prefix')], function () {
         //     \SLblog::routes();
@@ -99,7 +99,7 @@ class InstallCommand extends Command
         // \Route::group(['prefix' =>  config('SLblog.prefix')], function () {
         //     \SLblog::routes();
         // });
-        // $this->call('migrate');
+        $this->call('migrate');
     }
 
     protected function compileControllerStub($model)

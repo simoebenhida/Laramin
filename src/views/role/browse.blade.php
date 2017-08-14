@@ -4,5 +4,5 @@
 
 @section('content')
 
-  <rolepermission :roles="{{ SLblog::model('Role')->all()->toJson() }}"></rolepermission>
+  <rolepermission :proles="{{ SLblog::model('Role')->all()->toJson() }}" :models="{{ json_encode(SLblog::getAllModels())}}"></rolepermission>
 @endsection
