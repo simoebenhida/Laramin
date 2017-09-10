@@ -1,13 +1,14 @@
 <?php
-namespace Simoja\SLblog;
+namespace Simoja\Laramin;
 
-use App\Category;
-use App\DataInfo;
-use App\DataType;
-use App\Permission;
-use App\Post;
-use App\Role;
-use App\Tag;
+
+// use Simoja\Laramin\Models\Category;
+use Simoja\Laramin\Models\DataInfo;
+use Simoja\Laramin\Models\DataType;
+use Simoja\Laramin\Models\Permission;
+// use Simoja\Laramin\Models\Post;
+use Simoja\Laramin\Models\Role;
+// use Simoja\Laramin\Models\Tag;
 use App\User;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Schema;
@@ -20,14 +21,15 @@ use Illuminate\Support\Str;
  */
 
 
-class SLblog
+class Laramin
 {
     protected $BasicModels = [
           'DataType' => DataType::class,  //Must be The First Element
           'DataInfo' => DataInfo::class, //The Same
-          'User'  => User::class,
+          // 'User'  => User::class,
           'Permission' => Permission::class,
-          'Role' => Role::class
+          'Role' => Role::class,
+          'Database' => null
       ];
 
     protected $BasicTypes = [
@@ -39,15 +41,12 @@ class SLblog
        'number' => 'Number',
         'password' => 'Password',
         'radio_btn' => 'Radio Button',
-        'json' => 'Json',
         'rich_text_box' => 'Richest Text Box',
-        // 'select_dropdown' => 'Select Dropdow',
-        // 'select_multiple' => 'Select Multiple',
+        'select_dropdown' => 'Select Dropdow',
+        'select_multiple' => 'Select Multiple',
         'text' => 'Text',
         'text_area' => 'Text Area',
         'timestamp' => 'TimesTamp',
-        // 'hidden' => 'Hidden',
-        // 'code_editor' => 'Code Editor'
         ];
 
     protected $ExtraModels = [];
@@ -62,7 +61,9 @@ class SLblog
 
     public function __construct()
     {
-        $this->ExtraModels = collect([]);
+        $this->ExtraModels = collect([
+             'User' => User::class
+             ]);
         $this->BasicModels = collect($this->BasicModels);
         $this->setDataType();
         $this->setExtraModels();
@@ -95,9 +96,10 @@ class SLblog
     {
         return $this->ExtraModels->all();
     }
+
     public function getModelstoArray()
     {
-        return DataType::all()->toArray();
+        return DataType::where('menu',true)->get()->toArray();
     }
 
     public function getModelsSlug()
@@ -135,7 +137,7 @@ class SLblog
     {
             //make an array each Index User with boolean permission (create,edit,delete,read)
             $modelPermission = collect([]);
-             SLblog::getAllModels()->each(function($item,$key) use($user,$modelPermission) {
+             Laramin::getAllModels()->each(function($item,$key) use($user,$modelPermission) {
                     $modelPermission->put($key,[
                            'read' => $user->hasPermission('read-'. Str::plural(strtolower($key))),
                            'create' => $user->hasPermission('create-'. Str::plural(strtolower($key))),

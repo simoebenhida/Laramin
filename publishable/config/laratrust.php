@@ -61,17 +61,17 @@ return [
         /**
          * Role model
          */
-        'role' => 'App\Role',
+        'role' => 'Simoja\Laramin\Models\Role',
 
         /**
          * Permission model
          */
-        'permission' => 'App\Permission',
+        'permission' => 'Simoja\Laramin\Models\Permission',
 
         /**
          * Team model
          */
-        'team' => 'App\Team',
+        // 'team' => 'App\Team',
 
     ],
 

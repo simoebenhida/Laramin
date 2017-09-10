@@ -19,6 +19,8 @@ class CreateDataInfosTable extends Migration
             $table->foreign('data_types_id')->references('id')->on('data_types')->onDelete('cascade');
             $table->string('column');
             $table->string('type');
+            $table->json('details')->nullable();
+            $table->boolean('display')->default(false);
             $table->json('validation')->nullable();
             $table->timestamps();
         });

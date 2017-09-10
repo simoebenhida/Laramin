@@ -1,8 +1,8 @@
 <?php
 
-use App\User;
-if (!function_exists('slblog_each_user_role')) {
-    function slblog_each_user_role($user)
+// use App\User;
+if (!function_exists('lramin_each_user_role')) {
+    function laramin_each_user_role($user)
     {
         // dd($user->roles()->first()->name);
         if($user->roles()->count() > 0)
@@ -12,21 +12,21 @@ if (!function_exists('slblog_each_user_role')) {
         return '';
     }
 }
-if (!function_exists('slblog_get_roles')) {
-    function slblog_get_roles()
+if (!function_exists('laramin_get_roles')) {
+    function laramin_get_roles()
     {
-        return SLblog::model('Role')->all();
+        return Laramin::model('Role')->all();
     }
 }
-if (!function_exists('slblog_get_users')) {
-    function slblog_get_users()
+if (!function_exists('laramin_get_users')) {
+    function laramin_get_users()
     {
-        return SLblog::model('User')->all()->toArray();
+        return Laramin::model('User')->all()->toArray();
     }
 }
 
-if (!function_exists('slblog_each_user_permission')) {
-    function slblog_each_user_permission(User $user)
+if (!function_exists('laramin_each_user_permission')) {
+    function laramin_each_user_permission($user)
     {
         return $user->permissions()->get();
     }

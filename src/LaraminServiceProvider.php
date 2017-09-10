@@ -1,15 +1,16 @@
 <?php
 
-namespace Simoja\SLblog;
+namespace Simoja\Laramin;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Foundation\AliasLoader;
 use Illuminate\Routing\Router;
-use Simoja\SLblog\Facades\SLblog as SLblogFacade;
-use Simoja\SLblog\Http\Middleware\SLblogAdminMiddleware;
-use Simoja\SLblog\Http\Middleware\SLblogGuestMiddleware;
+use Simoja\Laramin\Facades\Laramin as LaraminFacade;
+use Simoja\Laramin\Http\Middleware\LaraminAdminMiddleware;
+use Simoja\Laramin\Http\Middleware\LaraminGuestMiddleware;
+use Simoja\Laramin\Http\Middleware\LaraminPermissionMiddleware;
 
-class SLBlogServiceProvider extends ServiceProvider
+class LaraminServiceProvider extends ServiceProvider
 {
     /**
      * Bootstrap the application services.
@@ -22,16 +23,21 @@ class SLBlogServiceProvider extends ServiceProvider
 
     public function boot(Router $router)
     {
-        $this->loadViewsFrom(__DIR__.'/views', 'slblog');
+
+        // $this->loadMigrationsFrom("{$this->publishablePath}/database/migrations/");
+
+        $this->loadViewsFrom(__DIR__.'/views', 'laramin');
         // $this->loadRoutesFrom(__DIR__.'/routes.php');
         $this->loadHelpers();
 
         if (app()->version() >= 5.4) {
-            $router->aliasMiddleware('admin.user', SLblogAdminMiddleware::class);
-            $router->aliasMiddleware('admin.guest', SLblogGuestMiddleware::class);
+            $router->aliasMiddleware('laramin.user', LaraminAdminMiddleware::class);
+            $router->aliasMiddleware('laramin.guest', LaraminGuestMiddleware::class);
+            $router->aliasMiddleware('laramin.permission', LaraminPermissionMiddleware::class);
         } else {
-            $router->middleware('admin.user', SLblogAdminMiddleware::class);
-            $router->middleware('admin.guest', SLblogGuestMiddleware::class);
+            $router->middleware('laramin.user', LaraminAdminMiddleware::class);
+            $router->middleware('laramin.guest', LaraminGuestMiddleware::class);
+            $router->middleware('laramin.permission', LaraminPermissionMiddleware::class);
         }
     }
 
@@ -42,37 +48,42 @@ class SLBlogServiceProvider extends ServiceProvider
      */
     public function register()
     {
+        // $this->configPath = config_path('laramin.php');
         $this->publishablePath = $this->getPublishablePath();
-        $this->configPath = config_path('slblog.php');
         $this->registerConsoleCommands();
 
-        $this->mergeConfigFrom($this->configPath, 'SLblog');
-
+        // $this->mergeConfigFrom($this->configPath, 'Laramin');
+        $this->registerConfigs();
         $loader = AliasLoader::getInstance();
-        $loader->alias('SLblog', SLblogFacade::class);
+        $loader->alias('Laramin', LaraminFacade::class);
 
-        $this->app->singleton('slblog', function ($app) {
-            return new SLblog();
+        $this->app->singleton('laramin', function ($app) {
+            return new Laramin();
         });
         if ($this->app->runningInConsole()) {
             $this->registerPublishableResources();
         }
     }
-
+    public function registerConfigs()
+    {
+        $this->mergeConfigFrom(
+            dirname(__DIR__).'/publishable/config/laramin.php', 'Laramin'
+        );
+    }
     private function registerPublishableResources()
     {
         $publishable = [
-            'config' => [
-                "{$this->publishablePath}/config/slblog.php" => config_path('slblog.php'),
+            'laramin' => [
+                "{$this->publishablePath}/config/laramin.php" => config_path('laramin.php'),
             ],
-            'config' => [
+            'laratrust' => [
                 "{$this->publishablePath}/config/laratrust.php" => config_path('laratrust.php'),
             ],
-            'config' => [
+            'laratrust_seeder' => [
                 "{$this->publishablePath}/config/laratrust_seeder.php" => config_path('laratrust_seeder.php'),
             ],
             'sLblog_assets' => [
-                "{$this->publishablePath}/assets/" => public_path(config('SLblog.public_path')),
+                "{$this->publishablePath}/assets/" => public_path(config('Laramin.public_path')),
             ],
             'migrations' => [
                 "{$this->publishablePath}/database/migrations/" => database_path('migrations'),
@@ -97,6 +108,7 @@ class SLBlogServiceProvider extends ServiceProvider
         $this->commands(Commands\InstallCommand::class);
         $this->commands(Commands\SeederCommand::class);
         $this->commands(Commands\ModelCommand::class);
+        $this->commands(Commands\Migrations\MigrateMakeCommand::class);
     }
 
     protected function loadHelpers()

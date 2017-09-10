@@ -1,13 +1,13 @@
 <?php
 
-namespace Simoja\SLblog\Commands;
+namespace Simoja\Laramin\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Console\DetectsApplicationNamespace;
-use Simoja\SLblog\SLBlogServiceProvider;
+use Simoja\Laramin\LaraminServiceProvider;
 use Symfony\Component\Process\Process;
 use Illuminate\Filesystem\Filesystem;
-use Simoja\SLblog\Facades\SLblog as SLblogFacade;
+use Simoja\Laramin\Facades\Laramin;
 
 class InstallCommand extends Command
 {
@@ -18,14 +18,14 @@ class InstallCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'SLblog:install';
+    protected $signature = 'Laramin:install';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Install SLblog';
+    protected $description = 'Install Laramin';
 
     /**
      * Create a new command instance.
@@ -47,16 +47,16 @@ class InstallCommand extends Command
         if (file_exists(getcwd().'/composer.phar')) {
             return '"'.PHP_BINARY.'" '.getcwd().'/composer.phar';
         }
-
         return 'composer';
     }
 
     public function handle(Filesystem $filesystem)
     {
-        $this->info('Publishing the SLblog assets');
-        $this->call('vendor:publish', ['--provider' => SLBlogServiceProvider::class]);
+        $this->call('migrate:reset');
 
-        foreach(SLblogFacade::getbackModels() as $key => $model)
+        $this->info('Publishing the Laramin assets');
+        $this->call('vendor:publish', ['--provider' => LaraminServiceProvider::class]);
+        foreach(Laramin::getExtraModels() as $key => $model)
         {
             file_put_contents(
                 app_path("{$key}.php"),
@@ -70,8 +70,8 @@ class InstallCommand extends Command
             - UnComment For Later
          */
 
-        $this->info('Migrating the database tables into your application');
-        $this->call('laratrust:migration');
+        // $this->info('Migrating the database tables into your application');
+        // $this->call('laratrust:migration');
         $this->info('Dumping the autoloaded files and reloading all new files');
 
         $composer = $this->findComposer();
@@ -79,27 +79,29 @@ class InstallCommand extends Command
         $process = new Process($composer.' dump-autoload');
         $process->setWorkingDirectory(base_path())->run();
 
-        $this->info('Adding SLblog routes to routes/web.php');
+        $this->info('Adding Laramin routes to routes/web.php');
 
         $filesystem->append(
             base_path('routes/web.php'),
-            "\n\nRoute::group(['prefix' =>  config('SLblog.prefix')], function () {\n    SLblog::routes();\n});\n"
+            "\n\nRoute::group(['prefix' =>  config('Laramin.prefix')], function () {\n    Laramin::routes();\n});\n"
         );
 
-        // \Route::group(['prefix' =>  config('SLblog.prefix')], function () {
-        //     \SLblog::routes();
+        // \Route::group(['prefix' =>  config('Laramin.prefix')], function () {
+        //     \Laramin::routes();
         // });
-        $this->info('Adding SLblog api routes to routes/api.php');
+        $this->info('Adding Laramin api routes to routes/api.php');
 
          $filesystem->append(
             base_path('routes/api.php'),
-            "\n\nRoute::group(['prefix' =>  config('SLblog.prefix')], function () {\n    SLblog::ApiRoutes();\n});\n"
+            "\n\nRoute::group(['prefix' =>  config('Laramin.prefix')], function () {\n    Laramin::ApiRoutes();\n});\n"
         );
 
-        // \Route::group(['prefix' =>  config('SLblog.prefix')], function () {
-        //     \SLblog::routes();
+        // \Route::group(['prefix' =>  config('Laramin.prefix')], function () {
+        //     \Laramin::routes();
         // });
         $this->call('migrate');
+        $this->call('db:seed');
+
     }
 
     protected function compileControllerStub($model)

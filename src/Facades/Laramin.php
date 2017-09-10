@@ -1,12 +1,12 @@
 <?php
-namespace Simoja\SLblog\Facades;
+namespace Simoja\Laramin\Facades;
 
 use Illuminate\Support\Facades\Facade;
 
-class SLblog extends Facade {
+class Laramin extends Facade {
 
 	protected static function getFacadeAccessor()
 	{
-		return 'slblog';
+		return 'laramin';
 	}
 }

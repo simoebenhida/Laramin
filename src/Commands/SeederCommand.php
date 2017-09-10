@@ -1,10 +1,10 @@
 <?php
 
-namespace Simoja\SLblog\Commands;
+namespace Simoja\Laramin\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Console\DetectsApplicationNamespace;
-use Simoja\SLblog\SLBlogServiceProvider;
+use Simoja\Laramin\LaraminServiceProvider;
 
 class SeederCommand extends Command
 {
@@ -15,14 +15,14 @@ class SeederCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'SLblog:seed';
+    protected $signature = 'Laramin:seed';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Seeder SLblog';
+    protected $description = 'Seeder Laramin';
 
     /**
      * Create a new command instance.
@@ -41,7 +41,7 @@ class SeederCommand extends Command
      */
     public function handle()
     {
-        $this->info('Seeding the SLblog examples');
+        $this->info('Seeding the Laramin examples');
         $this->call('laratrust:seeder');
         $this->warn('If the command didn\'t work try to run this command : composer dump-autoload');
         $this->error('Add this line on DatabaseSeeder.php $this->call(LaratrustSeeder::class)');

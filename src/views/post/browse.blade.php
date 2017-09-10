@@ -1,4 +1,4 @@
-@extends('slblog::partials.main')
+@extends('laramin::partials.main')
 
 @section('title','Post')
 
@@ -24,44 +24,44 @@
 	<table id="dataTable">
 	<thead>
 		<tr>
-		<th>ID</th>
-		<th>Title</th>
-		<th>Author</th>
-		<th>Image</th>
-		<th>created at</th>
-		<th>Status</th>
-		<th>Actions</th>
+		@foreach ($columns as $column)
+			<th>{{ $column->column }}</th>
+		@endforeach
+		<th>Actions</th> {{-- The Same Action --}}
 		</tr>
 	</thead>
 		<tbody>
-		<tr>
-			<td>1</td>
-			<td>title</td>
-			<td>author</td>
-			<td>
-				<img src="https://www.w3schools.com/css/trolltunga.jpg" style="width:100px">
-			</td>
-			<td>2017-07-06 13:18:47</td>
-			<td>
-				<span class="tag is-success">PUBLISHED</span>
-				{{-- <span class="tag is-warning">PENDING</span>
-				<span class="tag is-danger">DRAFT</span> --}}
-			</td>
-			<td class="pull-right">
-				<a class="button is-primary is-outlined">
-				    <span>Edit</span>
-				    <span class="icon is-small">
-				      <i class="fa fa-pencil"></i>
-				    </span>
-				  </a>
-			   <a class="button is-danger is-outlined">
-				    <span>Delete</span>
-				    <span class="icon is-small">
-				      <i class="fa fa-times"></i>
-				    </span>
-				  </a>
-		        </td>
-		</tr>
+			@foreach ($items as $item)
+			<tr>
+				@foreach ($columns as $column)
+				{{-- Check If the column has access to display on Array Browse --}}
+				@if($column->type == 'image' || $column->type == 'status')
+					@include('laramin::browse.'.$column->type,['infos' => $item[$column->column]])
+				@else
+                                                @if($column->type == 'text' || $column->type == 'text_area')
+				            <td>{{ str_limit($item[$column->column],10) }}</td>
+                                                @else
+                                                    <td>{{ $item[$column->column] }}</td>
+                                                @endif
+				@endif
+				@endforeach
+				{{-- <browseaction :items="{{ $item->toJson() }}"></browseaction> --}}
+				   <td class="pull-right">
+                                                    <a href="{{ route('laramin.models.edit',['type' => $type,'id' => $item->id])}}" class="button is-primary is-outlined">
+                                                        <span>Edit</span>
+                                                        <span class="icon is-small">
+                                                          <i class="fa fa-pencil"></i>
+                                                        </span>
+                                                      </a>
+                                                   <a class="button is-danger is-outlined">
+                                                        <span>Delete</span>
+                                                        <span class="icon is-small">
+                                                          <i class="fa fa-times"></i>
+                                                        </span>
+                                                      </a>
+                                                </td>
+			</tr>
+			@endforeach
 		</tbody>
 	</table>
 

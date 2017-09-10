@@ -1,5 +1,5 @@
 
-@extends('slblog::partials.main')
+@extends('laramin::partials.main')
 
 @section('title','DaTabase')
 
@@ -11,7 +11,7 @@
     <h1 class="title">DaTabase</h1>
     </div>
     <div class="column is-6">
-         <a href="/{{ config('SLblog.prefix') }}/database/create" class="button is-primary is-pulled-right">
+         <a href="/{{ config('Laramin.prefix') }}/database/create" class="button is-primary is-pulled-right">
         <span class="icon">
           <i class="fa fa-plus"></i>
         </span>
@@ -29,28 +29,26 @@
         <th>Name</th>
         <th>Model Name</th>
         <th>Slug</th>
+        <th>Menu</th>
         <th>created at</th>
         <th class="pull-right">Actions</th>
         </tr>
     </thead>
         <tbody>
+        @foreach (Laramin::model('DataType')->all() as $type)
         <tr>
-            <td>1</td>
-            <td>Name</td>
-            <td>Model Name</td>
-            <td>slug</td>
-            <td>2017-07-06 13:18:47</td>
+            <td>{{ $type->id }}</td>
+            <td>{{ $type->name }}</td>
+            <td>{{ $type->model }}</td>
+            <td>{{ $type->slug }}</td>
+            <td>{{ $type->menu }}</td>
+            <td>{{ $type->created_at }}</td>
             <td class="pull-right">
             {{--     /**
                     TODO:
                     - Add PopUp Showing Column Models With Types
                  */ --}}
-               <a class="button is-primary is-outlined">
-                    <span>Show Columns</span>
-                    <span class="icon is-small">
-                      <i class="fa fa-pencil"></i>
-                    </span>
-                  </a>
+                <columndatabase :columns="{{ $type->infos }}"></columndatabase>
                 <a class="button is-primary is-outlined">
                     <span>Edit</span>
                     <span class="icon is-small">
@@ -65,6 +63,7 @@
                   </a>
                 </td>
         </tr>
+        @endforeach
         </tbody>
     </table>
 

@@ -1,61 +1,48 @@
 <?php
-    Route::group(['as' => 'slblog.'], function () {
-        $namespaceController = '\\'.config('SLblog.namespaceControllers');
-        // Route::get('/test',['uses' => "{$namespaceController}\SLBlogHomeController@index"]);
+    Route::group(['as' => 'laramin.'], function () {
+        $namespaceController = '\\'.config('Laramin.namespaceControllers');
 
-        Route::get('login', ['uses' => "{$namespaceController}\SLBlogUserLoginController@showLoginForm", 'as' => 'login']);
-        Route::post('login', [ 'uses' => "{$namespaceController}\SLBlogUserLoginController@postLogin", 'as' => 'postlogin' ]);
+        Route::get('login', ['uses' => "{$namespaceController}\LaraminUserLoginController@showLoginForm", 'as' => 'login']);
+        Route::post('login', [ 'uses' => "{$namespaceController}\LaraminUserLoginController@postLogin", 'as' => 'postlogin' ]);
+        Route::get('logout', [ 'uses' => "{$namespaceController}\LaraminUserLoginController@logout", 'as' => 'logout' ]);
 
-        Route::group(['middleware' => 'admin.user'], function () use ($namespaceController) {
-            Route::get('/', ['uses' => "{$namespaceController}\SLBlogHomeController@index",'as' => 'index']);
-            Route::get('/dashboard', ['uses' => "{$namespaceController}\SLBlogHomeController@dashboard",'as' => 'dashboard']);
-            // Route::get('/test',function(){
-            // 	return view('slblog::database.add-edit');
-            // });
-            /**
+        Route::group(['middleware' => ['laramin.user']], function () use ($namespaceController) {
+            Route::get('/', ['uses' => "{$namespaceController}\LaraminHomeController@index",'as' => 'index']);
+            Route::get('/dashboard', ['uses' => "{$namespaceController}\LaraminHomeController@dashboard",'as' => 'dashboard']);
 
-                TODO:
-                - For the crud add en event to detect the type Post , Tag, Category and change the name to type name
-                - click link target the type and change the config to current type ?
-                Make Slug ?
-             */
-                //Database
-            Route::group(['prefix' => 'database', 'as' => 'database.'], function () use ($namespaceController) {
-                Route::get('/', ['uses' => "{$namespaceController}\SLBlogDatabaseController@browse",'as' => 'browse']);
-                Route::get('/create', ['uses' => "{$namespaceController}\SLBlogDatabaseController@create",'as' => 'add']);
-                Route::post('/add', ['uses' => "{$namespaceController}\SLBlogDatabaseController@store",'as' => 'store']);
+             //Database
+            Route::group(['middleware' => ['laramin.permission'],'prefix' => 'database', 'as' => 'database.'], function () use ($namespaceController) {
+                Route::get('/', ['uses' => "{$namespaceController}\LaraminDatabaseController@browse",'as' => 'browse']);
+                Route::get('/create', ['uses' => "{$namespaceController}\LaraminDatabaseController@create",'as' => 'add']);
+                Route::post('/add', ['uses' => "{$namespaceController}\LaraminDatabaseController@store",'as' => 'store']);
             });
+
             //Permission
-            Route::group(['prefix' => 'users', 'as' => 'users.'], function () use ($namespaceController) {
-                Route::get('/', ['uses' => "{$namespaceController}\SLblogPermissionController@users",'as' => 'users']);
-                // Route::get('/create', ['uses' => "{$namespaceController}\SLblogPermissionController@create",'as' => 'add']);
-                // Route::post('/add', ['uses' => "{$namespaceController}\SLblogPermissionController@store",'as' => 'store']);
+            Route::group(['middleware' => ['laramin.permission'],'prefix' => 'users', 'as' => 'users.'], function () use ($namespaceController) {
+                Route::get('/', ['uses' => "{$namespaceController}\LaraminPermissionController@users",'as' => 'users']);
             });
-            Route::group(['prefix' => 'roles', 'as' => 'roles.'], function () use ($namespaceController) {
-                Route::get('/', ['uses' => "{$namespaceController}\SLblogPermissionController@roles",'as' => 'roles']);
-                // Route::get('/create', ['uses' => "{$namespaceController}\SLblogPermissionController@create",'as' => 'add']);
-                // Route::post('/add', ['uses' => "{$namespaceController}\SLblogPermissionController@store",'as' => 'store']);
+            Route::group(['middleware' => ['laramin.permission'],'prefix' => 'roles', 'as' => 'roles.'], function () use ($namespaceController) {
+                Route::get('/', ['uses' => "{$namespaceController}\LaraminPermissionController@roles",'as' => 'roles']);
             });
-            foreach (slblog_menu_slugs() as $key => $value) {
-                Route::group(['prefix' => $value, 'as' => $value.'.'], function () use ($namespaceController) {
-                    Route::get('/', ['uses' => "{$namespaceController}\SLBlogCrudController@browse",'as' => 'browse']);
-                    Route::get('/create', ['uses' => "{$namespaceController}\SLBlogCrudController@create",'as' => 'add']);
-                    Route::post('/add', ['uses' => "{$namespaceController}\SLBlogCrudController@store",'as' => 'store']);
-                    // Route::get('/edit',['uses' => "{$namespaceController}\SLBlogCrudController@editPost",'as' => 'edit']);
-                });
-            }
-            // Route::group(['prefix' => 'tag', 'as' => 'tag.'],function() use($namespaceController) {
-        // 	Route::get('/',['uses' => "{$namespaceController}\SLBlogCrudController@browse",'as' => 'browse']);
-        // 	Route::get('/create',['uses' => "{$namespaceController}\SLBlogCrudController@create",'as' => 'add']);
-        // 	Route::post('/add',['uses' => "{$namespaceController}\SLBlogCrudController@store",'as' => 'store']);
-        // 	// Route::get('/edit',['uses' => "{$namespaceController}\SLBlogCrudController@editTag",'as' => 'edit']);
-        // });
 
-        // Route::group(['prefix' => 'category', 'as' => 'category.'],function() use($namespaceController) {
-        // 	Route::get('/',['uses' => "{$namespaceController}\SLBlogCrudController@browse",'as' => 'browse']);
-        // 	Route::get('/create',['uses' => "{$namespaceController}\SLBlogCrudController@create",'as' => 'add']);
-        // 	Route::post('/add',['uses' => "{$namespaceController}\SLBlogCrudController@store",'as' => 'store']);
-        // 	// Route::get('/edit',['uses' => "{$namespaceController}\SLBlogCrudController@editCategory",'as' => 'edit']);
-        // });
+            //Models
+             try {
+            foreach (laramin_menu_slugs() as $key => $value)  {
+                Route::resource($value,"{$namespaceController}\LaraminModelController");
+            }
+        } catch (\InvalidArgumentException $e) {
+            throw new \InvalidArgumentException("Custom routes hasn't been configured because: ".$e->getMessage(), 1);
+        } catch (\Exception $e) {
+            // do nothing, might just be because table not yet migrated.
+        }
+            // foreach (laramin_menu_slugs() as $key => $value) {
+            //         Route::group(['prefix' => 'models/'.$value,'middleware' => ['admin.permission'], 'as' => 'models.'], function () use ($namespaceController) {
+            //         Route::get('/', ['uses' => "{$namespaceController}\LaraminCrudController@index",'as' => 'index']);
+            //         Route::get('/create', ['uses' => "{$namespaceController}\LaraminCrudController@create",'as' => 'create']);
+            //         Route::post('/add', ['uses' => "{$namespaceController}\LaraminCrudController@store",'as' => 'store']);
+            //         Route::get('edit/{type}/{id}',['uses' => "{$namespaceController}\SLBlogCrudController@update",'as' => 'update']);
+            //     });
+            // }
         });
+
     });

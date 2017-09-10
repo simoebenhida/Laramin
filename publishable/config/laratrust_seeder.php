@@ -8,19 +8,28 @@ return [
             'roles' => 'c,r,u,d',
             'posts' => 'c,r,u,d',
             'tags' => 'c,r,u,d',
-            'categories' => 'c,r,u,d'
+            'categories' => 'c,r,u,d',
+            'databases' => 'c,r,u,d'
         ],
         'administrator' => [
             'users' => 'c,r,u,d',
-            'profile' => 'r,u'
+            'permissions' => 'c,r,u,d',
+            'roles' => 'c,r,u,d',
+            'posts' => 'c,r,u,d',
+            'tags' => 'c,r,u,d',
+            'categories' => 'c,r,u,d'
         ],
         'user' => [
-            'profile' => 'r,u'
+            'permissions' => 'r',
+            'roles' => 'r',
+            'posts' => 'r',
+            'tags' => 'r',
+            'categories' => 'r',
         ],
     ],
     'permission_structure' => [
         'cru_user' => [
-            'profile' => 'c,r,u'
+            'databases' => 'c,r,u'
         ],
     ],
     'permissions_map' => [

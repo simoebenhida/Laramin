@@ -1,4 +1,4 @@
-@extends('slblog::partials.main')
+@extends('laramin::partials.main')
 
 @section('title','Dashboard')
 
@@ -9,7 +9,7 @@
 			<div class="card-content">
 				<h1 class="has-text-centered has-text-white size-t-2 m-t-120">Posts</h1>
 				<div class="has-text-centered">
-				<span class="tag is-light is-large is-fullwidth m-t-20">{{ SLblog::model('post')->count() }}</span>
+				<span class="tag is-light is-large is-fullwidth m-t-20">{{ Laramin::model('Post')->count() }}</span>
 				</div>
 				<div class="has-text-centered m-t-20">
 				<a href="#" class="button">Add New Post </a>
@@ -23,7 +23,7 @@
 			<div class="card-content">
 				<h1 class="has-text-centered has-text-white size-t-2 m-t-120">Tags</h1>
 				<div class="has-text-centered">
-				<span class="tag is-light is-large is-fullwidth m-t-20">{{ SLblog::model('tag')->count() }}</span>
+				<span class="tag is-light is-large is-fullwidth m-t-20">{{ Laramin::model('tag')->count() }}</span>
 				</div>
 				<div class="has-text-centered m-t-20">
 				<a href="#" class="button">Add New Tag </a>
@@ -37,7 +37,7 @@
 			<div class="card-content">
 				<h1 class="has-text-centered has-text-white size-t-2 m-t-120">Categories</h1>
 				<div class="has-text-centered">
-				<span class="tag is-light is-large is-fullwidth m-t-20">{{ SLblog::model('category')->count() }}</span>
+				<span class="tag is-light is-large is-fullwidth m-t-20">{{ Laramin::model('category')->count() }}</span>
 				</div>
 				<div class="has-text-centered m-t-20">
 				<a href="#" class="button">Add New Category </a>

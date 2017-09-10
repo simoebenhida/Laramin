@@ -1,10 +1,11 @@
 <?php
 
-namespace Simoja\SLblog\Models;
+namespace Simoja\Laramin\Models;
 
-use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
 use Laratrust\Traits\LaratrustUserTrait;
+use Simoja\Laramin\Facades\Laramin;
 
 class User extends Authenticatable
 {
@@ -27,4 +28,12 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    public function toArray()
+    {
+        return array_merge(parent::toArray(), [
+            'role' =>   laramin_each_user_role($this),
+            'permission' => Laramin::getModelPermission($this)
+         ]);
+    }
 }

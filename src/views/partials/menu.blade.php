@@ -1,10 +1,14 @@
-<div class="column is-2 menu-background" id="slblog_menu">
+<div class="column is-2 menu-background">
           {{-- /**
 
             TODO:
             - Menu Click Event For Later
            */ --}}
 
-         <slblogthemenu :menus='{{ json_encode(slblog_menu_models()) }}' prefix="{{ config('SLblog.prefix') }}" :active="{{ json_encode(slblog_get_active_menu()) }}"></slblogthemenu>
+         <laraminthemenu
+         :menus='{{ json_encode(laramin_menu_models()) }}'
+         prefix="{{ config('Laramin.prefix') }}"
+         :active="{{ json_encode(laramin_get_active_menu()) }}"
+         :permission="{{ json_encode(laramin_read_permission_menu()) }}"></laraminthemenu>
 </div>
 

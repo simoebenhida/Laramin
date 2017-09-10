@@ -1,4 +1,4 @@
-@extends('slblog::partials.main')
+@extends('laramin::partials.main')
 {{-- TO DO : Edit Category title status delete or add --}}
 
 @section('title','Category')
@@ -9,7 +9,7 @@
 				<h1 class="title is-center">Category</h1>
 				<div class="card">
 					<div class="card-content m-b-40">
-				<form action="{{ route('slblog.tag.store') }}" method="post">
+				<form action="{{ route('laramin.tag.store') }}" method="post">
 						{{ csrf_field() }}
 				<div class="field">
 				<label for="Name">Name</label>

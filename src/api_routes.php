@@ -1,9 +1,14 @@
 <?php
-    Route::group(['as' => 'slblog.'], function () {
-        $namespaceController = '\\'.config('SLblog.namespaceControllers');
+    Route::group(['as' => 'laramin.'], function () {
+        $namespaceController = '\\'.config('Laramin.namespaceControllers');
 
-        Route::post('addRoles', ['uses' => "{$namespaceController}\SLblogRoleController@store",'as' => 'store']);
-        Route::put('editPermissionRoles', ['uses' => "{$namespaceController}\SLblogRoleController@assignPermission",'as' => 'assignPermission']);
+        Route::post('addRole', "{$namespaceController}\LaraminRoleController@store");
+        Route::put('editRole', "{$namespaceController}\LaraminRoleController@update");
+        Route::delete('deleteRole/{id}', "{$namespaceController}\LaraminRoleController@destroy");
+        Route::put('editPermissionRole',"{$namespaceController}\LaraminRoleController@assignPermission");
+        Route::get('getPermissionRole',"{$namespaceController}\LaraminRoleController@getAssignPermission");
 
-        Route::put('editUser', ['uses' => "{$namespaceController}\SLblogUserController@update",'as' => 'update']);
+        Route::put('editUser',"{$namespaceController}\LaraminUserController@update");
+        Route::delete('deleteUser/{id}',"{$namespaceController}\LaraminUserController@destroy");
+
     });

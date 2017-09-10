@@ -1,4 +1,4 @@
-@extends('slblog::partials.main')
+@extends('laramin::partials.main')
 
 @section('title','Manage Permission')
 
@@ -25,7 +25,7 @@
         </div>
 
         <div class="columns is-multiline">
-        @foreach(SLblog::getAllModels() as $key => $model)
+        @foreach(Laramin::getAllModels() as $key => $model)
                 <div class="column is-one-quarter">
            <ul>
                <li>

@@ -1,8 +1,7 @@
-@extends('slblog::partials.main')
+@extends('laramin::partials.main')
 
 @section('title','User Permission')
 
 @section('content')
-<h1 class="title m-t-100">Users</h1>
-          <userpermission :pusers="{{ json_encode(slblog_get_users()) }}" :roles="{{json_encode(slblog_get_roles())}}"></userpermission>
+          <userpermission :pusers="{{ json_encode(laramin_get_users()) }}" :roles="{{json_encode(laramin_get_roles())}}" :can="{{ json_encode(laramin_get_single_permission(auth()->user())) }}"></userpermission>
 @endsection

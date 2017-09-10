@@ -1,7 +1,7 @@
 <?php
-if (!function_exists('slblog_asset')) {
-    function slblog_asset($path, $secure = null)
+if (!function_exists('laramin_asset')) {
+    function laramin_asset($path, $secure = null)
     {
-        return asset(config('SLblog.public_path').'/'.$path, $secure);
+        return asset(config('Laramin.public_path').'/'.$path, $secure);
     }
 }

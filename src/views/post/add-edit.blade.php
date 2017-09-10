@@ -1,11 +1,11 @@
-@extends('slblog::partials.main')
+@extends('laramin::partials.main')
 {{-- TODO: Change Title with Type Variable Via Controller --}}
 @section('title','Add Post')
 
 @section('content')
 	<div class="columns">
 	<div class="column is-7 m-t-100" id="app">
-		<form action="{{ route('slblog.post.store') }}" method="post" enctype="multipart/form-data">
+		<form action="{{ route('laramin.post.store') }}" method="post" enctype="multipart/form-data">
 		{{ csrf_field() }}
 			<h1 class="title">Add Post</h1>
 
@@ -74,9 +74,9 @@
 
 @endsection
 @section('scripts')
-	<script src="{{ slblog_asset('js/slugify.js')}}"></script>
-	 <script src="{{ slblog_asset('js/tinymce/tinymce.min.js') }}"></script>
-    	<script src="{{ slblog_asset('js/voyager_tinymce.js') }}"></script>
+	<script src="{{ laramin_asset('js/slugify.js')}}"></script>
+	 <script src="{{ laramin_asset('js/tinymce/tinymce.min.js') }}"></script>
+    	<script src="{{ laramin_asset('js/voyager_tinymce.js') }}"></script>
 	<script>
 		$('document').ready(function () {
          		   $('#slug').slugify();

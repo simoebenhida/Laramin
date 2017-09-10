@@ -18,7 +18,7 @@ class CreateDataTypesTable extends Migration
             $table->string('name');
             $table->string('model')->nullable();
             $table->string('slug')->nullable();
-            $table->enum('menu', ['show', 'unshow'])->default('unshow');
+            $table->boolean('menu')->default(false);
             $table->timestamps();
         });
     }

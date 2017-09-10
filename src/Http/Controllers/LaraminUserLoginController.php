@@ -1,12 +1,12 @@
 <?php
 
-namespace Simoja\SLblog\Http\Controllers;
+namespace Simoja\Laramin\Http\Controllers;
 
-use App\Http\Controllers\Controller;
+// use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 
-class SLBlogUserLoginController extends Controller
+class LaraminUserLoginController extends Controller
 {
     use AuthenticatesUsers;
 
@@ -17,7 +17,7 @@ class SLBlogUserLoginController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('admin.guest')->except('logout');
+        $this->middleware('laramin.guest')->except('logout');
     }
 
     public function postLogin(Request $request)
@@ -49,11 +49,11 @@ class SLBlogUserLoginController extends Controller
 
     public function showLoginForm()
     {
-    	return view('slblog::auth.login');
+    	return view('laramin::auth.login');
     }
 
     public function redirectTo()
     {
-        return route('slblog.dashboard');
+        return route('laramin.dashboard');
     }
 }

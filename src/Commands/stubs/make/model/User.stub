@@ -5,7 +5,7 @@ namespace App;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laratrust\Traits\LaratrustUserTrait;
-use Simoja\SLblog\Facades\SLblog;
+use Simoja\Laramin\Facades\Laramin;
 
 class User extends Authenticatable
 {
@@ -32,8 +32,8 @@ class User extends Authenticatable
     public function toArray()
     {
         return array_merge(parent::toArray(), [
-            'role' =>   slblog_each_user_role($this),
-            'permission' => SLblog::getModelPermission($this)
+            'role' =>   laramin_each_user_role($this),
+            'permission' => Laramin::getModelPermission($this)
          ]);
     }
 }

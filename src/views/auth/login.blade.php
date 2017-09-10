@@ -2,8 +2,8 @@
 <html>
 <head>
   <title>Login</title>
-  <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.4.3/css/bulma.min.css">
-  <link rel="stylesheet" type="text/css" href="{{ slblog_asset('css/style.css') }}">
+  <link rel="stylesheet" type="text/css" href="{{ laramin_asset('css/bulma.min.css') }}">
+  <link rel="stylesheet" type="text/css" href="{{ laramin_asset('css/style.css') }}">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
   <link rel="stylesheet" href="//fonts.googleapis.com/icon?family=Material+Icons">
 </head>
@@ -12,7 +12,7 @@
       <div class="card">
         <div class="card-content">
           <h1 class="title">Log In</h1>
-         <form action="{{ route('slblog.postlogin') }}" method="POST">
+         <form action="{{ route('laramin.postlogin') }}" method="POST">
                     {{ csrf_field() }}
           <div class="field">
               <label>Email</label>
@@ -36,18 +36,5 @@
         </div>
       </div>
   </div>
-  {{-- <script src="https://unpkg.com/vue"></script> --}}
-  {{-- @include('slblog::partials.footer'); --}}
-  {{-- <script type="text/javascript">
-    Vue.use(Buefy.default)
-
-  var App = new Vue({
-      el: '#app',
-      data: {
-        switchState: true,
-        checkboxState: true
-    }
-  })
-  </script> --}}
 </body>
 </html>

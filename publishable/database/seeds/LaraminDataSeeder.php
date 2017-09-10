@@ -2,10 +2,10 @@
 
 use Illuminate\Database\Seeder;
 // use faker\Factory as Faker;
-use App\DataType;
-use App\DataInfo;
+use Simoja\Laramin\Models\DataType;
+use Simoja\Laramin\Models\DataInfo;
 
-class SLblogDataSeeder extends Seeder
+class LaraminDataSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -49,16 +49,9 @@ class SLblogDataSeeder extends Seeder
                         'required|mimes:jpeg,bmp,png',
                         'image'
                     ],
-                    /**
-
-                        TODO:
-                        - Add Enum For Later
-
-                     */
-
                     'status' => [
                         'required',
-                        'text',
+                        'status',
                     ]
                 ],
                'Tag' => [
@@ -83,13 +76,15 @@ class SLblogDataSeeder extends Seeder
                 ]
                ]);
 
-        $this->command->info('SLblog Data Seeder');
+        $this->command->info('Laramin Data Seeder');
 
         $models->each(function ($model, $index) use ($columns) {
             $this->command->info('Creating Data Type to '.$index);
 
             $res = DataType::create([
                         'name' => $index,
+                        'menu' => true,
+                        'model' =>  $index,
                         'slug' => strtolower($index),
                     ]);
             $id = $res->id;

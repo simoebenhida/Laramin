@@ -1,27 +1,47 @@
 <?php
-if (!function_exists('slblog_menu_slugs')) {
-    function slblog_menu_slugs()
+
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
+
+// if (!function_exists('laramin_getSlug')) {
+//     function laramin_getSlug()
+//     {
+//          return explode('.', $request->route()->getName())[1];
+//     }
+// }
+if (!function_exists('laramin_menu_slugs')) {
+    function laramin_menu_slugs()
     {
-        return SLblog::getModelsSlug();
+        return Laramin::getModelsSlug();
     }
 }
 
-if (!function_exists('slblog_basic_types')) {
-    function slblog_basic_types()
+if (!function_exists('laramin_basic_types')) {
+    function laramin_basic_types()
     {
-        return SLblog::getBasicTypes();
+        return Laramin::getBasicTypes();
     }
 }
 
-if (!function_exists('slblog_menu_models')) {
-    function slblog_menu_models()
+if (!function_exists('laramin_menu_models')) {
+    function laramin_menu_models()
     {
-        return SLblog::getModelstoArray();
+        return Laramin::getModelstoArray();
     }
 }
-
-if (!function_exists('slblog_get_active_menu')) {
-    function slblog_get_active_menu()
+if (!function_exists('laramin_read_permission_menu')) {
+    function laramin_read_permission_menu()
+    {
+        $tools = ['users','roles','databases'];
+        $permission = collect();
+        foreach($tools as $tool) {
+            $permission->put($tool,Auth::user()->hasPermission("read-{$tool}"));
+        }
+       return $permission;
+    }
+}
+if (!function_exists('laramin_get_active_menu')) {
+    function laramin_get_active_menu()
     {
         $type = parse_url(request()->url());
         $type = collect($type);
@@ -31,11 +51,29 @@ if (!function_exists('slblog_get_active_menu')) {
 
         if (! $path->isEmpty()) {
             $type = collect(explode('/', $type['path']));
-            if ($type->contains(config('SLblog.prefix'))) {
+            if ($type->contains(config('Laramin.prefix'))) {
                 $type->shift();
                 $type->shift();
+                $laramin = Laramin::model('DataType')->where('slug',$type->first())->first();
+                if($laramin)
+                {
+                     return collect([strtolower($laramin->name)]);
+                }
                 return $type;
             }
         }
     }
 }
+if (!function_exists('laramin_get_single_permission')) {
+    function laramin_get_single_permission($user)
+    {
+        $active = laramin_get_active_menu();
+        $active = Str::plural($active->first());
+        $permission = collect();
+        $permission->put("create",$user->hasPermission("create-{$active}"));
+        $permission->put("read",$user->hasPermission("read-{$active}"));
+        $permission->put("update",$user->hasPermission("update-{$active}"));
+        $permission->put("delete",$user->hasPermission("delete-{$active}"));
+        return $permission;
+    }
+ }

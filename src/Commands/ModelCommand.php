@@ -1,11 +1,12 @@
 <?php
 
-namespace Simoja\SLblog\Commands;
+namespace Simoja\Laramin\Commands;
 
-use Illuminate\Support\Str;
 use Illuminate\Console\GeneratorCommand;
-use Symfony\Component\Console\Input\InputOption;
+use Illuminate\Support\Str;
+use Simoja\Laramin\Facades\Laramin;
 use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Input\InputOption;
 
 class ModelCommand extends GeneratorCommand
 {
@@ -14,14 +15,14 @@ class ModelCommand extends GeneratorCommand
      *
      * @var string
      */
-    protected $name = 'SLblog:model';
+    protected $name = 'Laramin:model';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Create a new SLblog Eloquent model class';
+    protected $description = 'Create a new Laramin Eloquent model class';
 
     /**
      * The type of class being generated.
@@ -53,17 +54,24 @@ class ModelCommand extends GeneratorCommand
     protected function replaceNamespace(&$stub, $name)
     {
         $stub = str_replace(
-            ['DummyNamespace', 'DummyRootNamespace','DummyTable'],
-            [$this->getNamespace($name), $this->rootNamespace(),$this->getMigrationInput()],
+            ['DummyNamespace', 'DummyRootNamespace','DummyTable','DummyFillable'],
+            [$this->getNamespace($name), $this->rootNamespace(),$this->getMigrationInput(),$this->fillableColumns($name)],
             $stub
         );
-
         return $this;
     }
+
+    protected function fillableColumns($name)
+    {
+        $model = explode('\\',$name);
+        return Laramin::model('DataType')->where('name',$model[1])->first()->infos()->pluck('column');
+    }
+
     protected function getMigrationInput()
     {
-        return trim($this->argument('migration'));
+        return $this->argument('migration');
     }
+
     protected function getArguments()
     {
         return [

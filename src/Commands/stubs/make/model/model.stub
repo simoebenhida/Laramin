@@ -6,5 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class DummyClass extends Model
 {
+    protected $fillable = DummyFillable;
+
     protected $table = 'DummyTable';
 }

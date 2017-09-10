@@ -3,7 +3,7 @@
 namespace App;
 
 use Laratrust\LaratrustRole;
-use Simoja\SLblog\Facades\SLblog;
+use Simoja\Laramin\Facades\Laramin;
 
 class Role extends LaratrustRole
 {
@@ -13,7 +13,7 @@ class Role extends LaratrustRole
     public function toArray()
     {
         return array_merge(parent::toArray(), [
-            'permission' => SLblog::getModelPermission($this)
+            'permission' => Laramin::getModelPermission($this)
          ]);
     }
 }
