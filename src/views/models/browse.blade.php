@@ -2,6 +2,7 @@
 
 @section('title',$type->name)
 
+
 @section('content')
 
     <div class="column is-12 m-t-100 m-b-200">
@@ -38,7 +39,10 @@
                 @if($column->type == 'image')
                     @include('laramin::browse.'.$column->type,['infos' => $item[$column->column]])
                 @else
-                                                    <td>{{ str_limit($item[$column->column],10) }}</td>
+                    {{-- @if ($column->type == 'select_dropdown' || $column->type == 'select_multiple')
+                        <td></td>
+                    @endif --}}
+                    <td>{{ str_limit($item[$column->column],10) }}</td>
                 @endif
                 @endforeach
 

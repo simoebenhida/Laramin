@@ -14,4 +14,10 @@ class DataInfo extends Model
     {
         return $this->belongsTo('Simoja\Laramin\Models\DataType');
     }
+
+    public function scopeDisplayed($query)
+    {
+            $query->where('display', true);
+    }
+
 }

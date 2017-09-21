@@ -28,50 +28,61 @@ class LaraminDataSeeder extends Seeder
                     'title' => [
                         'required|max:150',
                         'text'
+                        true
                     ],
                     'slug' => [
                         'required|unique:posts',
                         'text'
+                        true
                     ],
                     'content' => [
                         'required',
                         'text_area'
+                        false
                     ],
                     'description' => [
                         'required|max:250',
                         'text_area'
+                        false
                     ],
                     'featured' => [
                         'required|max:154',
-                        'checkbox'
+                        'checkbox',
+                        false
                     ],
                     'image' => [
                         'required|mimes:jpeg,bmp,png',
-                        'image'
+                        'image',
+                        true
                     ],
                     'status' => [
                         'required',
                         'status',
+                        true
                     ]
                 ],
                'Tag' => [
                     'name' => [
                         'required|max:156',
-                        'text'
+                        'text',
+                        true
                     ],
                     'slug' => [
                         'required|max:100|unique:tags',
-                        'text'
+                        'text',
+                        true
                     ]
                 ],
                'Category' => [
                     'name' => [
                         'required|max:156',
                         'text'
+                        true
                     ],
                     'slug' => [
                         'required|max:100|unique:categories',
                         'text'
+                        true
                     ]
                 ]
                ]);
@@ -99,7 +110,8 @@ class LaraminDataSeeder extends Seeder
                         'data_types_id' => $id,
                         'column' => $key,
                         'type' => $item[1],
-                        'validation' => json_encode($item[0])
+                        'validation' => json_encode($item[0]),
+                        'display' => $item[2]
                     ]);
             });
         });

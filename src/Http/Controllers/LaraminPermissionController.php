@@ -9,17 +9,19 @@ class LaraminPermissionController extends Controller
 {
     public function browse()
     {
-        //Need To change After
         return view('laramin::user.browse');
     }
+
     public function roles()
     {
         return view('laramin::role.browse');
     }
+
     public function users()
     {
         return view('laramin::user.browse');
     }
+
     public function create()
     {
         return view('laramin::add-edit');

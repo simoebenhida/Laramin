@@ -11,7 +11,7 @@
         <div class="select is-primary">
              <select name="{{ $name }}">
               @if($details !== NULL)
-                @foreach(laramin_select_dopdown($details) as $detail)
+                @foreach(laramin_select_dropdown($details) as $detail)
                <option @if(old('status') == $detail->value || $value == $detail->value) selected="selected" @endif value="{{ $detail->value }}">{{ $detail->option }}</option>
                 @endforeach
                {{-- <option @if(old('status') == 'PUBLISHED') selected="selected" @endif value="PUBLISHED">PUBLISHED</option>

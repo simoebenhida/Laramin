@@ -49,13 +49,13 @@
                     - Add PopUp Showing Column Models With Types
                  */ --}}
                 <columndatabase :columns="{{ $type->infos }}"></columndatabase>
-                <a class="button is-primary is-outlined">
+                <a href="/{{ config('Laramin.prefix') }}/database/edit/{{ $type->id }}" class="button is-primary is-outlined">
                     <span>Edit</span>
                     <span class="icon is-small">
                       <i class="fa fa-pencil"></i>
                     </span>
                   </a>
-               <a class="button is-danger is-outlined">
+               <a href="{{ route('laramin.database.destroy',$type->id) }}" class="button is-danger is-outlined">
                     <span>Delete</span>
                     <span class="icon is-small">
                       <i class="fa fa-times"></i>

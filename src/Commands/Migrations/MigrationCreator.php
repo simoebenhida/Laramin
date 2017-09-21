@@ -3,9 +3,10 @@
 namespace Simoja\Laramin\Commands\Migrations;
 
 use Closure;
+use Illuminate\Filesystem\Filesystem;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Str;
 use InvalidArgumentException;
-use Illuminate\Filesystem\Filesystem;
 
 class MigrationCreator
 {
@@ -63,6 +64,8 @@ class MigrationCreator
         // migration file so it can be used however it's needed by the developer.
         $this->firePostCreateHooks();
 
+
+        Artisan::call('migrate');
         return $path;
     }
 

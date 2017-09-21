@@ -23,7 +23,11 @@ class LaraminModelController extends Controller
     }
     public function getColumns()
     {
-        return $this->getDataType()->infos;
+        return $this->getDataType()->infos()->get();
+    }
+    public function getIndexColumns()
+    {
+        return $this->getDataType()->infos()->displayed()->get();
     }
     public function index(Request $request)
     {
@@ -31,7 +35,7 @@ class LaraminModelController extends Controller
 
          return view('laramin::models.browse')
                      ->withItems($this->getAllItems())
-                     ->withColumns($this->getColumns())
+                     ->withColumns($this->getIndexColumns())
                      ->withType($this->getDataType());
     }
 
@@ -43,7 +47,7 @@ class LaraminModelController extends Controller
     public function create(Request $request)
     {
         $this->slug = $this->getSlug($request);
-
+        // dd($this->getColumns());
         return view('laramin::models.add-edit')
                      ->withStatus('Add')
                      ->withColumns($this->getColumns())
@@ -64,19 +68,8 @@ class LaraminModelController extends Controller
         $path = $request->storeAs('public/'.$this->slug, $filename);
         return $filename;
     }
-
-    public function store(Request $request)
+    public function exeptionsRequest($request)
     {
-        $this->slug = $this->getSlug($request);
-
-        $validation = collect();
-        $this->getColumns()->each(function ($item, $index) use ($validation) {
-                if(json_decode($item->validation) !== null)
-                {
-                    $validation->put($item->column,json_decode($item->validation));
-                }
-        });
-        $this->validate($request, $validation->toArray());
         $type = collect();
         $this->getColumns()->each(function($item,$key) use($type) {
             $type->put($item->column,$item->type);
@@ -89,6 +82,29 @@ class LaraminModelController extends Controller
             $image = $this->uploadImage($request[$index]);
             $newRequest[$index] = $image;
         }
+        if($type->contains('select_multiple'))
+        {
+            $index = $type->search('select_multiple');
+            $newRequest[$index] = json_encode($request[$index]);
+        }
+        return $newRequest;
+    }
+    public function store(Request $request)
+    {
+        dd(request()->all());
+
+        $this->slug = $this->getSlug($request);
+
+        $validation = collect();
+        $this->getColumns()->each(function ($item, $index) use ($validation) {
+                if(json_decode($item->validation) !== null)
+                {
+                    $validation->put($item->column,json_decode($item->validation));
+                }
+        });
+        $this->validate($request, $validation->toArray());
+
+        $newRequest = $this->exeptionsRequest($request);
 
         $model = Laramin::model($this->getDataType()->name)->create($newRequest);
 
@@ -139,7 +155,10 @@ class LaraminModelController extends Controller
     public function update(Request $request, $id)
     {
         $this->slug = $this->getSlug($request);
-        Laramin::model($this->getDataType()->name)->find($id)->update($request->all());
+
+        $newRequest = $this->exeptionsRequest($request);
+
+        Laramin::model($this->getDataType()->name)->find($id)->update($newRequest);
         return redirect()->route("laramin.{$this->slug}.index");
     }
 

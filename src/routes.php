@@ -15,6 +15,9 @@
                 Route::get('/', ['uses' => "{$namespaceController}\LaraminDatabaseController@browse",'as' => 'browse']);
                 Route::get('/create', ['uses' => "{$namespaceController}\LaraminDatabaseController@create",'as' => 'add']);
                 Route::post('/add', ['uses' => "{$namespaceController}\LaraminDatabaseController@store",'as' => 'store']);
+                Route::get('/edit/{id}', ['uses' => "{$namespaceController}\LaraminDatabaseController@edit",'as' => 'edit']);
+                Route::post('/update/{id}', ['uses' => "{$namespaceController}\LaraminDatabaseController@update",'as' => 'update']);
+                Route::get('/destroy/{id}', ['uses' => "{$namespaceController}\LaraminDatabaseController@destroy",'as' => 'destroy']);
             });
 
             //Permission
@@ -35,14 +38,8 @@
         } catch (\Exception $e) {
             // do nothing, might just be because table not yet migrated.
         }
-            // foreach (laramin_menu_slugs() as $key => $value) {
-            //         Route::group(['prefix' => 'models/'.$value,'middleware' => ['admin.permission'], 'as' => 'models.'], function () use ($namespaceController) {
-            //         Route::get('/', ['uses' => "{$namespaceController}\LaraminCrudController@index",'as' => 'index']);
-            //         Route::get('/create', ['uses' => "{$namespaceController}\LaraminCrudController@create",'as' => 'create']);
-            //         Route::post('/add', ['uses' => "{$namespaceController}\LaraminCrudController@store",'as' => 'store']);
-            //         Route::get('edit/{type}/{id}',['uses' => "{$namespaceController}\SLBlogCrudController@update",'as' => 'update']);
-            //     });
-            // }
+
+
         });
 
     });
