@@ -13,12 +13,12 @@
     },
      "autoload" : {
         "psr-4": {
-            "Simoja\\SLblog\\": "src/"
+            "Simoja\\Laramin\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Simoja\\SLblog\\Tests\\": "tests/"
+            "Simoja\\Laramin\\Tests\\": "tests/"
       }
     },
     "minimum-stability": "stable"
