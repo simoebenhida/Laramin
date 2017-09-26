@@ -44,7 +44,7 @@ class LaraminDatabaseController extends Controller
         $this->validate($request,
             [
             'nameType' => 'required',
-            'slugType' => 'required',
+            'slugType' => 'required|unique:data_types,slug',
             'defaultFirstNameColumn' => 'required',
             ],
             [
@@ -85,6 +85,10 @@ class LaraminDatabaseController extends Controller
                     $type = $oldType[$i];
                     if ($type == 'date') {
                         $content->push("table->date('{$oldColumn[$i]}');\n");
+                    }
+                    if($type == 'status')
+                    {
+                    $content->push("table->enum('{$oldColumn[$i]}', ['PUBLISHED', 'DRAFT', 'PENDING'])->default('DRAFT');\n");
                     }
                     if (($type == 'string') || ($type == 'file') || ($type== 'image') || ($type == 'password') || ($type == 'select_dropdown') || ($type == 'radio_btn'))
                     {

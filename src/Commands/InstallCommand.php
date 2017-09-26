@@ -52,7 +52,7 @@ class InstallCommand extends Command
 
     public function handle(Filesystem $filesystem)
     {
-        $this->call('migrate:reset');
+        // $this->call('migrate:reset');
 
         $this->info('Publishing the Laramin assets');
         $this->call('vendor:publish', ['--provider' => LaraminServiceProvider::class]);
@@ -99,9 +99,9 @@ class InstallCommand extends Command
         // \Route::group(['prefix' =>  config('Laramin.prefix')], function () {
         //     \Laramin::routes();
         // });
+        $this->call('storage:link');
         $this->call('migrate');
         $this->call('db:seed');
-
     }
 
     protected function compileControllerStub($model)

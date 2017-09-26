@@ -23,6 +23,10 @@ class CreatePostsTable extends Migration
             $table->boolean('featured')->default('0');
             $table->string('image');
             $table->enum('status', ['PUBLISHED', 'DRAFT', 'PENDING'])->default('DRAFT');
+
+            $table->integer('category')->unsigned();
+            // $table->foreign('categorie_id')->references('id')->on('categories')->onDelete('cascade');
+
             $table->timestamps();
         });
     }

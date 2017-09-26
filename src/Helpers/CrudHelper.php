@@ -77,3 +77,4 @@ if (!function_exists('laramin_get_single_permission')) {
         return $permission;
     }
  }
+

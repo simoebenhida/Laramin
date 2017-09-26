@@ -36,12 +36,9 @@
             <tr>
                 @foreach ($columns as $column)
                 {{-- Check If the column has access to display on Array Browse --}}
-                @if($column->type == 'image')
+                @if($column->type == 'image' || $column->type == 'status')
                     @include('laramin::browse.'.$column->type,['infos' => $item[$column->column]])
                 @else
-                    {{-- @if ($column->type == 'select_dropdown' || $column->type == 'select_multiple')
-                        <td></td>
-                    @endif --}}
                     <td>{{ str_limit($item[$column->column],10) }}</td>
                 @endif
                 @endforeach
@@ -53,18 +50,19 @@
                                                           <i class="fa fa-pencil"></i>
                                                         </span>
                                                       </a>
-                                                   <a href="{{ route('laramin.' .$type->slug. '.destroy',$item->id) }}" class="button is-danger is-outlined" onclick="event.preventDefault();
+                                                    <modeldelete link="{{ route('laramin.' .$type->slug. '.destroy',$item->id) }}" slug="{{ $type->name }}" token="{{ csrf_token() }}"></modeldelete>
+                                                  {{--  <a href="{{ route('laramin.' .$type->slug. '.destroy',$item->id) }}" class="button is-danger is-outlined" onclick="event.preventDefault();
                                                                      document.getElementById('delete-form').submit();">
                                                         <span>Delete</span>
                                                         <span class="icon is-small">
                                                           <i class="fa fa-times"></i>
                                                         </span>
-                                                      </a>
+                                                    </a> --}}
 
-                                                    <form id="delete-form" action="{{ route('laramin.' .$type->slug. '.destroy',$item->id) }}" method="POST" style="display: none;">
+                                                    {{-- <form id="delete-form" action="{{ route('laramin.' .$type->slug. '.destroy',$item->id) }}" method="POST" style="display: none;">
                                                         {{ csrf_field() }}
                                                         {{ method_field('DELETE') }}
-                                                    </form>
+                                                    </form> --}}
                                                 </td>
             </tr>
             @endforeach

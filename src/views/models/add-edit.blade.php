@@ -12,22 +12,21 @@
               @if($status == 'Edit')
                 {{ method_field('PUT') }}
                 @endif
+ {{--            @include('laramin::forms.category',[
+                'name' => 'category',
+                'value' => '',
+                'details' => null
+                ]) --}}
 
             <h1 class="title m-t-100">{{ $status}} {{ $type->name }}</h1>
-                 <div class="columns is-multiline">
-
-             @include('laramin::forms.tags',[
-                'name' => 'tags',
-                'value' => '',
-                'details' => Laramin::model('Tag')->details()
-                ])
-
+            <div class="columns is-multiline">
             @if($status == 'Add')
             @foreach ($columns as $column)
                 @include('laramin::forms.'.$column->type,[
                 'name' => $column->column,
                 'value' => '',
-                'details' => $column->details
+                'details' => $column->details,
+                'id' => null
                 ])
             @endforeach
             @else
@@ -35,7 +34,8 @@
                 @include('laramin::forms.'.$column->type,[
                 'name' => $column->column,
                 'value' => $item[$column->column],
-                'details' => $column->details
+                'details' => $column->details,
+                'id' => $item->id
                 ])
             @endforeach
             @endif
@@ -49,7 +49,7 @@
 
 @endsection
 @section('scripts')
-    <script src="{{ laramin_asset('js/slugify.js')}}"></script>
+     <script src="{{ laramin_asset('js/slugify.js')}}"></script>
      <script src="{{ laramin_asset('js/tinymce/tinymce.min.js') }}"></script>
      <script src="{{ laramin_asset('js/laramin_tinymce.js') }}"></script>
     <script type="text/javascript" src="{{ laramin_asset('js/select2.min.js')}}"></script>

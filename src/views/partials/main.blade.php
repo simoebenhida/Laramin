@@ -19,7 +19,8 @@
 	@include('laramin::partials.menu')
 	<div class="container">
 	<div class="column">
-	@yield('content')
+	@include('laramin::partials.message')
+		@yield('content')
 	</div>
 	</div>
 	</div>
@@ -30,5 +31,7 @@
 	<script type="text/javascript" src="{{ laramin_asset('js/dataTables.bulma.min.js')}}"></script>
 	<script type="text/javascript" src="{{ asset('js/app.js') }}"></script>
 	@yield('scripts')
+
+
 </body>
 </html>

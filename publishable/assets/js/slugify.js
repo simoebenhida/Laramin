@@ -42,8 +42,11 @@
             init: function() {
                 // this.input = this.settings.input
                 //              || $(this.element).closest('form').find('input[name="title"]');
-                this.input = $('#title');
-                this.forceUpdate = (this.element.data('slug-forceupdate')) ? true : false;
+                console.log($(this.element));
+                this.input = this.settings.input
+                             || $(this.element).closest('form').find('input[name="' + this.element.attr("data-slug-origin") + '"]')
+                // this.input = $('#title');
+                this.forceUpdate = true;
                 this.input.on('keyup change', $.proxy(this.onChange, this));
 
                 this.refresh();

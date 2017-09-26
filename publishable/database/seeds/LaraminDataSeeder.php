@@ -27,62 +27,98 @@ class LaraminDataSeeder extends Seeder
                'Post' => [
                     'title' => [
                         'required|max:150',
-                        'text'
-                        true
+                        'text',
+                        true,
+                        null
                     ],
                     'slug' => [
-                        'required|unique:posts',
-                        'text'
-                        true
+                        'required|unique:posts,slug',
+                        'text',
+                        true,
+                        null
                     ],
                     'content' => [
                         'required',
-                        'text_area'
-                        false
+                        'rich_text_box',
+                        false,
+                        null
                     ],
                     'description' => [
                         'required|max:250',
-                        'text_area'
-                        false
+                        'text_area',
+                        false,
+                        null
                     ],
                     'featured' => [
-                        'required|max:154',
+                        null,
                         'checkbox',
-                        false
+                        false,
+                        null
+                    ],
+                    'tags' => [
+                        null,
+                        'tags',
+                        false,
+                        null
+                    ],
+                    'category' => [
+                        'required',
+                        'category',
+                        false,
+                        null
                     ],
                     'image' => [
                         'required|mimes:jpeg,bmp,png',
                         'image',
-                        true
+                        true,
+                        null
                     ],
                     'status' => [
-                        'required',
+                        null,
                         'status',
-                        true
+                        true,
+                        [
+                            [
+                                'value' => 'PUBLISHED',
+                                'option' => 'PUBLISHED'
+                            ],
+                            [
+                                'value' => 'PENDING',
+                                'option' => 'PENDING'
+                            ],
+                            [
+                                'value' => 'DRAFT',
+                                'option' => 'DRAFT'
+                            ]
+                        ],
                     ]
                 ],
                'Tag' => [
                     'name' => [
                         'required|max:156',
                         'text',
-                        true
+                        true,
+                        null
                     ],
                     'slug' => [
-                        'required|max:100|unique:tags',
-                        'text',
-                        true
+                        'required|max:100|unique:tags,slug',
+                        'string',
+                        true,
+                        null
                     ]
                 ],
                'Category' => [
                     'name' => [
                         'required|max:156',
-                        'text'
-                        true
+                        'text',
+                        true,
+                        null
                     ],
                     'slug' => [
-                        'required|max:100|unique:categories',
-                        'text'
-                        true
+                        'required|max:100|unique:categories,slug',
+                        'string',
+                        true,
+                        null
                     ]
                 ]
                ]);
@@ -110,7 +146,8 @@ class LaraminDataSeeder extends Seeder
                         'data_types_id' => $id,
                         'column' => $key,
                         'type' => $item[1],
-                        'validation' => json_encode($item[0]),
+                        'validation' => $item[0] == null ? NULL : json_encode($item[0]),
+                        'details' => $item[3] == null ? NULL : json_encode($item[3]),
                         'display' => $item[2]
                     ]);
             });

@@ -17,7 +17,7 @@ class DataInfo extends Model
 
     public function scopeDisplayed($query)
     {
-            $query->where('display', true);
+        $query->where('display', true);
     }
 
 }
