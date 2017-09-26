@@ -4,3 +4,4 @@ vendor
 build
 .lock
 composer.lock
+auth.json
