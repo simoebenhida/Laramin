@@ -63,7 +63,10 @@ class Laramin
     public function __construct()
     {
         $this->ExtraModels = collect([
-             'User' => User::class
+             'User' => User::class,
+             'Post' => Post::class,
+             'Category' => Category::class,
+             'Tag' => Tag::class
              ]);
         $this->BasicModels = collect($this->BasicModels);
         $this->setDataType();
