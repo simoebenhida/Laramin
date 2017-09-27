@@ -106,7 +106,7 @@ class LaratrustSeeder extends Seeder
         DB::table('permission_role')->truncate();
         DB::table('permission_user')->truncate();
         DB::table('role_user')->truncate();
-        \Simoja\Laramin\Models\User::truncate();
+        \App\User::truncate();
         \Simoja\Laramin\Models\Role::truncate();
         \Simoja\Laramin\Models\Permission::truncate();
         DB::statement('SET FOREIGN_KEY_CHECKS = 1');

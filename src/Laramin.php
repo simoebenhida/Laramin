@@ -2,14 +2,10 @@
 namespace Simoja\Laramin;
 
 
-// use Simoja\Laramin\Models\Category;
 use Simoja\Laramin\Models\DataInfo;
 use Simoja\Laramin\Models\DataType;
 use Simoja\Laramin\Models\Permission;
-// use Simoja\Laramin\Models\Post;
 use Simoja\Laramin\Models\Role;
-// use Simoja\Laramin\Models\Tag;
-use App\User;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Str;
@@ -63,10 +59,10 @@ class Laramin
     public function __construct()
     {
         $this->ExtraModels = collect([
-             'User' => User::class,
-             'Post' => Post::class,
-             'Category' => Category::class,
-             'Tag' => Tag::class
+             'User' => \App\User::class,
+             // 'Post' => Post::class,
+             // 'Category' => Category::class,
+             // 'Tag' => Tag::class
              ]);
         $this->BasicModels = collect($this->BasicModels);
         $this->setDataType();

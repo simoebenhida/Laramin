@@ -101,7 +101,7 @@ class InstallCommand extends Command
         // });
         $this->call('storage:link');
         $this->call('migrate');
-        $this->call('db:seed');
+        // $this->call('db:seed');
     }
 
     protected function compileControllerStub($model)
