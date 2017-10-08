@@ -7,5 +7,7 @@ return [
 
 	'prefix'  => 'admin',
 
+    'password' => 'secret',
+
 	'CurrentType' => null
 ];

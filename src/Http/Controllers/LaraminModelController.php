@@ -1,7 +1,6 @@
 <?php
 
 namespace Simoja\Laramin\Http\Controllers;
-// use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Simoja\Laramin\Facades\Laramin;

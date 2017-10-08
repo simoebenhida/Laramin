@@ -2,26 +2,58 @@
 
 namespace Simoja\Laramin\Http\Controllers;
 
-// use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Simoja\Laramin\Facades\Laramin;
 
 class LaraminUserController extends Controller
 {
-    public function update()
+    public function validation(Request $request,$update = null)
     {
-        $userByID = Laramin::model('User')::find(request()->id);
-        $userByID->update(collect(request()->all())->only(['name','email'])->toArray());
-        if (request()->role) {
-            $userByID->detachRole(request()->oldRole);
-            $userByID->attachRole(request()->role);
-        }
-        return response()->json(['user' => $userByID,'users' => Laramin::model('User')->all()]);
+         $this->validate($request,[
+            'name' => 'required',
+            'email' => 'required|email|unique:users,email,'.$update
+        ]);
     }
-    public function destroy($id)
+    public function store(Request $request)
     {
+        if(! $this->UserCan(request()->auth_id,'create-users')){
+            abort(404);
+        }
+        $this->validation($request);
+        $user = Laramin::model('User')->create([
+            'name' => request()->name,
+            'email' => request()->email,
+            'password' => bcrypt(config('Laramin.password'))
+        ]);
+        $user->attachRole(request()->role);
+        return response()->json(['created' => true,'user' => $user]);
+    }
+
+    public function update(Request $request)
+    {
+        if(! $this->UserCan(request()->auth_id,'update-users')){
+            abort(404);
+        }
+        $this->validation($request,$request->id);
+        $user = Laramin::model('User')::find(request()->id);
+        $user->update(collect(request()->all())->except(['role','id'])->toArray());
+        $role = $user->roles()->first()->name;
+
+        if (request()->role !== $role) {
+            $user->detachRole(request()->oldRole);
+            $user->attachRole(request()->role);
+        }
+
+        return response()->json(['user' => $user,'users' => Laramin::model('User')->all()]);
+    }
+
+    public function destroy($auth,$id)
+    {
+        if(! $this->UserCan($auth,'delete-users')){
+            abort(404);
+        }
         $user = Laramin::model('User')::find($id);
         $user->delete();
-        return response()->json(true);
+        return response()->json(['destroyed' => true]);
     }
 }
