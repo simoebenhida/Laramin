@@ -7,16 +7,11 @@
 @section('content')
 
         <form method="POST" action="@if($status == 'Add') {{ route('laramin.'. $type->slug .'.store') }} @else {{ route('laramin.'. $type->slug .'.update',$item->id) }} @endif" enctype="multipart/form-data">
-                {{ csrf_field() }}
 
+              {{ csrf_field() }}
               @if($status == 'Edit')
                 {{ method_field('PUT') }}
                 @endif
- {{--            @include('laramin::forms.category',[
-                'name' => 'category',
-                'value' => '',
-                'details' => null
-                ]) --}}
 
             <h1 class="title m-t-100">{{ $status}} {{ $type->name }}</h1>
             <div class="columns is-multiline">

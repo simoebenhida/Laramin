@@ -4,6 +4,7 @@ namespace Simoja\Laramin\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Session;
 use Simoja\Laramin\Facades\Laramin;
 
 class LaraminUserController extends Controller
@@ -60,10 +61,20 @@ class LaraminUserController extends Controller
         return response()->json(['destroyed' => true]);
     }
 
-    public function editOwnUser(Request $request)
+    public function Profileedit()
     {
-        $this->valiation($request,auth()->user()->id);
+        return view('laramin::profile.edit');
     }
+
+    public function Profileupdate(Request $request)
+    {
+        $user = auth()->user();
+        $this->validation($request,auth()->user()->id);
+        $user->update($request->all());
+        Session::flash($this->flashname,$this->SessionMessage("Your Profile Has Been Succesfully Updated",'success'));
+        return redirect()->back();
+    }
+
     public function editOwnPassword(Request $request)
     {
         $user = Laramin::model('User')::find($request->auth_id);

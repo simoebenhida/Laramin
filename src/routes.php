@@ -10,8 +10,8 @@
             Route::get('/', ['uses' => "{$namespaceController}\LaraminHomeController@index",'as' => 'index']);
             Route::get('/dashboard', ['uses' => "{$namespaceController}\LaraminHomeController@dashboard",'as' => 'dashboard']);
             Route::get('/profile', ['uses' => "{$namespaceController}\LaraminHomeController@profile",'as' => 'profile']);
-            Route::get('/profile/edit', ['uses' => "{$namespaceController}\LaraminHomeController@edit",'as' => 'profile_edit']);
-
+            Route::get('/profile/edit', ['uses' => "{$namespaceController}\LaraminUserController@Profileedit",'as' => 'profile_edit']);
+            Route::put('/profile/editing',['uses' => "{$namespaceController}\LaraminUserController@Profileupdate",'as' => 'profile_editing']);
              //Database
             Route::group(['middleware' => ['laramin.permission'],'prefix' => 'database', 'as' => 'database.'], function () use ($namespaceController) {
                 Route::get('/', ['uses' => "{$namespaceController}\LaraminDatabaseController@browse",'as' => 'browse']);

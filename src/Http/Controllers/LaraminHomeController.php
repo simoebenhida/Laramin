@@ -19,8 +19,4 @@ class LaraminHomeController extends Controller
     {
         return view('laramin::profile.index');
     }
-    public function edit()
-    {
-        return view('laramin::profile.edit');
-    }
 }
