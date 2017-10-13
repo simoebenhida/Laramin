@@ -13,6 +13,8 @@ class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
+    protected $flashname = 'Laramin_Toast';
+
     public function getSlug(Request $request)
     {
          return explode('.', $request->route()->getName())[1];
@@ -25,5 +27,13 @@ class Controller extends BaseController
         }
         $user = Laramin::model('User')::find($user);
         return $user->can($permission);
+    }
+    public function SessionMessage($message,$type)
+    {
+        $infos = collect();
+        $infos->put('message',$message);
+        $infos->put('type',$type);
+        $infos->put('title',ucfirst($type));
+        return $infos->toJson();
     }
 }

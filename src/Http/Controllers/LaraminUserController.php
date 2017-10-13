@@ -3,10 +3,12 @@
 namespace Simoja\Laramin\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Simoja\Laramin\Facades\Laramin;
 
 class LaraminUserController extends Controller
 {
+
     public function validation(Request $request,$update = null)
     {
          $this->validate($request,[
@@ -14,6 +16,7 @@ class LaraminUserController extends Controller
             'email' => 'required|email|unique:users,email,'.$update
         ]);
     }
+
     public function store(Request $request)
     {
         if(! $this->UserCan(request()->auth_id,'create-users')){
@@ -55,5 +58,24 @@ class LaraminUserController extends Controller
         $user = Laramin::model('User')::find($id);
         $user->delete();
         return response()->json(['destroyed' => true]);
+    }
+
+    public function editOwnUser(Request $request)
+    {
+        $this->valiation($request,auth()->user()->id);
+    }
+    public function editOwnPassword(Request $request)
+    {
+        $user = Laramin::model('User')::find($request->auth_id);
+        $this->validate($request,[
+            'old_password' => 'required',
+            'password' => 'required|confirmed'
+        ]);
+        if (Hash::check($request->old_password, $user->password)) {
+            $user->password = bcrypt($request->password);
+            return response()->json(['status' => true]);
+        }else {
+            return response()->json(['status' => false]);
+        }
     }
 }

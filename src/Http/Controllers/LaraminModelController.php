@@ -3,13 +3,13 @@
 namespace Simoja\Laramin\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Str;
 use Simoja\Laramin\Facades\Laramin;
 
 class LaraminModelController extends Controller
 {
     protected $slug;
     protected $newRequest;
-    protected $flashname = 'Laramin_Toast';
 
     public function getDataType()
     {
@@ -35,7 +35,10 @@ class LaraminModelController extends Controller
     public function index(Request $request)
     {
         $this->slug = $this->getSlug($request);
-
+        if(! $this->UserCan(auth()->user()->id,'read-'.Str::plural($this->slug)))
+            {
+                abort(404);
+            }
          return view('laramin::models.browse')
                      ->withItems($this->getAllItems())
                      ->withColumns($this->getIndexColumns())
@@ -50,6 +53,10 @@ class LaraminModelController extends Controller
     public function create(Request $request)
     {
         $this->slug = $this->getSlug($request);
+         if(! $this->UserCan(auth()->user()->id,'create-'.Str::plural($this->slug)))
+            {
+                abort(404);
+            }
         // dd($this->getColumns());
         return view('laramin::models.add-edit')
                      ->withStatus('Add')
@@ -117,6 +124,7 @@ class LaraminModelController extends Controller
         });
         return !! $checking->count();
     }
+
     public function validation(Request $request,$remove = [],$method = null)
     {
         $validation = collect();
@@ -139,18 +147,14 @@ class LaraminModelController extends Controller
         });
         $this->validate($request,$validation->toArray());
     }
-    public function SessionMessage($message,$type)
-    {
-        $infos = collect();
-        $infos->put('message',$message);
-        $infos->put('type',$type);
-        $infos->put('title',ucfirst($type));
-        return $infos->toJson();
-    }
     public function store(Request $request)
     {
         $this->slug = $this->getSlug($request);
 
+         if(! $this->UserCan(auth()->user()->id,'create-'.Str::plural($this->slug)))
+            {
+                abort(404);
+            }
         $this->newRequest = $request->all();
 
         $this->validation($request);
@@ -186,6 +190,10 @@ class LaraminModelController extends Controller
     public function edit(Request $request,$id)
     {
         $this->slug = $this->getSlug($request);
+         if(! $this->UserCan(auth()->user()->id,'update-'.Str::plural($this->slug)))
+            {
+                abort(404);
+            }
         $item = $this->getItemByID($id);
         return view('laramin::models.add-edit')
                      ->withItem($item)
@@ -224,7 +232,10 @@ class LaraminModelController extends Controller
     public function update(Request $request, $id)
     {
         $this->slug = $this->getSlug($request);
-
+         if(! $this->UserCan(auth()->user()->id,'update-'.Str::plural($this->slug)))
+            {
+                abort(404);
+            }
         $this->newRequest = $request->all();
 
         $itemById = Laramin::model($this->getDataType()->name)->find($id);
@@ -251,6 +262,10 @@ class LaraminModelController extends Controller
     public function destroy(Request $request,$id)
     {
         $this->slug = $this->getSlug($request);
+         if(! $this->UserCan(auth()->user()->id,'delete-'.Str::plural($this->slug)))
+            {
+                abort(404);
+            }
         Laramin::model($this->getDataType()->name)->find($id)->delete();
 
         Session::flash($this->flashname,$this->SessionMessage("Your {$this->slug} Has Been Succesfully Destroyed",'success'));

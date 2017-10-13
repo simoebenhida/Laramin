@@ -11,6 +11,7 @@
 
         Route::post('addUser', "{$namespaceController}\LaraminUserController@store");
         Route::put('editUser',"{$namespaceController}\LaraminUserController@update");
+        Route::put('editOwnPassword',"{$namespaceController}\LaraminUserController@editOwnPassword");
         Route::delete('deleteUser/{auth}/{id}',"{$namespaceController}\LaraminUserController@destroy");
 
     });

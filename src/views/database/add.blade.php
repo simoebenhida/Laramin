@@ -8,3 +8,13 @@
     <laramindatabase prefix="{{ config('Laramin.prefix') }}" :basictypes="{{ json_encode(laramin_basic_types()) }}"></laramindatabase>
     </div>
 @endsection
+@section('scripts')
+     <script src="{{ laramin_asset('js/slugify.js')}}"></script>
+
+    <script>
+        $('document').ready(function () {
+                   $('#slug').slugify();
+              });
+    </script>
+@endsection
+

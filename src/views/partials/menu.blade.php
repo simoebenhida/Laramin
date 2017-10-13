@@ -1,10 +1,4 @@
-<div class="column is-2 menu-background">
-          {{-- /**
-
-            TODO:
-            - Menu Click Event For Later
-           */ --}}
-
+<div class="column is-2">
          <laraminthemenu
          :menus='{{ json_encode(laramin_menu_models()) }}'
          prefix="{{ config('Laramin.prefix') }}"

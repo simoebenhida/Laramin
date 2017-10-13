@@ -1,4 +1,3 @@
-
 @extends('laramin::partials.main')
 
 @section('title','DaTabase')

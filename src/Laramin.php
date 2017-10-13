@@ -22,7 +22,6 @@ class Laramin
     protected $BasicModels = [
           'DataType' => DataType::class,  //Must be The First Element
           'DataInfo' => DataInfo::class, //The Same
-          // 'User'  => User::class,
           'Permission' => Permission::class,
           'Role' => Role::class,
           'Database' => null
@@ -60,9 +59,6 @@ class Laramin
     {
         $this->ExtraModels = collect([
              'User' => \App\User::class,
-             // 'Post' => Post::class,
-             // 'Category' => Category::class,
-             // 'Tag' => Tag::class
              ]);
         $this->BasicModels = collect($this->BasicModels);
         $this->setDataType();
@@ -133,16 +129,15 @@ class Laramin
     {
         return collect($array);
     }
-    public function getModelPermission($user)
+    public function getModelPermission($role)
     {
-            //make an array each Index User with boolean permission (create,edit,delete,read)
             $modelPermission = collect([]);
-             Laramin::getAllModels()->each(function($item,$key) use($user,$modelPermission) {
+             Laramin::getAllModels()->each(function($item,$key) use($role,$modelPermission) {
                     $modelPermission->put($key,[
-                           'read' => $user->hasPermission('read-'. Str::plural(strtolower($key))),
-                           'create' => $user->hasPermission('create-'. Str::plural(strtolower($key))),
-                           'update' => $user->hasPermission('update-'. Str::plural(strtolower($key))),
-                          'delete'  => $user->hasPermission('delete-'. Str::plural(strtolower($key)))
+                           'read' => $role->hasPermission('read-'. Str::plural(strtolower($key))),
+                           'create' => $role->hasPermission('create-'. Str::plural(strtolower($key))),
+                           'update' => $role->hasPermission('update-'. Str::plural(strtolower($key))),
+                           'delete'  => $role->hasPermission('delete-'. Str::plural(strtolower($key)))
                    ]);
            });
              return $modelPermission;

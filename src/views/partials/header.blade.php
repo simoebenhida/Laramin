@@ -1,4 +1,4 @@
-<nav class="navbar menu-background">
+<nav class="navbar menu-background" id="laramin_menu">
   <div class="navbar-brand">
     <a class="navbar-item" href="http://bulma.io">
       <img src="{{ laramin_asset('laramin.png') }}" alt="Laramin">
@@ -25,9 +25,17 @@
 
   <div id="navMenuExample" class="navbar-menu">
     <div class="navbar-end">
-      <a class="navbar-item" href="#" target="_blank">
-        Logout
-      </a>
+      <menudropdown :user="{{ auth()->user() }}"></menudropdown>
     </div>
   </div>
 </nav>
+@section('scripts')
+<script>
+  new Vue({
+    el : '#laramin_menu',
+    data : {
+      okey : 'Yes'
+    }
+  })
+</script>
+@endsection

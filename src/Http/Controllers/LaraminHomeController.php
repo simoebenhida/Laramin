@@ -15,4 +15,12 @@ class LaraminHomeController extends Controller
     {
     	return view('laramin::dashboard.index');
     }
+    public function profile()
+    {
+        return view('laramin::profile.index');
+    }
+    public function edit()
+    {
+        return view('laramin::profile.edit');
+    }
 }

@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Str;
 use Simoja\Laramin\Facades\Laramin;
 use Simoja\Laramin\Models\Permission;
@@ -24,11 +25,19 @@ class LaraminDatabaseController extends Controller
 
     public function browse()
     {
+        if(! $this->UserCan(auth()->user()->id,'read-databases'))
+            {
+                abort(404);
+            }
         return view('laramin::database.browse');
     }
 
     public function create()
     {
+        if(! $this->UserCan(auth()->user()->id,'create-databases'))
+            {
+                abort(404);
+            }
         return view('laramin::database.add');
     }
     public function findType($type = [])
@@ -41,10 +50,14 @@ class LaraminDatabaseController extends Controller
     }
     public function store(Request $request)
     {
+            if(! $this->UserCan($request->auth_id,'create-databases'))
+            {
+                abort(404);
+            }
         $this->validate($request,
             [
-            'nameType' => 'required',
-            'slugType' => 'required|unique:data_types,slug',
+            'nameType' => 'required|alpha_dash',
+            'slugType' => 'required|alpha_dash|unique:data_types,slug',
             'defaultFirstNameColumn' => 'required',
             ],
             [
@@ -74,13 +87,12 @@ class LaraminDatabaseController extends Controller
         });
 
         $this->types = collect(request()->type_columns);
-
         // //Add To Migration file
         if (! Schema::hasTable(request()->nameType)) {
             $content = collect();
             $oldType = $this->types;
             $oldColumn = $this->columnNames;
-             for ($i=0;$i<sizeof($oldType);$i++)
+             for ($i=0;$i<sizeof($oldColumn);$i++)
                 {
                     $type = $oldType[$i];
                     if ($type == 'date') {
@@ -129,6 +141,8 @@ class LaraminDatabaseController extends Controller
                         'description' => ucfirst(request()->nameType) . ' ' . ucfirst($module),
                     ]);
         }
+        // $nameType = ucfirst(request()->nameType);
+        // Session::flash($this->flashname,$this->SessionMessage("Your {$nameType} Has Been Succesfully Added",'success'));
 
         //Create Model File
         Artisan::call('Laramin:model', ['name' => ucfirst(request()->nameType), 'migration' => request()->nameType]);
@@ -144,6 +158,10 @@ class LaraminDatabaseController extends Controller
 
     public function update(Request $request,$id)
     {
+        if(! $this->UserCan(auth()->user()->id,'update-databases'))
+            {
+                abort(404);
+            }
         $type = Laramin::model('DataType')->find($id);
         $type->update([
             'menu' => $request->menu,
@@ -155,6 +173,8 @@ class LaraminDatabaseController extends Controller
                 'display' => array_key_exists('display_'.$item->id,request()->toArray()) ? true : false
                 ]);
         });
+        Session::flash($this->flashname,$this->SessionMessage("Your {$type->name} Has Been Succesfully Edited",'success'));
+
         return redirect()->route('laramin.database.browse');
     }
 
@@ -172,6 +192,10 @@ class LaraminDatabaseController extends Controller
     }
     public function destroy($id)
     {
+        if(! $this->UserCan(auth()->user()->id,'delete-databases'))
+            {
+                abort(404);
+            }
         Laramin::model('DataType')->find($id)->delete();
         return redirect()->route('laramin.database.browse');
     }
