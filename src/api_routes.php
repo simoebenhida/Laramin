@@ -1,6 +1,6 @@
 <?php
     Route::group(['as' => 'laramin.'], function () {
-        $namespaceController = '\\'.config('Laramin.namespaceControllers');
+        $namespaceController = '\\'.config('laramin.namespaceControllers');
 
         Route::post('addRole', "{$namespaceController}\LaraminRoleController@store");
         Route::put('editRole', "{$namespaceController}\LaraminRoleController@update");
@@ -12,6 +12,10 @@
         Route::post('addUser', "{$namespaceController}\LaraminUserController@store");
         Route::put('editUser',"{$namespaceController}\LaraminUserController@update");
         Route::put('editOwnPassword',"{$namespaceController}\LaraminUserController@editOwnPassword");
+
         Route::delete('deleteUser/{auth}/{id}',"{$namespaceController}\LaraminUserController@destroy");
+
+
+        Route::post('database/add',"{$namespaceController}\LaraminDatabaseController@store");
 
     });

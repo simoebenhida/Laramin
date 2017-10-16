@@ -4,10 +4,11 @@
 	<title>@yield('title')</title>
 	<meta charset="utf-8" name="csrf-token" content="{{ csrf_token() }}">
 	<meta charset="utf-8" name="auth-ID" content="@if(auth()->user()){{ auth()->user()->id }}@else null @endif">
-	{{-- <link rel="stylesheet" type="text/css" href="{{ laramin_asset('css/bulma.min.css') }}"> --}}
+	<meta charset="utf-8" name="prefix" content="{{ config('laramin.prefix') }}">
+	<link rel="stylesheet" type="text/css" href="{{ laramin_asset('css/bulma.min.css') }}">
 	<link rel="stylesheet" type="text/css" href="{{ asset('css/app.css') }}">
 	<link rel="stylesheet" type="text/css" href="{{ laramin_asset('css/style.css') }}">
-	<link rel="stylesheet" type="text/css" href="{{ laramin_asset('css/jquery.dataTables.min.css')}}">
+	{{-- <link rel="stylesheet" type="text/css" href="{{ laramin_asset('css/jquery.dataTables.min.css')}}"> --}}
 	<link rel="stylesheet" type="text/css" href="{{ laramin_asset('css/dataTables.bulma.css')}}">
 	{{-- <link rel="stylesheet" type="text/css" href="{{ laramin_asset('css/sweetalert2.min.css')}}"> --}}
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">

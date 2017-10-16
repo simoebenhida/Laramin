@@ -52,8 +52,6 @@ class InstallCommand extends Command
 
     public function handle(Filesystem $filesystem)
     {
-        // $this->call('migrate:reset');
-
         $this->info('Publishing the Laramin assets');
         $this->call('vendor:publish', ['--provider' => LaraminServiceProvider::class]);
         foreach(Laramin::getExtraModels() as $key => $model)
@@ -63,15 +61,7 @@ class InstallCommand extends Command
                 $this->compileControllerStub($key)
             );
         }
-        //migration
-        /**
 
-            TODO:
-            - UnComment For Later
-         */
-
-        // $this->info('Migrating the database tables into your application');
-        // $this->call('laratrust:migration');
         $this->info('Dumping the autoloaded files and reloading all new files');
 
         $composer = $this->findComposer();
@@ -83,25 +73,16 @@ class InstallCommand extends Command
 
         $filesystem->append(
             base_path('routes/web.php'),
-            "\n\nRoute::group(['prefix' =>  config('Laramin.prefix')], function () {\n    Laramin::routes();\n});\n"
+            "\n\nRoute::group(['prefix' =>  config('laramin.prefix')], function () {\n    Laramin::routes();\n});\n"
         );
-
-        // \Route::group(['prefix' =>  config('Laramin.prefix')], function () {
-        //     \Laramin::routes();
-        // });
         $this->info('Adding Laramin api routes to routes/api.php');
 
          $filesystem->append(
             base_path('routes/api.php'),
-            "\n\nRoute::group(['prefix' =>  config('Laramin.prefix')], function () {\n    Laramin::ApiRoutes();\n});\n"
+            "\n\nRoute::group(['prefix' =>  config('laramin.prefix')], function () {\n    Laramin::ApiRoutes();\n});\n"
         );
 
-        // \Route::group(['prefix' =>  config('Laramin.prefix')], function () {
-        //     \Laramin::routes();
-        // });
         $this->call('storage:link');
-        $this->call('migrate');
-        // $this->call('db:seed');
     }
 
     protected function compileControllerStub($model)

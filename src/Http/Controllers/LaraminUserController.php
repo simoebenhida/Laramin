@@ -27,7 +27,8 @@ class LaraminUserController extends Controller
         $user = Laramin::model('User')->create([
             'name' => request()->name,
             'email' => request()->email,
-            'password' => bcrypt(config('Laramin.password'))
+            'avatar' => 'default.png',
+            'password' => bcrypt(config('laramin.password'))
         ]);
         $user->attachRole(request()->role);
         return response()->json(['created' => true,'user' => $user]);
@@ -68,9 +69,14 @@ class LaraminUserController extends Controller
 
     public function Profileupdate(Request $request)
     {
+        dd($request->avatar);
         $user = auth()->user();
         $this->validation($request,auth()->user()->id);
         $user->update($request->all());
+        dd($request->avatar);
+        $extension = $request->avatar->getClientOriginalExtension();
+        $filename = auth()->id().'.'.$extension;
+        $path = $request->storeAs('public/avatar', $filename);
         Session::flash($this->flashname,$this->SessionMessage("Your Profile Has Been Succesfully Updated",'success'));
         return redirect()->back();
     }

@@ -21,10 +21,8 @@
             <changepassword></changepassword>
         </div>
 </div>
-<div class="column is-4">
-    <img src="http://devma.net/storage/users/May2017/MudntFwPsxCUfRT8shhw.jpeg" height="150px">
-    <input class="input" type="file" name="image">
-</div>
+
+    <userimagepreview src="{{ Auth::user()->avatar }}"></userimagepreview>
 
 </div>
 <button type="submit" class="button is-primary">Edit</button>

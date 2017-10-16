@@ -22,8 +22,8 @@ class DataType extends Model
         $permission = Str::plural(lcfirst($this->name));
         return array_merge(parent::toArray(), [
             'links' => [
-                'browse' => url(config('Laramin.prefix')."/{$this->slug}"),
-                'addedit' => url(config('Laramin.prefix')."/{$this->slug}/create"),
+                'browse' => url(config('laramin.prefix')."/{$this->slug}"),
+                'addedit' => url(config('laramin.prefix')."/{$this->slug}/create"),
                 ],
             'read' => Auth::user()->hasPermission("read-{$permission}")
          ]);

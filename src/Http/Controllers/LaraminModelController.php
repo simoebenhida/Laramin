@@ -110,8 +110,7 @@ class LaraminModelController extends Controller
             foreach (json_decode($request->tags) as $key => $value) {
                 $Id->push($value->id);
             }
-            // dd($Id);
-            $model->tags()->sync($Id);
+            $model->tags()->sync($Id->toArray());
         }
     }
 

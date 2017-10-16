@@ -25,17 +25,19 @@
 
   <div id="navMenuExample" class="navbar-menu">
     <div class="navbar-end">
-      <menudropdown :user="{{ auth()->user() }}"></menudropdown>
+      <div class="navbar-item">
+          <a class="navbar-item">
+            Profile
+          </a>
+    |
+     <a class="navbar-item" href="{{ route('laramin.logout') }}" onclick="event.preventDefault();
+                                                     document.getElementById('logout-form').submit();">
+                                            Logout
+      </a>
+          <form id="logout-form" action="{{ route('laramin.logout') }}" method="POST" style="display: none;">
+              {{ csrf_field() }}
+          </form>
+  </div>
     </div>
   </div>
 </nav>
-@section('scripts')
-<script>
-  new Vue({
-    el : '#laramin_menu',
-    data : {
-      okey : 'Yes'
-    }
-  })
-</script>
-@endsection

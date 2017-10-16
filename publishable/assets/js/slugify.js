@@ -40,11 +40,8 @@
         // Avoid Plugin.prototype conflicts
         $.extend( Plugin.prototype, {
             init: function() {
-                // this.input = this.settings.input
-                //              || $(this.element).closest('form').find('input[name="title"]');
-                console.log($(this.element));
                 this.input = this.settings.input
-                             || $(this.element).closest('form').find('input[name="' + this.element.attr("data-slug-origin") + '"]')
+                             || $(this.element).find('input[name="' + this.element.attr("data-slug-origin") + '"]')
                 // this.input = $('#title');
                 this.forceUpdate = true;
                 this.input.on('keyup change', $.proxy(this.onChange, this));

@@ -64,12 +64,14 @@ class LaraminServiceProvider extends ServiceProvider
             $this->registerPublishableResources();
         }
     }
+
     public function registerConfigs()
     {
         $this->mergeConfigFrom(
-            dirname(__DIR__).'/publishable/config/laramin.php', 'Laramin'
+            dirname(__DIR__).'/publishable/config/laramin.php', 'laramin'
         );
     }
+
     private function registerPublishableResources()
     {
         $publishable = [

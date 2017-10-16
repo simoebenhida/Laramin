@@ -44,9 +44,9 @@
 
 @endsection
 @section('scripts')
-     <script src="{{ laramin_asset('js/slugify.js')}}"></script>
-     <script src="{{ laramin_asset('js/tinymce/tinymce.min.js') }}"></script>
-     <script src="{{ laramin_asset('js/laramin_tinymce.js') }}"></script>
+    <script src="{{ laramin_asset('js/slugify.js')}}"></script>
+    <script src="{{ laramin_asset('js/tinymce/tinymce.min.js') }}"></script>
+    <script src="{{ laramin_asset('js/laramin_tinymce.js') }}"></script>
     <script type="text/javascript" src="{{ laramin_asset('js/select2.min.js')}}"></script>
 
     <script>

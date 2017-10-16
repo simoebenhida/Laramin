@@ -17,7 +17,7 @@
           <div class="field">
               <label>Email</label>
                 <p class="control">
-                    <input type="email" class="input @if($errors->has('email')) is-danger @endif"  placeholder="Email" name="email">
+                    <input type="email" class="input @if($errors->has('email')) is-danger @endif"  placeholder="Email" name="email" value="{{ old('email') }}">
                 </p>
                 <p class="help is-danger"> {{ $errors->first('email') }}</p>
           </div>

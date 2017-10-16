@@ -51,7 +51,7 @@ if (!function_exists('laramin_get_active_menu')) {
 
         if (! $path->isEmpty()) {
             $type = collect(explode('/', $type['path']));
-            if ($type->contains(config('Laramin.prefix'))) {
+            if ($type->contains(config('laramin.prefix'))) {
                 $type->shift();
                 $type->shift();
                 $laramin = Laramin::model('DataType')->where('slug',$type->first())->first();

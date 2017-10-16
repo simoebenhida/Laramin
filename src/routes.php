@@ -1,10 +1,10 @@
 <?php
     Route::group(['as' => 'laramin.'], function () {
-        $namespaceController = '\\'.config('Laramin.namespaceControllers');
+        $namespaceController = '\\'.config('laramin.namespaceControllers');
 
         Route::get('login', ['uses' => "{$namespaceController}\LaraminUserLoginController@showLoginForm", 'as' => 'login']);
         Route::post('login', [ 'uses' => "{$namespaceController}\LaraminUserLoginController@postLogin", 'as' => 'postlogin' ]);
-        Route::get('logout', [ 'uses' => "{$namespaceController}\LaraminUserLoginController@logout", 'as' => 'logout' ]);
+        Route::post('logout', [ 'uses' => "{$namespaceController}\LaraminUserLoginController@logout", 'as' => 'logout' ]);
 
         Route::group(['middleware' => ['laramin.user']], function () use ($namespaceController) {
             Route::get('/', ['uses' => "{$namespaceController}\LaraminHomeController@index",'as' => 'index']);
@@ -16,7 +16,6 @@
             Route::group(['middleware' => ['laramin.permission'],'prefix' => 'database', 'as' => 'database.'], function () use ($namespaceController) {
                 Route::get('/', ['uses' => "{$namespaceController}\LaraminDatabaseController@browse",'as' => 'browse']);
                 Route::get('/create', ['uses' => "{$namespaceController}\LaraminDatabaseController@create",'as' => 'add']);
-                Route::post('/add', ['uses' => "{$namespaceController}\LaraminDatabaseController@store",'as' => 'store']);
                 Route::get('/edit/{id}', ['uses' => "{$namespaceController}\LaraminDatabaseController@edit",'as' => 'edit']);
                 Route::post('/update/{id}', ['uses' => "{$namespaceController}\LaraminDatabaseController@update",'as' => 'update']);
                 Route::get('/destroy/{id}', ['uses' => "{$namespaceController}\LaraminDatabaseController@destroy",'as' => 'destroy']);

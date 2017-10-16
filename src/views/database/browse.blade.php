@@ -10,12 +10,14 @@
     <h1 class="title">DaTabase</h1>
     </div>
     <div class="column is-6">
-         <a href="/{{ config('Laramin.prefix') }}/database/create" class="button is-primary is-pulled-right">
+        @if(Auth::user()->can('create-databases'))
+         <a href="/{{ config('laramin.prefix') }}/database/create" class="button is-primary is-pulled-right">
         <span class="icon">
           <i class="fa fa-plus"></i>
         </span>
         <span>Add Databse</span>
       </a>
+      @endif
     </div>
     </div>
 
@@ -43,23 +45,28 @@
             <td>{{ $type->menu }}</td>
             <td>{{ $type->created_at }}</td>
             <td class="pull-right">
-            {{--     /**
-                    TODO:
-                    - Add PopUp Showing Column Models With Types
-                 */ --}}
+
+                @if(Auth::user()->can('read-databases'))
                 <columndatabase :columns="{{ $type->infos }}"></columndatabase>
-                <a href="/{{ config('Laramin.prefix') }}/database/edit/{{ $type->id }}" class="button is-primary is-outlined">
+                @endif
+
+                @if(Auth::user()->can('update-databases'))
+                <a href="/{{ config('laramin.prefix') }}/database/edit/{{ $type->id }}" class="button is-primary is-outlined">
                     <span>Edit</span>
                     <span class="icon is-small">
                       <i class="fa fa-pencil"></i>
                     </span>
                   </a>
-               <a href="{{ route('laramin.database.destroy',$type->id) }}" class="button is-danger is-outlined">
+                @endif
+
+                @if(Auth::user()->can('delete-databases'))
+                <a href="{{ route('laramin.database.destroy',$type->id) }}" class="button is-danger is-outlined">
                     <span>Delete</span>
                     <span class="icon is-small">
                       <i class="fa fa-times"></i>
                     </span>
                   </a>
+                  @endif
                 </td>
         </tr>
         @endforeach
