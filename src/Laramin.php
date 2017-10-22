@@ -5,6 +5,7 @@ namespace Simoja\Laramin;
 use Simoja\Laramin\Models\DataInfo;
 use Simoja\Laramin\Models\DataType;
 use Simoja\Laramin\Models\Permission;
+use Simoja\Laramin\Models\Settings;
 use Simoja\Laramin\Models\Role;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Schema;
@@ -24,6 +25,7 @@ class Laramin
           'DataInfo' => DataInfo::class, //The Same
           'Permission' => Permission::class,
           'Role' => Role::class,
+          'Settings' => Settings::class,
           'Database' => null
       ];
 
@@ -129,6 +131,18 @@ class Laramin
     {
         return collect($array);
     }
+
+    public function setting($key)
+    {
+        $setting = Laramin::model('Settings')->where('key', '=', $key)->first();
+
+        if (isset($setting->id)) {
+            return $setting->value;
+        }
+
+        return null;
+    }
+
     public function getModelPermission($role)
     {
             $modelPermission = collect([]);

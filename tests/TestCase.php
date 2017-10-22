@@ -10,7 +10,7 @@ abstract class TestCase extends BaseTestCase
     use CreatesApplication;
 
     protected $user;
-
+    protected $prefix = 'admin';
     protected function signIn($user = null)
     {
         if($user == null)

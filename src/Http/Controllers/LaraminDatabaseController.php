@@ -190,13 +190,15 @@ class LaraminDatabaseController extends Controller
     {
         return date('Y_m_d_His');
     }
-    public function destroy($id)
+
+    public function destroy($auth,$id)
     {
-        if(! $this->UserCan(auth()->user()->id,'delete-databases'))
+        if(! $this->UserCan($auth,'delete-databases'))
             {
                 abort(404);
             }
         Laramin::model('DataType')->find($id)->delete();
-        return redirect()->route('laramin.database.browse');
+
+        return response()->json(['success' => 1]);
     }
 }

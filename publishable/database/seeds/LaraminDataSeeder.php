@@ -4,6 +4,7 @@ use Illuminate\Database\Seeder;
 // use faker\Factory as Faker;
 use Simoja\Laramin\Models\DataType;
 use Simoja\Laramin\Models\DataInfo;
+use Simoja\Laramin\Models\Settings;
 
 class LaraminDataSeeder extends Seeder
 {
@@ -122,8 +123,34 @@ class LaraminDataSeeder extends Seeder
                     ]
                 ]
                ]);
+      $settings = collect([
+        'title' => [
+            'Site Title',
+            'text'
+        ],
+        'description' => [
+            'Site Description',
+            'text'
+        ],
+        'logo' => [
+            'Site Logo',
+            'image'
+        ]
+      ]);
+
 
         $this->command->info('Laramin Data Seeder');
+
+        $this->command->info('Seed Settings');
+        $settings->each(function($value,$index) {
+            $this->command->info('Creating Settings for '.$index);
+            Settings::create([
+                    'key' => $index,
+                    'display_name' => $value[0],
+                    'type' => $value[1],
+            ]);
+        });
+
 
         $models->each(function ($model, $index) use ($columns) {
             $this->command->info('Creating Data Type to '.$index);

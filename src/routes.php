@@ -9,16 +9,26 @@
         Route::group(['middleware' => ['laramin.user']], function () use ($namespaceController) {
             Route::get('/', ['uses' => "{$namespaceController}\LaraminHomeController@index",'as' => 'index']);
             Route::get('/dashboard', ['uses' => "{$namespaceController}\LaraminHomeController@dashboard",'as' => 'dashboard']);
-            Route::get('/profile', ['uses' => "{$namespaceController}\LaraminHomeController@profile",'as' => 'profile']);
-            Route::get('/profile/edit', ['uses' => "{$namespaceController}\LaraminUserController@Profileedit",'as' => 'profile_edit']);
-            Route::put('/profile/editing',['uses' => "{$namespaceController}\LaraminUserController@Profileupdate",'as' => 'profile_editing']);
+
+            //Profile
+            Route::group(['prefix' => 'profile','as' => 'profile'], function() use ($namespaceController) {
+                Route::get('/', ['uses' => "{$namespaceController}\LaraminHomeController@profile",'as' => '']);
+                Route::get('/edit', ['uses' => "{$namespaceController}\LaraminUserController@Profileedit",'as' => '_edit']);
+                Route::put('/editing',['uses' => "{$namespaceController}\LaraminUserController@Profileupdate",'as' => '_editing']);
+            });
+
+            //Settings
+            Route::group(['prefix' => 'settings','as' => 'settings'], function() use ($namespaceController) {
+                Route::get('/', ['uses' => "{$namespaceController}\LaraminSettingsController@index",'as' => '']);
+                Route::put('/edit', ['uses' => "{$namespaceController}\LaraminSettingsController@edit",'as' => '_edit']);
+            });
+
              //Database
             Route::group(['middleware' => ['laramin.permission'],'prefix' => 'database', 'as' => 'database.'], function () use ($namespaceController) {
                 Route::get('/', ['uses' => "{$namespaceController}\LaraminDatabaseController@browse",'as' => 'browse']);
                 Route::get('/create', ['uses' => "{$namespaceController}\LaraminDatabaseController@create",'as' => 'add']);
                 Route::get('/edit/{id}', ['uses' => "{$namespaceController}\LaraminDatabaseController@edit",'as' => 'edit']);
                 Route::post('/update/{id}', ['uses' => "{$namespaceController}\LaraminDatabaseController@update",'as' => 'update']);
-                Route::get('/destroy/{id}', ['uses' => "{$namespaceController}\LaraminDatabaseController@destroy",'as' => 'destroy']);
             });
 
             //Permission

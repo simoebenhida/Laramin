@@ -16,23 +16,39 @@
             <h1 class="title m-t-100">{{ $status}} {{ $type->name }}</h1>
             <div class="columns is-multiline">
             @if($status == 'Add')
+
             @foreach ($columns as $column)
+                @if($column->type == 'rich_text_box')
+                <div class="column is-full">
+                @else
+                <div class="column is-half">
+                @endif
                 @include('laramin::forms.'.$column->type,[
                 'name' => $column->column,
                 'value' => '',
                 'details' => $column->details,
                 'id' => null
                 ])
+            </div>
             @endforeach
+
             @else
+
             @foreach ($columns as $column)
+                @if($column->type == 'rich_text_box')
+                <div class="column is-full">
+                @else
+                <div class="column is-half">
+                @endif
                 @include('laramin::forms.'.$column->type,[
                 'name' => $column->column,
                 'value' => $item[$column->column],
                 'details' => $column->details,
                 'id' => $item->id
                 ])
+            </div>
             @endforeach
+
             @endif
                 </div>
 

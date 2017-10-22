@@ -1,4 +1,3 @@
- <div class="column is-half">
  <div class="field">
             <label for="{{ $name }}" class="label">{{ title_case($name) }}</label>
             <p class="control">
@@ -6,5 +5,4 @@
                 value="@if(empty($value)){{ old($name)}}@else{{ $value }}@endif">
             </p>
              <p class="help is-danger">{{ $errors->first($name) }}</p>
-</div>
 </div>

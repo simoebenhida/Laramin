@@ -6,7 +6,7 @@
 	<meta charset="utf-8" name="auth-ID" content="@if(auth()->user()){{ auth()->user()->id }}@else null @endif">
 	<meta charset="utf-8" name="prefix" content="{{ config('laramin.prefix') }}">
 	<link rel="stylesheet" type="text/css" href="{{ laramin_asset('css/bulma.min.css') }}">
-	<link rel="stylesheet" type="text/css" href="{{ asset('css/app.css') }}">
+	<link rel="stylesheet" type="text/css" href="{{ laramin_asset('css/app.css') }}">
 	<link rel="stylesheet" type="text/css" href="{{ laramin_asset('css/style.css') }}">
 	{{-- <link rel="stylesheet" type="text/css" href="{{ laramin_asset('css/jquery.dataTables.min.css')}}"> --}}
 	<link rel="stylesheet" type="text/css" href="{{ laramin_asset('css/dataTables.bulma.css')}}">
@@ -33,7 +33,7 @@
 	<script type="text/javascript" src="{{ laramin_asset('js/jquery.dataTables.min.js')}}"></script>
 	<script type="text/javascript" src="{{ laramin_asset('js/dataTables.bulma.min.js')}}"></script>
 	{{-- <script type="text/javascript" src="{{ laramin_asset('js/app.js') }}"></script> --}}
-	<script type="text/javascript" src="{{ asset('js/app.js') }}"></script>
+	<script type="text/javascript" src="{{ laramin_asset('js/app.js') }}"></script>
 	@yield('scripts')
 
 

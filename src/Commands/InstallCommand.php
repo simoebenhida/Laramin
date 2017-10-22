@@ -8,17 +8,20 @@ use Simoja\Laramin\LaraminServiceProvider;
 use Symfony\Component\Process\Process;
 use Illuminate\Filesystem\Filesystem;
 use Simoja\Laramin\Facades\Laramin;
+use Simoja\Laramin\Traits\Seedable;
+use Symfony\Component\Console\Input\InputOption;
 
 class InstallCommand extends Command
 {
+    use Seedable;
     use DetectsApplicationNamespace;
-
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'Laramin:install';
+    protected $name = 'Laramin:install';
+    protected $seedersPath = __DIR__.'/../../publishable/database/seeds/';
 
     /**
      * The console command description.
@@ -32,6 +35,7 @@ class InstallCommand extends Command
      *
      * @return void
      */
+
     public function __construct()
     {
         parent::__construct();
@@ -50,7 +54,8 @@ class InstallCommand extends Command
         return 'composer';
     }
 
-    public function handle(Filesystem $filesystem)
+
+    public function fire(Filesystem $filesystem)
     {
         $this->info('Publishing the Laramin assets');
         $this->call('vendor:publish', ['--provider' => LaraminServiceProvider::class]);
@@ -62,12 +67,12 @@ class InstallCommand extends Command
             );
         }
 
-        $this->info('Dumping the autoloaded files and reloading all new files');
+        // $this->info('Dumping the autoloaded files and reloading all new files');
 
-        $composer = $this->findComposer();
+        // $composer = $this->findComposer();
 
-        $process = new Process($composer.' dump-autoload');
-        $process->setWorkingDirectory(base_path())->run();
+        // $process = new Process($composer.' dump-autoload');
+        // $process->setWorkingDirectory(base_path())->run();
 
         $this->info('Adding Laramin routes to routes/web.php');
 
@@ -81,6 +86,14 @@ class InstallCommand extends Command
             base_path('routes/api.php'),
             "\n\nRoute::group(['prefix' =>  config('laramin.prefix')], function () {\n    Laramin::ApiRoutes();\n});\n"
         );
+
+        $this->info('Migration');
+        $this->call('migrate');
+
+        $this->info('Seeding data into the database');
+
+        $this->call('db:seed',['--class' => 'LaraminDataSeeder']);
+        $this->call('db:seed',['--class' => 'LaratrustSeeder']);
 
         $this->call('storage:link');
     }

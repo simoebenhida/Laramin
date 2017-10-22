@@ -16,20 +16,15 @@
       </span>
     </a>
 
-    <div class="navbar-burger burger" data-target="navMenuExample">
-      <span></span>
-      <span></span>
-      <span></span>
-    </div>
+    <menuclicked></menuclicked>
   </div>
 
-  <div id="navMenuExample" class="navbar-menu">
+  <div id="navMenu" class="navbar-menu">
     <div class="navbar-end">
       <div class="navbar-item">
-          <a class="navbar-item">
-            Profile
+          <a href="{{ route('laramin.profile') }}" class="navbar-item @if(laramin_get_active_menu()->first() == 'profile')is-active @endif">
+            <span class="fa fa-user"></span>  Profile
           </a>
-    |
      <a class="navbar-item" href="{{ route('laramin.logout') }}" onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
                                             Logout
@@ -40,4 +35,5 @@
   </div>
     </div>
   </div>
+
 </nav>

@@ -17,5 +17,6 @@
 
 
         Route::post('database/add',"{$namespaceController}\LaraminDatabaseController@store");
+        Route::delete('database/destroy/{auth}/{id}',"{$namespaceController}\LaraminDatabaseController@destroy");
 
     });

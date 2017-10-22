@@ -69,14 +69,16 @@ class LaraminUserController extends Controller
 
     public function Profileupdate(Request $request)
     {
-        dd($request->avatar);
         $user = auth()->user();
         $this->validation($request,auth()->user()->id);
-        $user->update($request->all());
-        dd($request->avatar);
-        $extension = $request->avatar->getClientOriginalExtension();
-        $filename = auth()->id().'.'.$extension;
-        $path = $request->storeAs('public/avatar', $filename);
+        $user->update(collect($request->all())->except(['avatar'])->toArray());
+        if($request->avatar) {
+            $extension = $request->avatar->getClientOriginalExtension();
+            $filename = auth()->id().'.'.$extension;
+            $path = $request->avatar->storeAs('public/avatar', $filename);
+            $user->avatar = $filename;
+            $user->update();
+        }
         Session::flash($this->flashname,$this->SessionMessage("Your Profile Has Been Succesfully Updated",'success'));
         return redirect()->back();
     }

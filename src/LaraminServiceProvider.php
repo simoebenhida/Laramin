@@ -108,7 +108,6 @@ class LaraminServiceProvider extends ServiceProvider
     protected function registerConsoleCommands()
     {
         $this->commands(Commands\InstallCommand::class);
-        $this->commands(Commands\SeederCommand::class);
         $this->commands(Commands\ModelCommand::class);
         $this->commands(Commands\Migrations\MigrateMakeCommand::class);
     }

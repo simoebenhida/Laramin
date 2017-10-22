@@ -23,20 +23,9 @@
 
     <div class="card">
         <div class="card-content">
-    <table id="dataTable">
-    <thead>
-        <tr>
-        <th>ID</th>
-        <th>Name</th>
-        <th>Model Name</th>
-        <th>Slug</th>
-        <th>Menu</th>
-        <th>created at</th>
-        <th class="pull-right">Actions</th>
-        </tr>
-    </thead>
-        <tbody>
-        @foreach (Laramin::model('DataType')->all() as $type)
+    <browsedatabase :types="{{ Laramin::model('DataType')->all()->toJson() }}" :can="{{ json_encode(laramin_get_single_permission(auth()->user())) }}"></browsedatabase>
+       {{--  <tbody>
+    @foreach (Laramin::model('DataType')->all() as $type)
         <tr>
             <td>{{ $type->id }}</td>
             <td>{{ $type->name }}</td>
@@ -60,7 +49,7 @@
                 @endif
 
                 @if(Auth::user()->can('delete-databases'))
-                <a href="{{ route('laramin.database.destroy',$type->id) }}" class="button is-danger is-outlined">
+                <a href="" class="button is-danger is-outlined">
                     <span>Delete</span>
                     <span class="icon is-small">
                       <i class="fa fa-times"></i>
@@ -70,8 +59,7 @@
                 </td>
         </tr>
         @endforeach
-        </tbody>
-    </table>
+        </tbody> --}}
 
     </div>
     </div>

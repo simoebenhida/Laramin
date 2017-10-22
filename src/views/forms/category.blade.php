@@ -1,4 +1,3 @@
- <div class="column is-half">
 <div class="field" style="text-align: center">
                 @if(Laramin::model('Category')->count() == 0)
                   <p class="help is-danger">You Need To Add A Category For Adding a Post</p>
@@ -12,5 +11,4 @@
             </select>
         </div>
             @endif
-    </div>
 </div>

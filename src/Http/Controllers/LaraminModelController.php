@@ -78,6 +78,7 @@ class LaraminModelController extends Controller
         $path = $request->storeAs('public/'.$this->slug, $filename);
         return $filename;
     }
+
     public function getInfoOfType()
     {
         $type = collect();
@@ -86,6 +87,7 @@ class LaraminModelController extends Controller
         });
         return $type;
     }
+
     public function exeptionsRequest($request,$type)
     {
         if($type->contains('image'))

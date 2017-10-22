@@ -1,4 +1,3 @@
- <div class="column is-half">
 
 <div class="field" style="text-align: center">
         <label class="label">{{ title_case($name) }}</label>
@@ -12,4 +11,3 @@
             </select>
         </div>
     </div>
-</div>

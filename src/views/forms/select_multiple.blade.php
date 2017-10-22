@@ -1,5 +1,4 @@
- <div class="column is-half" style="min-height: 100px">
-    <div class="field">
+    <div class="field" style="min-height: 100px">
         <label class="label">{{ title_case($name) }}</label>
   <div class="control">
     <div class="select is-info is-multiple">
@@ -13,4 +12,3 @@
         </div>
         </div>
     </div>
-</div>

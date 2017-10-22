@@ -25,6 +25,7 @@ class DataType extends Model
                 'browse' => url(config('laramin.prefix')."/{$this->slug}"),
                 'addedit' => url(config('laramin.prefix')."/{$this->slug}/create"),
                 ],
+            'infos' => $this->infos,
             'read' => Auth::user()->hasPermission("read-{$permission}")
          ]);
     }
