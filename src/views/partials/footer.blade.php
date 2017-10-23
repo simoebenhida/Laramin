@@ -2,10 +2,10 @@
   <div class="container">
     <div class="content has-text-centered">
       <p>
-        <strong>Laramin</strong> by <a href="#">Mohamed Benhida</a>.
+        <strong>Laramin</strong> by <a href="http://devma.net">Mohamed Benhida</a>.
       </p>
       <p>
-        <a class="icon" href="https://github.com/jgthms/bulma">
+        <a class="icon" href="https://github.com/simoebenhida/Laramin">
           <i class="fa fa-github"></i>
         </a>
       </p>
