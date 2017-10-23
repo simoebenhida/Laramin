@@ -55,7 +55,7 @@ class InstallCommand extends Command
     }
 
 
-    public function fire(Filesystem $filesystem)
+    public function handle(Filesystem $filesystem)
     {
         $this->info('Publishing the Laramin assets');
         $this->call('vendor:publish', ['--provider' => LaraminServiceProvider::class]);
