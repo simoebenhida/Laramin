@@ -45,9 +45,12 @@ php artisan Laramin:install
 ```
 You will Have Three Config Files Where you can update the Data As You Wish :
 
-config/laramin.php
-config/laratrust.php
-config/laratrust_seeder.php
+`config/laramin.php`</br>
+
+`config/laratrust.php`</br>
+
+`config/laratrust_seeder.php`</br>
+
 
 
 And we're all good to go!
@@ -55,6 +58,7 @@ And we're all good to go!
 To connected There is some dummy data added you can check on Database
 
 >**email:** `superadministrator@app.com`
+></br>
 >**password:** `password`
 
 ### Inspired By :
