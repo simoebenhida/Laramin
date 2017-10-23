@@ -84,8 +84,8 @@ class LaraminServiceProvider extends ServiceProvider
             'laratrust_seeder' => [
                 "{$this->publishablePath}/config/laratrust_seeder.php" => config_path('laratrust_seeder.php'),
             ],
-            'sLblog_assets' => [
-                "{$this->publishablePath}/assets/" => public_path(config('Laramin.public_path')),
+            'laramin_assets' => [
+                "{$this->publishablePath}/assets/" => public_path(config('laramin.public_path')),
             ],
             'migrations' => [
                 "{$this->publishablePath}/database/migrations/" => database_path('migrations'),

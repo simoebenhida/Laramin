@@ -16,16 +16,16 @@
 
 	@yield('styles')
 </head>
-<body>
+<body class="layout-default">
 	<div class="container" id="laramin_app">
 	@include('laramin::partials.header')
-	<div class="columns">
-	@include('laramin::partials.menu')
-	<div class="column is-10">
-	@include('laramin::partials.message')
-		@yield('content')
-	</div>
-	</div>
+		<div class="columns">
+		@include('laramin::partials.menu')
+			<div class="column is-10">
+			@include('laramin::partials.message')
+				@yield('content')
+			</div>
+		</div>
 	</div>
 
 	@include('laramin::partials.footer')

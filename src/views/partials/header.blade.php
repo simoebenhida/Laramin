@@ -1,21 +1,8 @@
-<nav class="navbar menu-background" id="laramin_menu">
+<nav class="navbar" id="laramin_menu">
   <div class="navbar-brand">
-    <a class="navbar-item" href="http://bulma.io">
-      <img src="{{ laramin_asset('laramin.png') }}" alt="Laramin">
+    <a class="navbar-item" href="http://devma.net">
+      <img src="{{ laramin_asset('laramin.png') }}" alt="Laramin" width="112" height="28" style="max-height : 16.75rem">
     </a>
-
-    <a class="navbar-item is-hidden-desktop" href="https://github.com/jgthms/bulma" target="_blank">
-      <span class="icon" style="color: #333;">
-        <i class="fa fa-github"></i>
-      </span>
-    </a>
-
-    <a class="navbar-item is-hidden-desktop" href="https://twitter.com/jgthms" target="_blank">
-      <span class="icon" style="color: #55acee;">
-        <i class="fa fa-twitter"></i>
-      </span>
-    </a>
-
     <menuclicked></menuclicked>
   </div>
 

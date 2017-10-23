@@ -29,6 +29,14 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
+    public function getAvatarAttribute($value)
+    {
+        if(! $value) {
+            return laramin_asset('laramin.png');
+        }
+        return '/storage/avatar/'.$value;
+    }
+
     public function toArray()
     {
         return array_merge(parent::toArray(), [

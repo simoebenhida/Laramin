@@ -9,7 +9,8 @@
 </head>
 <body>
     <div class="column is-half is-offset-one-quarter m-t-100">
-      <div class="card">
+      <div class="card" style="text-align: center">
+      <img src="{{ laramin_asset('laramin.png') }}">
         <div class="card-content">
           <h1 class="title">Log In</h1>
          <form action="{{ route('laramin.postlogin') }}" method="POST">
