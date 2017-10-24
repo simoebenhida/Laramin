@@ -55,6 +55,20 @@ Lastly, we can install laramin with simply run It Will Add Some Dummy Data
 ```bash
 php artisan Laramin:install
 ```
+
+### Seed
+Then you need to seed the permissions roles dummy users
+
+by adding this lines on `database/seeds/DatabaseSeeder.php
+```
+$this->call(LaraminDataSeeder::class);
+$this->call(LaratrustSeeder::class);
+```
+and launch
+```
+php artisan db:seed
+```
+
 You will Have Three Config Files Where you can update the Data As You Wish :
 
 `config/laramin.php`</br>

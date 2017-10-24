@@ -60,6 +60,13 @@ class InstallCommand extends Command
         $this->info('Publishing the Laramin assets');
         $this->call('vendor:publish', ['--provider' => LaraminServiceProvider::class]);
 
+        foreach(Laramin::getExtraModels() as $key => $model)
+        {
+            file_put_contents(
+                app_path("{$key}.php"),
+                $this->compileControllerStub($key)
+            );
+        }
         $this->info('Adding Laramin routes to routes/web.php');
 
         $filesystem->append(
@@ -76,25 +83,18 @@ class InstallCommand extends Command
         $this->info('Migration');
         $this->call('migrate');
 
-        $this->info('Dumping the autoloaded files and reloading all new files');
+        // $this->info('Dumping the autoloaded files and reloading all new files');
 
-        $composer = $this->findComposer();
+        // $composer = $this->findComposer();
 
-        $process = new Process($composer.' dump-autoload');
-        $process->setWorkingDirectory(base_path())->run();
+        // $process = new Process($composer.' dump-autoload');
+        // $process->setWorkingDirectory(base_path())->run();
 
-        $this->info('Seeding data into the database');
+        // $this->info('Seeding data into the database');
 
-        $this->call('db:seed',['--class' => 'LaraminDataSeeder']);
-        $this->call('db:seed',['--class' => 'LaratrustSeeder']);
+        // $this->call('db:seed',['--class' => 'LaraminDataSeeder']);
+        // $this->call('db:seed',['--class' => 'LaratrustSeeder']);
 
-        foreach(Laramin::getExtraModels() as $key => $model)
-        {
-            file_put_contents(
-                app_path("{$key}.php"),
-                $this->compileControllerStub($key)
-            );
-        }
 
         $this->call('storage:link');
     }

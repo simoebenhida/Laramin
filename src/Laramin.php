@@ -61,10 +61,14 @@ class Laramin
     {
         $this->ExtraModels = collect([
              'User' => \App\User::class,
+             'Post' => \App\Post::class,
+             'Category' => \App\Category::class,
+             'Tag' => \App\Tag::class
              ]);
+
         $this->BasicModels = collect($this->BasicModels);
         $this->setDataType();
-        $this->setExtraModels();
+        // $this->setExtraModels();
         $this->getbackModels();
         $this->getEnabledModel();
     }
@@ -84,12 +88,12 @@ class Laramin
             $this->DataType = DataType::all();
         }
     }
-    public function setExtraModels()
-    {
-        $this->DataType->each(function ($item, $key) {
-            $this->ExtraModels->put($item->name, 'App\\'.$item->name);
-        });
-    }
+    // public function setExtraModels()
+    // {
+    //     $this->DataType->each(function ($item, $key) {
+    //         $this->ExtraModels->put($item->name, 'App\\'.$item->name);
+    //     });
+    // }
     public function getExtraModels()
     {
         return $this->ExtraModels->all();
