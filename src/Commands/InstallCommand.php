@@ -67,12 +67,12 @@ class InstallCommand extends Command
             );
         }
 
-        // $this->info('Dumping the autoloaded files and reloading all new files');
+        $this->info('Dumping the autoloaded files and reloading all new files');
 
-        // $composer = $this->findComposer();
+        $composer = $this->findComposer();
 
-        // $process = new Process($composer.' dump-autoload');
-        // $process->setWorkingDirectory(base_path())->run();
+        $process = new Process($composer.' dump-autoload');
+        $process->setWorkingDirectory(base_path())->run();
 
         $this->info('Adding Laramin routes to routes/web.php');
 
@@ -100,10 +100,6 @@ class InstallCommand extends Command
 
     protected function compileControllerStub($model)
     {
-        return str_replace(
-            '{{namespace}}',
-            $this->getAppNamespace(),
-            file_get_contents(__DIR__."/stubs/make/model/{$model}.stub")
-        );
+        return file_get_contents(__DIR__."/stubs/make/model/{$model}.stub");
     }
 }

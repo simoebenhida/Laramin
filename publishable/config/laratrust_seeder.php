@@ -9,7 +9,8 @@ return [
             'posts' => 'c,r,u,d',
             'tags' => 'c,r,u,d',
             'categories' => 'c,r,u,d',
-            'databases' => 'c,r,u,d'
+            'databases' => 'c,r,u,d',
+            'settings' => 'c,r,u,d'
         ],
         'administrator' => [
             'users' => 'c,r,u,d',
@@ -17,7 +18,8 @@ return [
             'roles' => 'c,r,u,d',
             'posts' => 'c,r,u,d',
             'tags' => 'c,r,u,d',
-            'categories' => 'c,r,u,d'
+            'categories' => 'c,r,u,d',
+            'settings' => 'c,r,u,d'
         ],
         'user' => [
             'permissions' => 'r',

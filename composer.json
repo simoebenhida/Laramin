@@ -21,5 +21,12 @@
             "Simoja\\Laramin\\Tests\\": "tests/"
       }
     },
-    "minimum-stability": "stable"
+    "minimum-stability": "stable",
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Simoja\\Laramin\\LaraminServiceProvider"
+            ],
+        }
+},
 }

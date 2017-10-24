@@ -32,7 +32,7 @@ if (!function_exists('laramin_menu_models')) {
 if (!function_exists('laramin_read_permission_menu')) {
     function laramin_read_permission_menu()
     {
-        $tools = ['users','roles','databases'];
+        $tools = ['users','roles','databases','settings'];
         $permission = collect();
         foreach($tools as $tool) {
             $permission->put($tool,Auth::user()->hasPermission("read-{$tool}"));

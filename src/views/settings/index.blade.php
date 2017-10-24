@@ -12,6 +12,7 @@
 <div class="columns">
 <div class="column is-8 is-offset-2">
           @foreach ($settings as $setting)
+                <code>Laramin::setting({{ "'{$setting->key}'" }})</code> => {{ Laramin::setting($setting->key) }}
                 @include('laramin::forms.'.$setting->type,[
                 'name' => $setting->key,
                 'value' => $setting->value,
@@ -22,6 +23,9 @@
 </div>
 
 </div>
+
+@if(Auth::user()->can('update-settings'))
 <button type="submit" class="button is-primary is-pulled-right">Save Settings</button>
+@endif
 
 @endsection

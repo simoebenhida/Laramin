@@ -10,11 +10,19 @@ class LaraminSettingsController extends Controller
 {
     public function index()
     {
+        if(! $this->UserCan(auth()->user()->id,'read-settings'))
+            {
+                abort(404);
+            }
         $settings = Laramin::model('Settings')::all();
         return view('laramin::settings.index')->withSettings($settings);
     }
     public function edit(Request $request)
     {
+        if(! $this->UserCan(auth()->user()->id,'update-settings'))
+            {
+                abort(404);
+            }
         $settings = Laramin::model('Settings')::all();
 
         foreach ($settings as $setting) {
