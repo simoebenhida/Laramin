@@ -1,9 +1,15 @@
 <p align="center"><a href="https://github.com/simoebenhida/Laramin" target="_blank"><img width="400" src="https://i.imgur.com/XQ57dWg.png"></a></p>
 
 
+
 # **L**aramin - Small Laravel Admin
 
-
+<p align="center">
+Laramin Screenshot
+</p>
+<p align="center">
+<img width="400" src="https://i.imgur.com/33ikwWg.png">
+</p>
 <hr>
 
 After creating your new Laravel application you can include the Laramin package with the following command:

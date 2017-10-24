@@ -59,13 +59,6 @@ class InstallCommand extends Command
     {
         $this->info('Publishing the Laramin assets');
         $this->call('vendor:publish', ['--provider' => LaraminServiceProvider::class]);
-        foreach(Laramin::getExtraModels() as $key => $model)
-        {
-            file_put_contents(
-                app_path("{$key}.php"),
-                $this->compileControllerStub($key)
-            );
-        }
 
         $this->info('Dumping the autoloaded files and reloading all new files');
 
@@ -94,6 +87,14 @@ class InstallCommand extends Command
 
         $this->call('db:seed',['--class' => 'LaraminDataSeeder']);
         $this->call('db:seed',['--class' => 'LaratrustSeeder']);
+
+        foreach(Laramin::getExtraModels() as $key => $model)
+        {
+            file_put_contents(
+                app_path("{$key}.php"),
+                $this->compileControllerStub($key)
+            );
+        }
 
         $this->call('storage:link');
     }
