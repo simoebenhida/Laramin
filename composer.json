@@ -27,6 +27,9 @@
             "providers": [
                 "Simoja\\Laramin\\LaraminServiceProvider"
             ],
+             "aliases": {
+                "Laramin": "Simoja\\Laramin\\Facades\\Laramin"
+            }
         }
 },
 }
