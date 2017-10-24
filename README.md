@@ -73,11 +73,18 @@ To connected There is some dummy data added you can check on Database
 ></br>
 >**password:** `password`
 
+### How It Works
+
+When you create a database it creates a migration file and model File also you will dont need to anything on the server side.
+
+If you Created the Database you have to go to Roles and and assign the permissions of the new Database then refresh the page(it will change later) then you can see your new Model on Menu
+
 ### Inspired By :
 
 <a href="https://github.com/santigarcor/laratrust">Laratrust</a> For The User Permissions
 </br>
 <a href="https://github.com/the-control-group/voyager">Voyager</a> The Idea of making a simple Admin Panel
+
 
 ### Demo
 Comming Soon

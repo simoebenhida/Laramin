@@ -60,13 +60,6 @@ class InstallCommand extends Command
         $this->info('Publishing the Laramin assets');
         $this->call('vendor:publish', ['--provider' => LaraminServiceProvider::class]);
 
-        $this->info('Dumping the autoloaded files and reloading all new files');
-
-        $composer = $this->findComposer();
-
-        $process = new Process($composer.' dump-autoload');
-        $process->setWorkingDirectory(base_path())->run();
-
         $this->info('Adding Laramin routes to routes/web.php');
 
         $filesystem->append(
@@ -82,6 +75,13 @@ class InstallCommand extends Command
 
         $this->info('Migration');
         $this->call('migrate');
+
+        $this->info('Dumping the autoloaded files and reloading all new files');
+
+        $composer = $this->findComposer();
+
+        $process = new Process($composer.' dump-autoload');
+        $process->setWorkingDirectory(base_path())->run();
 
         $this->info('Seeding data into the database');
 
