@@ -21,6 +21,12 @@ DB_USERNAME=homestead
 DB_PASSWORD=secret
 ```
 
+### Laravel 5.5 and up
+
+You don't have to do anything else, this package uses the Package Auto-Discovery feature, and should be available as soon as you install it via Composer.
+
+### Laravel 5.4 or 5.3
+
 Add the Laramin service provider to the `config/app.php` file in the `providers` array:
 
 ```php
