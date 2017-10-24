@@ -58,6 +58,10 @@ php artisan Laramin:install
 
 ### Seed
 Then you need to seed the permissions roles dummy users
+Dont forget to launch First
+```
+composer dump-autoload
+```
 
 by adding this lines on `database/seeds/DatabaseSeeder.php
 ```
@@ -82,7 +86,7 @@ You will Have Three Config Files Where you can update the Data As You Wish :
 And we're all good to go!
 
 To connected There is some dummy data added you can check on Database
-
+Now Launch your website with prefix name by default /admin and enter this dummy credentials and all works fine
 >**email:** `superadministrator@app.com`
 ></br>
 >**password:** `password`
