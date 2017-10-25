@@ -60,7 +60,14 @@ class InstallCommand extends Command
         $this->info('Publishing the Laramin assets');
         $this->call('vendor:publish', ['--provider' => LaraminServiceProvider::class]);
 
-        foreach(Laramin::getExtraModels() as $key => $model)
+        $models = collect([
+             'User' => \App\User::class,
+             'Post' => \App\Post::class,
+             'Category' => \App\Category::class,
+             'Tag' => \App\Tag::class
+             ]);
+
+        foreach($models as $key => $model)
         {
             file_put_contents(
                 app_path("{$key}.php"),

@@ -16,6 +16,14 @@ if (!function_exists('laramin_menu_slugs')) {
     }
 }
 
+if (!function_exists('laramin_menu_dashboard')) {
+    function laramin_menu_dashboard()
+    {
+        return Laramin::model('DataType')->take(3)->get();
+    }
+}
+
+
 if (!function_exists('laramin_basic_types')) {
     function laramin_basic_types()
     {
