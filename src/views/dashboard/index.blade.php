@@ -8,7 +8,7 @@
 	<div class="column is-4 m-t-100">
 		<div class="card" style="background-color: #00d1b2">
 			<div class="card-content">
-				<h1 class="has-text-centered has-text-white size-t-2 m-t-120">Posts</h1>
+				<h1 class="has-text-centered has-text-white size-t-2 m-t-120">{{ $model->name }}</h1>
 				<div class="has-text-centered">
 				<span class="tag is-light is-large is-fullwidth m-t-20">{{ Laramin::model($model->name)->count() }}</span>
 				</div>
