@@ -11,6 +11,10 @@ Laramin Screenshot
 <img width="400" src="https://i.imgur.com/33ikwWg.png">
 </p>
 <hr>
+### Demo
+<a href="http://devma.net/demo/laramin">Demo Here</a>
+
+### Getting Started
 
 After creating your new Laravel application you can include the Laramin package with the following command:
 
@@ -104,8 +108,6 @@ If you Created the Database you have to go to Roles and and assign the permissio
 <a href="https://github.com/the-control-group/voyager">Voyager</a> The Idea of making a simple Admin Panel
 
 
-### Demo
-Comming Soon
 
 ### Contributing
 
