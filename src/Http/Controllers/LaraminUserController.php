@@ -27,7 +27,6 @@ class LaraminUserController extends Controller
         $user = Laramin::model('User')->create([
             'name' => request()->name,
             'email' => request()->email,
-            'avatar' => 'default.png',
             'password' => bcrypt(config('laramin.password'))
         ]);
         $user->attachRole(request()->role);
@@ -92,6 +91,7 @@ class LaraminUserController extends Controller
         ]);
         if (Hash::check($request->old_password, $user->password)) {
             $user->password = bcrypt($request->password);
+            $user->update();
             return response()->json(['status' => true]);
         }else {
             return response()->json(['status' => false]);
