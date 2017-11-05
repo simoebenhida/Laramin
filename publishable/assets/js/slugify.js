@@ -41,8 +41,8 @@
         $.extend( Plugin.prototype, {
             init: function() {
                 this.input = this.settings.input
-                             || $(this.element).find('input[name="' + this.element.attr("data-slug-origin") + '"]')
-                // this.input = $('#title');
+                             || $(this.element).closest('form').find('input[name="' + this.element.attr("data-slug-origin") + '"]');
+
                 this.forceUpdate = true;
                 this.input.on('keyup change', $.proxy(this.onChange, this));
 
@@ -101,9 +101,9 @@
 
                 str = _slug
                     .replace(/^\s+|\s+$/g, '')      // Trim
-                    .replace(/[^-\u0600-۾\w\d\$\*\(\)\'\!\_]/g, _sep)   // Remove invalid chars
-                    .replace(/\s+/g, _sep)          // Replace spaces with separator
-                    .replace(/\-\-+/g, _sep);       // Replace multiple separators with single
+                    .replace(/[^a-z0-9 -]/g, '')    // Remove invalid chars
+                    .replace(/\s+/g, this.settings.separator)    // Replace spaces with separator
+                    .replace(/\-\-+/g, this.settings.separator); // Replace multiple separators with single
 
                 return str;
             },
