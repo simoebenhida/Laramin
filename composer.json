@@ -1,7 +1,7 @@
 {
     "name": "simoja/laramin",
     "description": "Small Laravel Admin",
-    "license": "MT",
+    "license": "MIT",
     "authors": [
         {
             "name": "Mohamed Benhida",
