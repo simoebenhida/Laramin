@@ -90,11 +90,11 @@ class LaraminUserController extends Controller
             'password' => 'required|confirmed'
         ]);
         if (Hash::check($request->old_password, $user->password)) {
+            // dd(bcrypt($request->password));
             $user->password = bcrypt($request->password);
             $user->update();
             return response()->json(['status' => true]);
-        }else {
-            return response()->json(['status' => false]);
         }
+        return response()->json(['status' => false]);
     }
 }

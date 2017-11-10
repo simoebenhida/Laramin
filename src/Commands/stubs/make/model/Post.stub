@@ -3,17 +3,16 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Simoja\Laramin\Facades\Laramin;
+use Simoja\Laramin\Traits\Taggable;
 
 class Post extends Model
 {
+    use Taggable;
+
     protected $fillable = [
         'title', 'image', 'description','slug','status','featured','content','category'
     ];
-
-    public function tags()
-    {
-        return $this->belongsToMany('App\Tag');
-    }
 
     public function categories()
     {

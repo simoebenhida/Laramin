@@ -6,6 +6,7 @@ use Simoja\Laramin\Models\DataInfo;
 use Simoja\Laramin\Models\DataType;
 use Simoja\Laramin\Models\Permission;
 use Simoja\Laramin\Models\Settings;
+use Simoja\Laramin\Models\TagsRelation;
 use Simoja\Laramin\Models\Role;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Schema;
@@ -23,6 +24,7 @@ class Laramin
     protected $BasicModels = [
           'DataType' => DataType::class,  //Must be The First Element
           'DataInfo' => DataInfo::class, //The Same
+          'TagsRelation' => TagsRelation::class,
           'Permission' => Permission::class,
           'Role' => Role::class,
           'Settings' => Settings::class,
@@ -45,6 +47,7 @@ class Laramin
         'status' => 'Status',
         'text_area' => 'Text Area',
         'timestamp' => 'TimesTamp',
+        'tags' => 'Tags',
         ];
 
     protected $ExtraModels = [];

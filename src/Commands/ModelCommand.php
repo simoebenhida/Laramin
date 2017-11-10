@@ -54,8 +54,8 @@ class ModelCommand extends GeneratorCommand
     protected function replaceNamespace(&$stub, $name)
     {
         $stub = str_replace(
-            ['DummyNamespace', 'DummyRootNamespace','DummyTable','DummyFillable'],
-            [$this->getNamespace($name), $this->rootNamespace(),$this->getMigrationInput(),$this->fillableColumns($name)],
+            ['DummyNamespace', 'DummyRootNamespace','DummyTable','DummyFillable','DummyTraits'],
+            [$this->getNamespace($name), $this->rootNamespace(),$this->getMigrationInput(),$this->fillableColumns($name),$this->DummyTraits()],
             $stub
         );
         return $this;
@@ -65,6 +65,17 @@ class ModelCommand extends GeneratorCommand
     {
         $model = explode('\\',$name);
         return Laramin::model('DataType')->where('name',$model[1])->first()->infos()->pluck('column');
+    }
+
+    protected function DummyTraits()
+    {
+        if($this->getTags()) {
+            return "use Taggable;";
+        }
+    }
+
+    protected function getTags() {
+        return trim($this->argument('tags'));
     }
 
     protected function getMigrationInput()
@@ -77,6 +88,7 @@ class ModelCommand extends GeneratorCommand
         return [
             ['name', InputArgument::REQUIRED, 'The name of the class'],
             ['migration', InputArgument::REQUIRED, 'The migration Name'],
+            ['tags', InputArgument::REQUIRED, 'Tags.'],
         ];
     }
     /**

@@ -20,20 +20,20 @@ if (!function_exists('laramin_select_multiple_value')) {
         return $collecting;
     }
 }
-if (!function_exists('laramin_get_tags_post')) {
-    function laramin_get_tags_post($id = null,$slug)
+if (!function_exists('laramin_get_tags')) {
+    function laramin_get_tags($id = null,$slug)
     {
         $values = collect();
 
         if($id !== null)
         {
-        $tags = Laramin::model($slug)->find($id)->tags;
-        $tags->each(function($value,$index) use ($values) {
-            $values->push([
-                'id' => $value->id,
-                'name' => $value->name
-            ]);
-        });
+            $tags = Laramin::model($slug)->find($id)->TagsModel($slug);
+            $tags->each(function($value,$index) use ($values) {
+                $values->push([
+                    'id' => $value->id,
+                    'name' => $value->name
+                ]);
+            });
         }
         return $values->toJson();
     }

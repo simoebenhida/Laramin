@@ -8,12 +8,10 @@ use Simoja\Laramin\LaraminServiceProvider;
 use Symfony\Component\Process\Process;
 use Illuminate\Filesystem\Filesystem;
 use Simoja\Laramin\Facades\Laramin;
-use Simoja\Laramin\Traits\Seedable;
 use Symfony\Component\Console\Input\InputOption;
 
 class InstallCommand extends Command
 {
-    use Seedable;
     use DetectsApplicationNamespace;
     /**
      * The name and signature of the console command.
@@ -89,19 +87,6 @@ class InstallCommand extends Command
 
         $this->info('Migration');
         $this->call('migrate');
-
-        // $this->info('Dumping the autoloaded files and reloading all new files');
-
-        // $composer = $this->findComposer();
-
-        // $process = new Process($composer.' dump-autoload');
-        // $process->setWorkingDirectory(base_path())->run();
-
-        // $this->info('Seeding data into the database');
-
-        // $this->call('db:seed',['--class' => 'LaraminDataSeeder']);
-        // $this->call('db:seed',['--class' => 'LaratrustSeeder']);
-
 
         $this->call('storage:link');
     }

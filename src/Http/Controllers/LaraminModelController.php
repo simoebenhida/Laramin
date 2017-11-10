@@ -108,11 +108,19 @@ class LaraminModelController extends Controller
         if($type->contains('tags') && $request->tags)
         {
             //Check if Method Tags Exist
-            $Id = collect();
+            $ID = collect();
             foreach (json_decode($request->tags) as $key => $value) {
-                $Id->push($value->id);
+                $ID->push($value->id);
             }
-            $model->tags()->sync($Id->toArray());
+
+            foreach ($ID as $value) {
+                $tag = Laramin::model('TagsRelation')->create([
+                    'parent' => $this->slug,
+                    'tag_id' => $value,
+                    'other_id' => $model->id
+                ]);
+            }
+            // $model->tags()->sync($Id->toArray());
         }
     }
 

@@ -87,6 +87,7 @@ class LaraminDatabaseController extends Controller
         });
 
         $this->types = collect(request()->type_columns);
+        $checkTag = false;
         // //Add To Migration file
         if (! Schema::hasTable(request()->nameType)) {
             $content = collect();
@@ -106,6 +107,11 @@ class LaraminDatabaseController extends Controller
                     {
                         $content->push("table->string('{$oldColumn[$i]}');\n");
                     }
+
+                    if($type == 'tags') {
+                        $checkTag = true;
+                    }
+
                     if (($type == 'checkbox') || ($type == 'radio_btn')) {
                         $content->push("table->boolean('{$oldColumn[$i]}');\n");
                     }
@@ -141,11 +147,9 @@ class LaraminDatabaseController extends Controller
                         'description' => ucfirst(request()->nameType) . ' ' . ucfirst($module),
                     ]);
         }
-        // $nameType = ucfirst(request()->nameType);
-        // Session::flash($this->flashname,$this->SessionMessage("Your {$nameType} Has Been Succesfully Added",'success'));
 
         //Create Model File
-        Artisan::call('Laramin:model', ['name' => ucfirst(request()->nameType), 'migration' => request()->nameType]);
+        Artisan::call('Laramin:model', ['name' => ucfirst(request()->nameType), 'migration' => request()->nameType ,'tags' => $checkTag]);
         }
     }
 
