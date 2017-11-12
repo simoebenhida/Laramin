@@ -17,6 +17,19 @@ class DataType extends Model
         return $this->hasMany('Simoja\Laramin\Models\DataInfo', 'data_types_id');
     }
 
+    public function fillableColumns()
+    {
+        return $this->infos()
+                ->get()
+                ->filter(function($item,$key) {
+                    if($item->type == 'tags')
+                    {
+                        return;
+                    }
+                    return $item;
+                })->pluck('column');
+    }
+
     public function toArray()
     {
         $permission = Str::plural(lcfirst($this->name));

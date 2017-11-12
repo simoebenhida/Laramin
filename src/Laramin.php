@@ -116,6 +116,7 @@ class Laramin
         $basicModel = $this->BasicModels;
         $basicModel->shift();
         $basicModel->shift();
+        $basicModel->shift();
         $this->getEnabledModels = $basicModel->merge($this->ExtraModels);
     }
     public function getAllModels()

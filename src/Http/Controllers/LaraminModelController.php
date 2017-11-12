@@ -103,22 +103,32 @@ class LaraminModelController extends Controller
         }
     }
 
-    public function relationAfterSaving($request,$model,$type)
+    public function relationAfterSaving($request,$model,$type,$store)
     {
-        if($type->contains('tags') && $request->tags)
+        if($type->contains('tags'))
         {
             //Check if Method Tags Exist
+            $index = $type->search('tags');
             $ID = collect();
-            foreach (json_decode($request->tags) as $key => $value) {
+
+            foreach (json_decode($request[$index]) as $key => $value) {
                 $ID->push($value->id);
             }
 
+            if(! $store)
+            {
+                    Laramin::model('TagsRelation')->where('parent',$this->slug)->where('other_id',$model->id)->get()
+                            ->each(function($item,$key) {
+                                $item->delete();
+                            });
+            }
+
             foreach ($ID as $value) {
-                $tag = Laramin::model('TagsRelation')->create([
-                    'parent' => $this->slug,
-                    'tag_id' => $value,
-                    'other_id' => $model->id
-                ]);
+                    Laramin::model('TagsRelation')->create([
+                        'parent' => $this->slug,
+                        'tag_id' => $value,
+                        'other_id' => $model->id
+                    ]);
             }
             // $model->tags()->sync($Id->toArray());
         }
@@ -172,7 +182,7 @@ class LaraminModelController extends Controller
 
         $model = Laramin::model($this->getDataType()->name)->create($this->newRequest);
 
-        $this->relationAfterSaving($request,$model,$this->getInfoOfType());
+        $this->relationAfterSaving($request,$model,$this->getInfoOfType(),true);
 
         Session::flash($this->flashname,$this->SessionMessage("Your {$this->slug} Has Been Succesfully Added",'success'));
 
@@ -254,7 +264,9 @@ class LaraminModelController extends Controller
 
         $itemById->update($this->newRequest);
 
-        $this->relationAfterSaving($request,$itemById,$this->getInfoOfType());
+        // $itemById = Laramin::model($this->getDataType()->name)->find($id);
+
+        $this->relationAfterSaving($request,$itemById,$this->getInfoOfType(),false);
 
         Session::flash($this->flashname,$this->SessionMessage("Your {$this->slug} Has Been Succesfully Edited",'success'));
 

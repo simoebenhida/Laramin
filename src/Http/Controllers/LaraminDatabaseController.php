@@ -81,7 +81,7 @@ class LaraminDatabaseController extends Controller
                     'column' => $value,
                     'type' => request()->type_columns[$key],
                     'details' => request()->details[$key]["status"] ? json_encode(request()->details[$key]["number"]) : NULL,
-                    'display' => array_key_exists($key,request()->array) ? request()->array[$key] : false,
+                    'display' => array_key_exists($key,request()->array) ? ! is_null(request()->array[$key]) ? request()->array[$key] : false : false,
                     'validation' => is_null(request()->validation[$key]) ? NULL : json_encode(request()->validation[$key])
                 ]);
         });

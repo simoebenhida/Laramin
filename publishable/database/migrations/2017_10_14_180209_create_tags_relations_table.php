@@ -18,7 +18,7 @@ class CreateTagsRelationsTable extends Migration
             $table->string('parent');
 
             $table->integer('tag_id')->unsigned();
-            $table->foreign('tag_id')->references('id')->on('tags');
+            $table->foreign('tag_id')->references('id')->on('tags')->onDelete('cascade');
 
             $table->integer('other_id')->unsigned();
             $table->timestamps();

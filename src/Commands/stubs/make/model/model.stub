@@ -3,7 +3,7 @@
 namespace DummyNamespace;
 
 use Illuminate\Database\Eloquent\Model;
-use Simoja\Laramin\Traits\Taggable;
+DummyTraitsNamespace
 
 class DummyClass extends Model
 {

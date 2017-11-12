@@ -54,8 +54,8 @@ class ModelCommand extends GeneratorCommand
     protected function replaceNamespace(&$stub, $name)
     {
         $stub = str_replace(
-            ['DummyNamespace', 'DummyRootNamespace','DummyTable','DummyFillable','DummyTraits'],
-            [$this->getNamespace($name), $this->rootNamespace(),$this->getMigrationInput(),$this->fillableColumns($name),$this->DummyTraits()],
+            ['DummyNamespace', 'DummyRootNamespace','DummyTable','DummyFillable','DummyTraitsNamespace','DummyTraits'],
+            [$this->getNamespace($name), $this->rootNamespace(),$this->getMigrationInput(),$this->fillableColumns($name),$this->DummyTraitsNamespace(),$this->DummyTraits()],
             $stub
         );
         return $this;
@@ -64,7 +64,14 @@ class ModelCommand extends GeneratorCommand
     protected function fillableColumns($name)
     {
         $model = explode('\\',$name);
-        return Laramin::model('DataType')->where('name',$model[1])->first()->infos()->pluck('column');
+        return Laramin::model('DataType')->where('name',$model[1])->first()->fillableColumns();
+    }
+
+    protected function DummyTraitsNamespace()
+    {
+        if($this->getTags()) {
+            return "use Simoja\\Laramin\\Traits\\Taggable;";
+        }
     }
 
     protected function DummyTraits()
