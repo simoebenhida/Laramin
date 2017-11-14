@@ -93,13 +93,19 @@ class LaraminModelController extends Controller
         if($type->contains('image'))
         {
             $index = $type->search('image');
-            $image = $this->uploadImage($request[$index]);
-            $this->newRequest[$index] = $image;
+            if($request[$index])
+            {
+                $image = $this->uploadImage($request[$index]);
+                $this->newRequest[$index] = $image;
+            }
         }
+
         if($type->contains('select_multiple'))
         {
             $index = $type->search('select_multiple');
+            if($request[$index]) {
             $this->newRequest[$index] = json_encode($request[$index]);
+            }
         }
     }
 
