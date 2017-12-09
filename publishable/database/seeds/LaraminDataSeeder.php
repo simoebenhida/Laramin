@@ -135,6 +135,10 @@ class LaraminDataSeeder extends Seeder
         'logo' => [
             'Site Logo',
             'image'
+        ],
+        'google_analytics_client_id' => [
+            'Google Api Id',
+            'text'
         ]
       ]);
 
