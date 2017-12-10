@@ -88,8 +88,7 @@
 <script type="text/javascript" src="{{ laramin_asset('js/jquery-2.1.4.min.js')}}"></script>
 <script type="text/javascript" src="{{ laramin_asset('js/jquery.dataTables.min.js')}}"></script>
 <script type="text/javascript" src="{{ laramin_asset('js/dataTables.bulma.min.js')}}"></script>
-{{--	<script type="text/javascript" src="{{ laramin_asset('js/app.js') }}"></script>--}}
-<script type="text/javascript" src="{{ asset('js/app.js') }}"></script>
+<script type="text/javascript" src="{{ laramin_asset('js/app.js') }}"></script>
 <script src="{{ laramin_asset('js/slugify.js')}}"></script>
 <script src="{{ laramin_asset('js/tinymce/tinymce.min.js') }}"></script>
 <script src="{{ laramin_asset('js/laramin_tinymce.js') }}"></script>
