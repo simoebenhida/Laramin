@@ -35,23 +35,23 @@
             @foreach ($items as $item)
             <tr>
                 @foreach ($columns as $column)
-                {{-- Check If the column has access to display on Array Browse --}}
+
                 @if($column->type == 'image' || $column->type == 'status')
                     @include('laramin::browse.'.$column->type,['infos' => $item[$column->column]])
                 @else
-                    <td>{{ str_limit($item[$column->column],10) }}</td>
+                    <td>{{ str_limit($item[$column->column],20) }}</td>
                 @endif
                 @endforeach
 
                    <td class="pull-right">
-                                                    <a href="{{ route('laramin.' .$type->slug. '.edit',$item->id)}}" class="button is-primary is-outlined">
-                                                        <span>Edit</span>
-                                                        <span class="icon is-small">
-                                                          <i class="fa fa-pencil"></i>
-                                                        </span>
-                                                      </a>
-                                                    <modeldelete link="{{ route('laramin.' .$type->slug. '.destroy',$item->id) }}" slug="{{ $type->name }}" token="{{ csrf_token() }}"></modeldelete>
-                                                </td>
+                       <a href="{{ route('laramin.' .$type->slug. '.edit',$item->id)}}" class="button is-primary is-outlined">
+                           <span>Edit</span>
+                           <span class="icon is-small">
+                               <i class="fa fa-pencil"></i>
+                           </span>
+                       </a>
+                       <modeldelete link="{{ route('laramin.' .$type->slug. '.destroy',$item->id) }}" slug="{{ $type->name }}" token="{{ csrf_token() }}"></modeldelete>
+                   </td>
             </tr>
             @endforeach
         </tbody>

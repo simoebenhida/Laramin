@@ -17,7 +17,7 @@ class LaraminModelController extends Controller
     }
     public function getAllItems()
     {
-        return Laramin::model($this->getDataType()->name)->orderBy('id', 'desc')->get();
+        return Laramin::model($this->getDataType()->name)->latest()->get();
     }
     public function getItemByID($id)
     {
@@ -35,11 +35,13 @@ class LaraminModelController extends Controller
     public function index(Request $request)
     {
         $this->slug = $this->getSlug($request);
+
         if(! $this->UserCan(auth()->user()->id,'read-'.Str::plural($this->slug)))
             {
                 abort(404);
             }
-         return view('laramin::models.browse')
+
+        return view('laramin::models.browse')
                      ->withItems($this->getAllItems())
                      ->withColumns($this->getIndexColumns())
                      ->withType($this->getDataType());

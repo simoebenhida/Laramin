@@ -11,6 +11,32 @@ class User extends TestCase
 {
     use DatabaseTransactions;
 
+    public function it_add_an_user_response()
+    {
+        return $this->signIn($this->user)->json('POST', '/api/admin/addUser', [
+            'name' => 'John',
+            'email' => 'email@email.com',
+            'role' => 'administrator',
+            'auth_id' => $this->user->id
+        ]);
+    }
+
+    public function it_update_an_user_response($user)
+    {
+        return $this->signIn($this->user)->json('PUT', '/api/admin/editUser',[
+            'id' => $user->id,
+            'name' => 'NameChanged',
+            'email' => 'EmailChange@email.com',
+            'role' => 'user',
+            'auth_id' => $this->user->id
+        ]);
+    }
+
+    public function it_destroy_an_user_response($user)
+    {
+        return $this->signIn($this->user)->json('DELETE', '/api/admin/deleteUser/'.$this->user->id.'/'.$user->id);
+    }
+
     /** @test */
     public function add_and_remove_role_from_user()
     {
@@ -23,26 +49,16 @@ class User extends TestCase
     }
 
     /** @test */
-    public function user_already_logged_in()
+    public function an_user_is_logged()
     {
         $response = $this->signIn()->get(route('laramin.login'));
-        $response2 = $this->get(route('laramin.dashboard'));
-        $response->assertStatus(302);
-        $response2->assertStatus(200);
-    }
 
-    public function it_add_an_user_response()
-    {
-        return $this->signIn($this->user)->json('POST', '/api/admin/addUser', [
-            'name' => 'John',
-            'email' => 'email@email.com',
-            'role' => 'administrator',
-            'auth_id' => $this->user->id
-        ]);
+        $response->assertSee('dashboard')
+                    ->assertDontSee('login');
     }
 
     /** @test */
-    public function it_has_permission_to_add_user()
+    public function it_has_permission_to_add_an_user()
     {
         $this->user = factory(\App\User::class)->create();
         $this->user->attachRole('administrator');
@@ -60,17 +76,6 @@ class User extends TestCase
         $this->user->attachRole('user');
         $response = $this->it_add_an_user_response();
         $response->assertStatus(404);
-    }
-
-    public function it_update_an_user_response($user)
-    {
-        return $this->signIn($this->user)->json('PUT', '/api/admin/editUser',[
-        'id' => $user->id,
-        'name' => 'NameChanged',
-        'email' => 'EmailChange@email.com',
-        'role' => 'user',
-        'auth_id' => $this->user->id
-        ]);
     }
 
     /** @test */
@@ -121,11 +126,6 @@ class User extends TestCase
         $user = Laramin::model('User')::find($user->id);
         $this->assertTrue($user->name !== 'NameChanged');
         $this->assertTrue($user->email !== 'EmailChange@email.com');
-    }
-
-    public function it_destroy_an_user_response($user)
-    {
-        return $this->signIn($this->user)->json('DELETE', '/api/admin/deleteUser/'.$this->user->id.'/'.$user->id);
     }
 
     /** @test */
