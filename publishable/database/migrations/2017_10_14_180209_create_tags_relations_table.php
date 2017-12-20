@@ -15,12 +15,11 @@ class CreateTagsRelationsTable extends Migration
     {
         Schema::create('tags_relations', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('parent');
-
+            $table->integer('parent_id')->unsigned();
+            $table->string('parent_type');
             $table->integer('tag_id')->unsigned();
             $table->foreign('tag_id')->references('id')->on('tags')->onDelete('cascade');
-
-            $table->integer('other_id')->unsigned();
+            $table->unique(['parent_id', 'tag_id', 'parent_type']);
             $table->timestamps();
 
         });
