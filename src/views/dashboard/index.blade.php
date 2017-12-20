@@ -31,12 +31,73 @@
 		<div class="column">
             <?php $google_analytics_client_id = Laramin::setting("google_analytics_client_id"); ?>
 			    @if (isset($google_analytics_client_id) && !empty($google_analytics_client_id))
+
 				{{-- Google Analytics Embed --}}
 				<div id="embed-api-auth-container"></div>
 		    	@else
-
 		    	<h1 class="has-text-centered">Add Google Analytics Client ID</h1>
                 @endif
+
+                <div class="Dashboard Dashboard--full" id="analytics-dashboard">
+                    <header class="Dashboard-header">
+                        <ul class="FlexGrid">
+                            <li class="FlexGrid-item">
+                                <div class="Titles">
+                                    <h1 class="Titles-main" id="view-name">Select a View</h1>
+                                    <div class="Titles-sub">Various visualizations</div>
+                                </div>
+                            </li>
+                            <li class="FlexGrid-item FlexGrid-item--fixed">
+                                <div id="active-users-container"></div>
+                            </li>
+                        </ul>
+                        <div id="view-selector-container"></div>
+                    </header>
+
+                    <ul class="FlexGrid FlexGrid--halves">
+                        <li class="FlexGrid-item">
+                            <div class="Chartjs">
+                                <header class="Titles">
+                                    <h1 class="Titles-main">This Week vs Last Week</h1>
+                                    <div class="Titles-sub">By users</div>
+                                </header>
+                                <figure class="Chartjs-figure" id="chart-1-container"></figure>
+                                <ol class="Chartjs-legend" id="legend-1-container"></ol>
+                            </div>
+                        </li>
+                        <li class="FlexGrid-item">
+                            <div class="Chartjs">
+                                <header class="Titles">
+                                    <h1 class="Titles-main">This Year vs Last Year</h1>
+                                    <div class="Titles-sub">By users</div>
+                                </header>
+                                <figure class="Chartjs-figure" id="chart-2-container"></figure>
+                                <ol class="Chartjs-legend" id="legend-2-container"></ol>
+                            </div>
+                        </li>
+                        <li class="FlexGrid-item">
+                            <div class="Chartjs">
+                                <header class="Titles">
+                                    <h1 class="Titles-main">Top Browsers</h1>
+                                    <div class="Titles-sub">By pageview</div>
+                                </header>
+                                <figure class="Chartjs-figure" id="chart-3-container"></figure>
+                                <ol class="Chartjs-legend" id="legend-3-container"></ol>
+                            </div>
+                        </li>
+                        <li class="FlexGrid-item">
+                            <div class="Chartjs">
+                                <header class="Titles">
+                                    <h1 class="Titles-main">Top Countries</h1>
+                                    <div class="Titles-sub">By sessions</div>
+                                </header>
+                                <figure class="Chartjs-figure" id="chart-4-container"></figure>
+                                <ol class="Chartjs-legend" id="legend-4-container"></ol>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+
 
 		</div>
 	</div>

@@ -27,8 +27,8 @@ if (!function_exists('laramin_get_tags')) {
 
         if($id !== null)
         {
-            $tags = Laramin::model($slug)->find($id)->TagsModel($slug);
-            $tags->each(function($value,$index) use ($values) {
+            $tags = Laramin::model($slug)->find($id)->getTags($slug);
+            $tags->each(function($value) use ($values) {
                 $values->push([
                     'id' => $value->id,
                     'name' => $value->name
