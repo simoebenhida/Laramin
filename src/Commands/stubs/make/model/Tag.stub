@@ -9,6 +9,8 @@ class Tag extends Model
     protected $fillable = [
        'name','slug'
     ];
+    protected $with = ['posts'];
+
     public function details($id = null)
     {
         if ($id) {

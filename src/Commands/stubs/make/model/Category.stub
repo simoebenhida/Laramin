@@ -10,7 +10,9 @@ class Category extends Model
        'name','slug'
     ];
 
-    public function posts()
+    protected $with = ['posts'];
+
+    public function ph onosts()
     {
         return $this->belongsTo('App\Post');
     }

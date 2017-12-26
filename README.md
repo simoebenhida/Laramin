@@ -13,7 +13,12 @@ Laramin Screenshot
 <hr>
 
 ### Demo
-<a href="http://devma.net/package/Laramin" target="_blank">Demo Here</a>
+
+Video Demo
+<a href="http://devma.net/package/Laramin" target="_blank">Demo</a>
+
+BlogPost Demo
+<a href="http://devma.net/blog/laramin-admin-panel" target="_blank">Demo Here</a>
 
 ### Getting Started
 

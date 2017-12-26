@@ -10,6 +10,8 @@ class Post extends Model
 {
     use Taggable;
 
+    protected $with = ['tags'];
+
     protected $fillable = [
         'title', 'image', 'description','slug','status','featured','content','category'
     ];

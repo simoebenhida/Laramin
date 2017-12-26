@@ -4,11 +4,13 @@ namespace Simoja\Laramin\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class DataInfo extends Model
-{
+class DataInfo extends Model {
+
     protected $fillable = [
-        'column','data_types_id','validation','type','details','display'
+        'column', 'data_types_id', 'validation', 'type', 'details', 'display'
     ];
+
+    protected $with = ['types'];
 
     public function types()
     {
