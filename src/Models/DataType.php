@@ -36,7 +36,7 @@ class DataType extends Model {
 
     public function toArray()
     {
-        $permission = Str::plural(lcfirst($this->name));
+        $permission = strtolower(Str::plural(lcfirst($this->name)));
 
         return array_merge(parent::toArray(), [
             'links' => [

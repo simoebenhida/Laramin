@@ -8,9 +8,6 @@ DummyTraitsNamespace
 class DummyClass extends Model
 {
     DummyTraits
-
     protected $fillable = DummyFillable;
-
     protected $table = 'DummyTable';
-
 }
