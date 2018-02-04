@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Session;
 use Simoja\Laramin\Facades\Laramin;
 use Simoja\Laramin\Traits\LaraminDatabase;
+use Illuminate\Support\Facades\Artisan;
 
 class LaraminDatabaseController extends Controller
 {
@@ -26,7 +27,7 @@ class LaraminDatabaseController extends Controller
 
     public function browse()
     {
-        if (!$this->UserCan(auth()->user()->id, 'read-databases')) {
+        if (!$this->can('read-databases', auth()->id())) {
             abort(404);
         }
         return view('laramin::database.browse');
@@ -34,30 +35,18 @@ class LaraminDatabaseController extends Controller
 
     public function create()
     {
-        if (!$this->UserCan(auth()->user()->id, 'create-databases')) {
+        if (!$this->can('create-databases', auth()->id())) {
             abort(404);
         }
         return view('laramin::database.add');
     }
 
-    public function findType($type = [])
-    {
-        $type = collect($type);
-        $something = $this->types->filter(function ($value, $key) use ($type) {
-            return $type->contains($key);
-        });
-        return stripslashes($something->first());
-    }
-
     public function store(Request $request)
     {
-        //Last Update : Refactoring 100 line to 20 line
-
-        //Checking if user have permission
-        if (!$this->UserCan($request->auth_id, 'create-databases')) {
+        if (!$this->can('create-databases', $request->auth_id)) {
             abort(404);
         }
-        //Validate the database inputs
+
         $this->validate(
             $request,
             [
@@ -82,13 +71,16 @@ class LaraminDatabaseController extends Controller
 
     public function update(Request $request, $id)
     {
-        if (!$this->UserCan(auth()->user()->id, 'update-databases')) {
+        if (!$this->can('update-databases', $request->auth_id)) {
             abort(404);
         }
+
         $type = Laramin::model('DataType')->find($id);
+
         $type->update([
             'menu' => $request->menu,
         ]);
+
         $type->infos->each(function ($item, $key) use ($request) {
             $item->update([
                 'details' => array_key_exists('details_' . $item->id, request()->toArray()) ? $request['details_' . $item->id] : null,
@@ -96,31 +88,23 @@ class LaraminDatabaseController extends Controller
                 'display' => array_key_exists('display_' . $item->id, request()->toArray()) ? true : false
             ]);
         });
+
         Session::flash($this->flashname, $this->SessionMessage("Your {$type->name} Has Been Succesfully Edited", 'success'));
 
         return redirect()->route('laramin.database.browse');
     }
 
-    protected function compileMigrationStub($name, $content)
-    {
-        return str_replace(
-            ['DummyClass', 'DummyName', 'DummyTables'],
-            ['Create' . ucfirst($name) . 'Table', strtolower($name), $content],
-            file_get_contents(__DIR__ . "/stubs/migration.stub")
-        );
-    }
-
-    protected function getDatePrefix()
-    {
-        return date('Y_m_d_His');
-    }
-
     public function destroy($auth, $id)
     {
-        if (!$this->UserCan($auth, 'delete-databases')) {
+        if (!$this->can('delete-databases', $auth)) {
             abort(404);
         }
-        Laramin::model('DataType')->find($id)->delete();
+
+        $type = Laramin::model('DataType')->find($id);
+
+        Artisan::call('Laramin:delete', ['name' => $type->name]);
+
+        $type->delete();
 
         return response()->json(['success' => 1]);
     }

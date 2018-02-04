@@ -26,7 +26,7 @@ class LaraminServiceProvider extends ServiceProvider
 
         // $this->loadMigrationsFrom("{$this->publishablePath}/database/migrations/");
 
-        $this->loadViewsFrom(__DIR__.'/views', 'laramin');
+        $this->loadViewsFrom(__DIR__ . '/views', 'laramin');
         // $this->loadRoutesFrom(__DIR__.'/routes.php');
         $this->loadHelpers();
 
@@ -68,7 +68,8 @@ class LaraminServiceProvider extends ServiceProvider
     public function registerConfigs()
     {
         $this->mergeConfigFrom(
-            dirname(__DIR__).'/publishable/config/laramin.php', 'laramin'
+            dirname(__DIR__) . '/publishable/config/laramin.php',
+            'laramin'
         );
     }
 
@@ -102,7 +103,7 @@ class LaraminServiceProvider extends ServiceProvider
 
     protected function getPublishablePath()
     {
-        return dirname(__DIR__).'/publishable';
+        return dirname(__DIR__) . '/publishable';
     }
 
     protected function registerConsoleCommands()
@@ -110,11 +111,12 @@ class LaraminServiceProvider extends ServiceProvider
         $this->commands(Commands\InstallCommand::class);
         $this->commands(Commands\ModelCommand::class);
         $this->commands(Commands\Migrations\MigrateMakeCommand::class);
+        $this->commands(Commands\DeleteCommand::class);
     }
 
     protected function loadHelpers()
     {
-        foreach (glob(__DIR__.'/Helpers/*.php') as $filename) {
+        foreach (glob(__DIR__ . '/Helpers/*.php') as $filename) {
             require_once $filename;
         }
     }

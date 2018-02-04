@@ -17,23 +17,23 @@ class Controller extends BaseController
 
     public function getSlug(Request $request)
     {
-         return explode('.', $request->route()->getName())[1];
+        return explode('.', $request->route()->getName())[1];
     }
-    public function UserCan($user = null,$permission = null)
+
+    public function can($permission = null, $userID)
     {
-        if($permission == null || $user == null)
-        {
+        if ($permission == null) {
             return false;
         }
-        $user = Laramin::model('User')::find($user);
-        return $user->can($permission);
+        return Laramin::model('User')->find($userID)->can($permission);
     }
-    public function SessionMessage($message,$type)
+
+    public function SessionMessage($message, $type)
     {
         $infos = collect();
-        $infos->put('message',$message);
-        $infos->put('type',$type);
-        $infos->put('title',ucfirst($type));
+        $infos->put('message', $message);
+        $infos->put('type', $type);
+        $infos->put('title', ucfirst($type));
         return $infos->toJson();
     }
 }

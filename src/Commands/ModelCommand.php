@@ -38,7 +38,7 @@ class ModelCommand extends GeneratorCommand
      */
     public function fire()
     {
-        if (parent::fire() === false && ! $this->option('force')) {
+        if (parent::fire() === false && !$this->option('force')) {
             return;
         }
     }
@@ -49,13 +49,14 @@ class ModelCommand extends GeneratorCommand
      */
     protected function getStub()
     {
-        return __DIR__.'/stubs/make/model/model.stub';
+        return __DIR__ . '/stubs/make/model/model.stub';
     }
+
     protected function replaceNamespace(&$stub, $name)
     {
         $stub = str_replace(
-            ['DummyNamespace', 'DummyRootNamespace','DummyTable','DummyFillable','DummyTraitsNamespace','DummyTraits'],
-            [$this->getNamespace($name), $this->rootNamespace(),$this->getMigrationInput(),$this->fillableColumns($name),$this->DummyTraitsNamespace(),$this->DummyTraits()],
+            ['DummyNamespace', 'DummyRootNamespace', 'DummyTable', 'DummyFillable', 'DummyTraitsNamespace', 'DummyTraits'],
+            [$this->getNamespace($name), $this->rootNamespace(), $this->getMigrationInput(), $this->fillableColumns($name), $this->DummyTraitsNamespace(), $this->DummyTraits()],
             $stub
         );
         return $this;
@@ -63,25 +64,26 @@ class ModelCommand extends GeneratorCommand
 
     protected function fillableColumns($name)
     {
-        $model = explode('\\',$name);
-        return Laramin::model('DataType')->where('name',$model[1])->first()->fillableColumns();
+        $model = explode('\\', $name);
+        return Laramin::model('DataType')->where('name', $model[1])->first()->fillableColumns();
     }
 
     protected function DummyTraitsNamespace()
     {
-        if($this->getTags()) {
+        if ($this->getTags()) {
             return "use Simoja\\Laramin\\Traits\\Taggable;";
         }
     }
 
     protected function DummyTraits()
     {
-        if($this->getTags()) {
+        if ($this->getTags()) {
             return "use Taggable;";
         }
     }
 
-    protected function getTags() {
+    protected function getTags()
+    {
         return trim($this->argument('tags'));
     }
 
