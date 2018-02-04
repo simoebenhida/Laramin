@@ -85,5 +85,7 @@ trait LaraminDatabase
                 'description' => ucfirst($request->name) . ' ' . ucfirst($module),
             ]);
         }
+
+        // $user = Laramin::model('User')->find($request->id)->role
     }
 }
