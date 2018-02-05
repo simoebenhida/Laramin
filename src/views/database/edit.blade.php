@@ -101,11 +101,4 @@
 @section('scripts')
    <script src="{{ laramin_asset('js/ace/ace.js') }}"></script>
    <script src="{{ laramin_asset('js/laramin_ace_editor.js') }}"></script>
-{{--    <script src="{{ laramin_asset('js/slugify.js')}}"></script>
-
-  <script>
-      $('document').ready(function () {
-                 $('#slug').slugify();
-            });
-  </script> --}}
 @endsection

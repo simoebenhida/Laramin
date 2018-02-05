@@ -9,21 +9,21 @@ use Simoja\Laramin\Facades\Laramin;
 
 class User extends TestCase
 {
-    use DatabaseTransactions;
+    use DatabaseMigrations;
 
-    public function it_add_an_user_response()
+    public function it_add_an_user_response($user)
     {
-        return $this->signIn($this->user)->json('POST', '/api/admin/addUser', [
+        return $this->signIn($user)->json('POST', '/api/admin/addUser', [
             'name' => 'John',
             'email' => 'email@email.com',
             'role' => 'administrator',
-            'auth_id' => $this->user->id
+            'auth_id' => $user->id
         ]);
     }
 
     public function it_update_an_user_response($user)
     {
-        return $this->signIn($this->user)->json('PUT', '/api/admin/editUser',[
+        return $this->signIn($this->user)->json('PUT', '/api/admin/editUser', [
             'id' => $user->id,
             'name' => 'NameChanged',
             'email' => 'EmailChange@email.com',
@@ -40,12 +40,13 @@ class User extends TestCase
     /** @test */
     public function add_and_remove_role_from_user()
     {
-        $this->signIn();
-        $this->user->attachRole('superadministrator');
-        $this->assertTrue($this->user->hasRole('superadministrator'));
+        $user = $this->create(\App\User::class);
+        $this->signIn($user);
+        $user->attachRole('superadministrator');
+        $this->assertTrue($user->hasRole('superadministrator'));
 
-        $this->user->detachRole('superadministrator');
-        $this->assertFalse($this->user->hasRole('superadministrator'));
+        $user->detachRole('superadministrator');
+        $this->assertFalse($user->hasRole('superadministrator'));
     }
 
     /** @test */
@@ -60,10 +61,10 @@ class User extends TestCase
     /** @test */
     public function it_has_permission_to_add_an_user()
     {
-        $this->user = factory(\App\User::class)->create();
-        $this->user->attachRole('administrator');
-        $response = $this->it_add_an_user_response();
-        $user = Laramin::model('User')->where('email','email@email.com')->first();
+        $user = $this->create(\App\User::class);
+        $user->attachRole('administrator');
+        $response = $this->it_add_an_user_response($user);
+        $user = Laramin::model('User')->where('email', 'email@email.com')->first();
         $response
             ->assertStatus(200);
         $this->assertTrue($user->hasRole('administrator'));
@@ -131,35 +132,35 @@ class User extends TestCase
     /** @test */
     public function it_has_permission_to_destroy_an_user()
     {
-          $this->user = factory(\App\User::class)->create();
-          $this->user->attachRole('administrator');
+        $this->user = factory(\App\User::class)->create();
+        $this->user->attachRole('administrator');
 
-          $user = factory(\App\User::class)->create();
-          $count = Laramin::model('User')->all()->count();
+        $user = factory(\App\User::class)->create();
+        $count = Laramin::model('User')->all()->count();
 
-          $response = $this->it_destroy_an_user_response($user);
+        $response = $this->it_destroy_an_user_response($user);
 
-          $response->assertStatus(200)
+        $response->assertStatus(200)
                    ->assertExactJson([
                     'destroyed' => true,
                     ]);
 
-          $this->assertEquals(Laramin::model('User')->all()->count(),$count-1);
+        $this->assertEquals(Laramin::model('User')->all()->count(), $count-1);
     }
 
-     /** @test */
+    /** @test */
     public function it_has_not_permission_to_destroy_an_user()
     {
-          $this->user = factory(\App\User::class)->create();
-          $this->user->attachRole('user');
+        $this->user = factory(\App\User::class)->create();
+        $this->user->attachRole('user');
 
-          $user = factory(\App\User::class)->create();
-          $count = Laramin::model('User')->all()->count();
+        $user = factory(\App\User::class)->create();
+        $count = Laramin::model('User')->all()->count();
 
-          $response = $this->it_destroy_an_user_response($user);
+        $response = $this->it_destroy_an_user_response($user);
 
-          $response->assertStatus(404);
+        $response->assertStatus(404);
 
-          $this->assertEquals(Laramin::model('User')->all()->count(),$count);
+        $this->assertEquals(Laramin::model('User')->all()->count(), $count);
     }
 }

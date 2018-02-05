@@ -16,15 +16,6 @@ class LaraminDatabaseController extends Controller
 {
     use LaraminDatabase;
 
-    protected $basicType;
-    protected $types = [];
-    protected $columnNames = [];
-
-    public function __construct()
-    {
-        $this->basicType = Laramin::getBasicTypes();
-    }
-
     public function browse()
     {
         if (!$this->can('read-databases', auth()->id())) {
@@ -71,23 +62,13 @@ class LaraminDatabaseController extends Controller
 
     public function update(Request $request, $id)
     {
-        if (!$this->can('update-databases', $request->auth_id)) {
+        if (!$this->can('update-databases', auth()->id())) {
             abort(404);
         }
 
         $type = Laramin::model('DataType')->find($id);
 
-        $type->update([
-            'menu' => $request->menu,
-        ]);
-
-        $type->infos->each(function ($item, $key) use ($request) {
-            $item->update([
-                'details' => array_key_exists('details_' . $item->id, request()->toArray()) ? $request['details_' . $item->id] : null,
-                'validation' => array_key_exists('validation_' . $item->id, request()->toArray()) ? $request['validation_' . $item->id] : null,
-                'display' => array_key_exists('display_' . $item->id, request()->toArray()) ? true : false
-            ]);
-        });
+        $this->updateType($request, $type);
 
         Session::flash($this->flashname, $this->SessionMessage("Your {$type->name} Has Been Succesfully Edited", 'success'));
 

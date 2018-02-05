@@ -13,7 +13,6 @@
 	{{-- <link rel="stylesheet" type="text/css" href="{{ laramin_asset('css/sweetalert2.min.css')}}"> --}}
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 	<link rel="stylesheet" href="//fonts.googleapis.com/icon?family=Material+Icons">
-
 	@yield('styles')
 </head>
 <body class="layout-default">
@@ -32,7 +31,7 @@
 	<script type="text/javascript" src="{{ laramin_asset('js/jquery-2.1.4.min.js')}}"></script>
 	<script type="text/javascript" src="{{ laramin_asset('js/jquery.dataTables.min.js')}}"></script>
 	<script type="text/javascript" src="{{ laramin_asset('js/dataTables.bulma.min.js')}}"></script>
-	<script type="text/javascript" src="{{ laramin_asset('js/app.js') }}"></script>
+	 <script type="text/javascript" src="{{ laramin_asset('js/app.js') }}"></script>
 	@yield('scripts')
 
 

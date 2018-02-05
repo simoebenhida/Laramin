@@ -23,12 +23,12 @@ class ChangePassword extends TestCase
     /** @test */
     public function it_can_edit_a_password()
     {
-          $this->user = factory(\App\User::class)->create();
-          $response = $this->edit_password();
-          $response->assertStatus(200);
+        $this->user = factory(\App\User::class)->create();
+        $response = $this->edit_password();
+        $response->assertStatus(200);
 
-          $this->assertFalse(Hash::check('password',Laramin::model('User')->find($this->user->id)->password));
+        $this->assertFalse(Hash::check('password', Laramin::model('User')->find($this->user->id)->password));
 
-          $this->assertTrue(Hash::check('secret',Laramin::model('User')->find($this->user->id)->password));
+        $this->assertTrue(Hash::check('secret', Laramin::model('User')->find($this->user->id)->password));
     }
 }

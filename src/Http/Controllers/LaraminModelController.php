@@ -6,45 +6,30 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Str;
 use Simoja\Laramin\Facades\Laramin;
+use Simoja\Laramin\Traits\LaraminModel;
 
 class LaraminModelController extends Controller
 {
-    protected $slug;
+    use LaraminModel;
     protected $newRequest;
+    protected $slug;
+    protected $type;
 
-    public function getDataType()
+    public function __construct(Request $request)
     {
-        return Laramin::model('DataType')->where('slug', $this->slug)->first();
-    }
-    public function getAllItems()
-    {
-        return Laramin::model($this->getDataType()->name)->latest()->get();
-    }
-    public function getItemByID($id)
-    {
-        return Laramin::model($this->getDataType()->name)->find($id);
-    }
-    public function getColumns()
-    {
-        return $this->getDataType()->infos()->get();
-    }
-    public function getIndexColumns()
-    {
-        return $this->getDataType()->infos()->displayed()->get();
+        $this->slug = $this->getSlug($request);
+        $this->type = Laramin::model('DataType')->where('slug', $this->slug)->first();
     }
 
     public function index(Request $request)
     {
-        $this->slug = $this->getSlug($request);
-
         if (!$this->can('read-' . Str::plural($this->slug), auth()->user()->id)) {
             abort(404);
         }
-
         return view('laramin::models.browse')
-            ->withItems($this->getAllItems())
-            ->withColumns($this->getIndexColumns())
-            ->withType($this->getDataType());
+            ->withItems($this->items())
+            ->withColumns($this->displayedColumns())
+            ->withType($this->type);
     }
 
     /**
@@ -54,15 +39,14 @@ class LaraminModelController extends Controller
      */
     public function create(Request $request)
     {
-        $this->slug = $this->getSlug($request);
         if (!$this->can('create-' . Str::plural($this->slug), auth()->user()->id)) {
             abort(404);
         }
-        // dd($this->getColumns());
+
         return view('laramin::models.add-edit')
             ->withStatus('Add')
-            ->withColumns($this->getColumns())
-            ->withType($this->getDataType());
+            ->withColumns($this->columns())
+            ->withType($this->type);
     }
 
     /**
@@ -71,98 +55,20 @@ class LaraminModelController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function uploadImage($request)
-    {
-        $filename = auth()->id() . '_' . date('Y_m_d_H_i_s');
-        $extension = $request->getClientOriginalExtension();
-        $filename = $filename . '.' . $extension;
-        $path = $request->storeAs('public/' . $this->slug, $filename);
-        return $filename;
-    }
-
-    public function getInfoOfType()
-    {
-        $type = collect();
-        $this->getColumns()->each(function ($item, $key) use ($type) {
-            $type->put($item->column, $item->type);
-        });
-        return $type;
-    }
-
-    public function exeptionsRequest($request, $type)
-    {
-        if ($type->contains('image')) {
-            $index = $type->search('image');
-            if ($request[$index]) {
-                $image = $this->uploadImage($request[$index]);
-                $this->newRequest[$index] = $image;
-            }
-        }
-
-        if ($type->contains('select_multiple')) {
-            $index = $type->search('select_multiple');
-            if ($request[$index]) {
-                $this->newRequest[$index] = json_encode($request[$index]);
-            }
-        }
-    }
-
-    public function relationAfterSaving($request, $model, $type, $store)
-    {
-        if ($type->contains('tags')) {
-            $index = $type->search('tags');
-            $id = collect();
-
-            foreach (json_decode($request[$index]) as $key => $value) {
-                $id->put($value->id, ['parent_type' => get_class($model)]);
-            }
-            $model->tags()->sync($id->toArray());
-        }
-    }
-
-    public function checkForUnique($validation)
-    {
-        $check = collect(explode('|', $validation));
-        $checking = $check->filter(function ($value, $key) {
-            $value = collect(explode(':', $value));
-            return $value->first() == 'unique';
-        });
-        return !!$checking->count();
-    }
-
-    public function validation(Request $request, $remove = [], $method = null)
-    {
-        $validation = collect();
-        $remove = collect(['image']);
-        $this->getColumns()->each(function ($item, $index) use ($validation, $remove, $method) {
-            if (json_decode($item->validation) !== null) {
-                if (!$remove->contains($item->type)) {
-                    if (!is_null($method) && $this->checkForUnique(json_decode($item->validation))) {
-                        $validation->put($item->column, json_decode($item->validation) . ',' . $method);
-                    } else {
-                        $validation->put($item->column, json_decode($item->validation));
-                    }
-                }
-            }
-        });
-        $this->validate($request, $validation->toArray());
-    }
     public function store(Request $request)
     {
-        $this->slug = $this->getSlug($request);
-
         if (!$this->can('create-' . Str::plural($this->slug), auth()->user()->id)) {
             abort(404);
         }
-        $this->newRequest = $request->all();
+        // $this->newRequest = $request->all();
 
         $this->validation($request);
 
-        $this->exeptionsRequest($request, $this->getInfoOfType());
+        $request = $this->HandleRequest($request);
 
-        $model = Laramin::model($this->getDataType()->name)->create($this->newRequest);
+        $model = Laramin::model($this->type->name)->create($request->toArray());
 
-        $this->relationAfterSaving($request, $model, $this->getInfoOfType(), true);
+        // $this->relationAfterSaving($request, $model, $this->getInfoOfType(), true);
 
         Session::flash($this->flashname, $this->SessionMessage("Your {$this->slug} Has Been Succesfully Added", 'success'));
 
@@ -188,16 +94,15 @@ class LaraminModelController extends Controller
      */
     public function edit(Request $request, $id)
     {
-        $this->slug = $this->getSlug($request);
         if (!$this->can('update-' . Str::plural($this->slug), auth()->user()->id)) {
             abort(404);
         }
-        $item = $this->getItemByID($id);
+
         return view('laramin::models.add-edit')
-            ->withItem($item)
+            ->withItem($this->item($id))
             ->withStatus('Edit')
-            ->withColumns($this->getColumns())
-            ->withType($this->getDataType());
+            ->withColumns($this->columns())
+            ->withType($this->type);
     }
 
     /**
@@ -225,22 +130,18 @@ class LaraminModelController extends Controller
 
     public function update(Request $request, $id)
     {
-        $this->slug = $this->getSlug($request);
         if (!$this->can('update-' . Str::plural($this->slug), auth()->user()->id)) {
             abort(404);
         }
-        $this->newRequest = $request->all();
+        // $this->newRequest = $request->all();
 
-        $itemById = Laramin::model($this->getDataType()->name)->find($id);
+        $model = Laramin::model($this->type->name)->find($id);
 
-        $this->validation($request, $this->checkUpdateValues($request, $itemById, $this->getInfoOfType()), $itemById->id);
+        $this->validation($request, $model->id);
 
+        $model->update($request->toArray());
 
-        $itemById->update($this->newRequest);
-
-        // $itemById = Laramin::model($this->getDataType()->name)->find($id);
-
-        $this->relationAfterSaving($request, $itemById, $this->getInfoOfType(), false);
+        // $this->relationAfterSaving($request, $itemById, $this->getInfoOfType(), false);
 
         Session::flash($this->flashname, $this->SessionMessage("Your {$this->slug} Has Been Succesfully Edited", 'success'));
 
@@ -260,7 +161,7 @@ class LaraminModelController extends Controller
         if (!$this->can('delete-' . Str::plural($this->slug), auth()->user()->id)) {
             abort(404);
         }
-        Laramin::model($this->getDataType()->name)->find($id)->delete();
+        Laramin::model($this->type->name)->find($id)->delete();
 
         Session::flash($this->flashname, $this->SessionMessage("Your {$this->slug} Has Been Succesfully Destroyed", 'success'));
 

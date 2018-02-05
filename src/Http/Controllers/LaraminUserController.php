@@ -9,10 +9,9 @@ use Simoja\Laramin\Facades\Laramin;
 
 class LaraminUserController extends Controller
 {
-
-    public function validation(Request $request,$update = null)
+    public function validation(Request $request, $update = null)
     {
-         $this->validate($request,[
+        $this->validate($request, [
             'name' => 'required',
             'email' => 'required|email|unique:users,email,'.$update
         ]);
@@ -20,7 +19,7 @@ class LaraminUserController extends Controller
 
     public function store(Request $request)
     {
-        if(! $this->UserCan(request()->auth_id,'create-users')){
+        if (! $this->can('create-users', request()->auth_id)) {
             abort(404);
         }
         $this->validation($request);
@@ -35,10 +34,10 @@ class LaraminUserController extends Controller
 
     public function update(Request $request)
     {
-        if(! $this->UserCan(request()->auth_id,'update-users')){
+        if (! $this->can('update-users', request()->auth_id)) {
             abort(404);
         }
-        $this->validation($request,$request->id);
+        $this->validation($request, $request->id);
         $user = Laramin::model('User')::find(request()->id);
         $user->update(collect(request()->all())->except(['role','id'])->toArray());
         $role = $user->roles()->first()->name;
@@ -51,9 +50,9 @@ class LaraminUserController extends Controller
         return response()->json(['user' => $user,'users' => Laramin::model('User')->all()]);
     }
 
-    public function destroy($auth,$id)
+    public function destroy($auth, $id)
     {
-        if(! $this->UserCan($auth,'delete-users')){
+        if (! $this->can('delete-users', $auth)) {
             abort(404);
         }
         $user = Laramin::model('User')::find($id);
@@ -69,23 +68,23 @@ class LaraminUserController extends Controller
     public function Profileupdate(Request $request)
     {
         $user = auth()->user();
-        $this->validation($request,auth()->user()->id);
+        $this->validation($request, auth()->user()->id);
         $user->update(collect($request->all())->except(['avatar'])->toArray());
-        if($request->avatar) {
+        if ($request->avatar) {
             $extension = $request->avatar->getClientOriginalExtension();
             $filename = auth()->id().'.'.$extension;
             $path = $request->avatar->storeAs('public/avatar', $filename);
             $user->avatar = $filename;
             $user->update();
         }
-        Session::flash($this->flashname,$this->SessionMessage("Your Profile Has Been Succesfully Updated",'success'));
+        Session::flash($this->flashname, $this->SessionMessage("Your Profile Has Been Succesfully Updated", 'success'));
         return redirect()->back();
     }
 
     public function editOwnPassword(Request $request)
     {
         $user = Laramin::model('User')::find($request->auth_id);
-        $this->validate($request,[
+        $this->validate($request, [
             'old_password' => 'required',
             'password' => 'required|confirmed'
         ]);

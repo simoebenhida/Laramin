@@ -4,27 +4,22 @@ namespace Simoja\Laramin\Tests;
 
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 use Illuminate\Contracts\Console\Kernel;
+use Tests\CreatesApplication;
 
 abstract class TestCase extends BaseTestCase
 {
-    public function createApplication()
+    use CreatesApplication;
+    protected $prefix = 'admin';
+
+    protected function create($namespace, $param = [])
     {
-        $app = require __DIR__ . '/../bootstrap/app.php';
-
-        $app->make(Kernel::class)->bootstrap();
-
-        return $app;
+        return factory($namespace)->create($param);
     }
 
-    protected $user;
-    protected $prefix = 'admin';
     protected function signIn($user = null)
     {
-        if ($user == null) {
-            $this->user = factory(\App\User::class)->create();
-        } else {
-            $this->user = $user;
-        }
-        return $this->actingAs($this->user);
+        $user ?: $this->create("\App\User");
+
+        return $this->actingAs($user);
     }
 }

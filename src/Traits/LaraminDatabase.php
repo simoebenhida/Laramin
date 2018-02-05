@@ -43,7 +43,6 @@ trait LaraminDatabase
 
     public function putToMigrationFile($request)
     {
-
         if (Schema::hasTable($request->name)) {
             return;
         }
@@ -55,20 +54,19 @@ trait LaraminDatabase
         $column = collect($request->name_columns);
 
         $migration = new DatabaseType;
-
         for ($i = 0; $i < sizeof($column); $i++) {
             if ($type[$i] == "tags") {
                 $isTag = true;
             }
             $content->push($migration->find($type[$i], $column[$i]));
-            $contents = '';
-            for ($i = 0; $i < sizeof($content); $i++) {
-                $contents .= '$' . $content[$i];
-            }
+        }
+        $contents = '';
+        for ($i = 0; $i < sizeof($content); $i++) {
+            $contents .= '$' . $content[$i];
         }
         //Create Migration File
         Artisan::call('Laramin:migration', ['name' => 'create_' . $request->name . '_table', 'content' => $contents, '--table' => str_slug($request->name)]);
-        
+
         //Create Model File
         Artisan::call('Laramin:model', ['name' => ucfirst($request->name), 'migration' => str_slug($request->name), 'tags' => $isTag]);
     }
@@ -87,5 +85,19 @@ trait LaraminDatabase
         }
 
         // $user = Laramin::model('User')->find($request->id)->role
+    }
+    public function updateType($request, $type)
+    {
+        $type->update([
+            'menu' => $request->menu,
+        ]);
+
+        $type->infos->each(function ($item, $key) use ($request) {
+            $item->update([
+                'details' => array_key_exists('details_' . $item->id, request()->toArray()) ? $request['details_' . $item->id] : null,
+                'validation' => array_key_exists('validation_' . $item->id, request()->toArray()) ? $request['validation_' . $item->id] : null,
+                'display' => array_key_exists('display_' . $item->id, request()->toArray()) ? true : false
+            ]);
+        });
     }
 }
